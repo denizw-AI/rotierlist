@@ -61,6 +61,17 @@
         }
 
 
+        .error {
+
+            text-align: center;
+
+            color: #ff6b6b;
+
+            padding: 100px 20px;
+
+        }
+
+
         .profile-header {
 
             display: grid;
@@ -195,6 +206,19 @@
         }
 
 
+        .badge.ranked {
+
+            color: #b99cff;
+
+            background:
+                rgba(124,92,255,0.10);
+
+            border-color:
+                rgba(124,92,255,0.20);
+
+        }
+
+
         .uuid {
 
             color: #626270;
@@ -213,6 +237,109 @@
             font-weight: 900;
 
             margin: 30px 0 15px;
+
+        }
+
+
+        .region-box {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-top: 15px;
+
+        }
+
+
+        .region-label {
+
+            color: #777783;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+        }
+
+
+        .region-select {
+
+            padding: 10px 13px;
+
+            border-radius: 10px;
+
+            border:
+                1px solid rgba(255,255,255,0.08);
+
+            background: #111119;
+
+            color: white;
+
+            outline: none;
+
+            cursor: pointer;
+
+            font-weight: 700;
+
+        }
+
+
+        .region-select:focus {
+
+            border-color: #7c5cff;
+
+        }
+
+
+        .save-region {
+
+            padding: 10px 14px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: #7c5cff;
+
+            color: white;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+        }
+
+
+        .save-region:hover {
+
+            transform: translateY(-1px);
+
+            opacity: 0.9;
+
+        }
+
+
+        .save-region:disabled {
+
+            opacity: 0.5;
+
+            cursor: not-allowed;
+
+        }
+
+
+        .region-status {
+
+            color: #65e6a0;
+
+            font-size: 11px;
+
+            display: none;
 
         }
 
@@ -287,6 +414,18 @@
                 1px solid rgba(255,255,255,0.07);
 
             border-radius: 16px;
+
+            transition: 0.2s;
+
+        }
+
+
+        .gamemode:hover {
+
+            transform: translateY(-2px);
+
+            border-color:
+                rgba(124,92,255,0.25);
 
         }
 
@@ -373,6 +512,14 @@
 
             }
 
+            .region-box {
+
+                justify-content: center;
+
+                flex-wrap: wrap;
+
+            }
+
             .stats {
 
                 grid-template-columns:
@@ -436,6 +583,13 @@
 
 
     <div
+        id="error"
+        class="error"
+        style="display:none;"
+    ></div>
+
+
+    <div
         id="profile"
         style="display:none;"
     >
@@ -476,6 +630,60 @@
                     id="uuid"
                     class="uuid"
                 ></div>
+
+
+                <div class="region-box">
+
+                    <span class="region-label">
+                        Region
+                    </span>
+
+                    <select
+                        id="regionSelect"
+                        class="region-select"
+                    >
+
+                        <option value="EU">
+                            🇪🇺 EU
+                        </option>
+
+                        <option value="NA">
+                            🇺🇸 NA
+                        </option>
+
+                        <option value="AS">
+                            🌏 AS
+                        </option>
+
+                        <option value="SA">
+                            🌎 SA
+                        </option>
+
+                        <option value="AU">
+                            🇦🇺 AU
+                        </option>
+
+                    </select>
+
+
+                    <button
+                        id="saveRegion"
+                        class="save-region"
+                    >
+
+                        Save
+
+                    </button>
+
+
+                    <span
+                        id="regionStatus"
+                        class="region-status"
+                    >
+                        Saved!
+                    </span>
+
+                </div>
 
             </div>
 
@@ -599,7 +807,9 @@ import {
 import {
     getDatabase,
     ref,
-    get
+    get,
+    set,
+    update
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 
 import {
@@ -612,8 +822,23 @@ const database =
     getDatabase(app);
 
 
+/*
+    CLOUDFLARE WORKER
+*/
+
+const MINECRAFT_API =
+    "https://rotierlist-minecraft.denizzzezw.workers.dev";
+
+
+/*
+    ELEMENTS
+*/
+
 const loading =
     document.getElementById("loading");
+
+const errorBox =
+    document.getElementById("error");
 
 const profile =
     document.getElementById("profile");
@@ -642,9 +867,22 @@ const tests =
 const region =
     document.getElementById("region");
 
+const regionSelect =
+    document.getElementById("regionSelect");
+
+const saveRegion =
+    document.getElementById("saveRegion");
+
+const regionStatus =
+    document.getElementById("regionStatus");
+
 const gamemodes =
     document.getElementById("gamemodes");
 
+
+/*
+    GAMEMODES
+*/
 
 const modeNames = {
 
@@ -660,6 +898,223 @@ const modeNames = {
 };
 
 
+/*
+    CURRENT PLAYER
+*/
+
+let currentUser = null;
+
+let currentPlayer = null;
+
+
+/*
+    DEFAULT TIERS
+*/
+
+function getDefaultTiers() {
+
+    return {
+
+        vanilla: "Unranked",
+        sword: "Unranked",
+        axe: "Unranked",
+        uhc: "Unranked",
+        pot: "Unranked",
+        mace: "Unranked",
+        smp: "Unranked",
+        crystal: "Unranked"
+
+    };
+
+}
+
+
+/*
+    MINECRAFT LOOKUP
+*/
+
+async function lookupMinecraft(username) {
+
+    try {
+
+        const response =
+            await fetch(
+                `${MINECRAFT_API}/?username=${encodeURIComponent(username)}`
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Minecraft lookup failed"
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        return data;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Minecraft lookup error:",
+            error
+        );
+
+
+        return {
+
+            success: false,
+
+            username: username,
+
+            uuid: null,
+
+            accountType: "unknown"
+
+        };
+
+    }
+
+}
+
+
+/*
+    CREATE MISSING PROFILE
+*/
+
+async function createMissingProfile(user) {
+
+    const minecraftUsername =
+        user.displayName?.trim();
+
+
+    if (!minecraftUsername) {
+
+        throw new Error(
+            "Your Minecraft name is missing from your account."
+        );
+
+    }
+
+
+    const minecraftData =
+        await lookupMinecraft(
+            minecraftUsername
+        );
+
+
+    let accountType =
+        "unknown";
+
+
+    let playerUUID =
+        null;
+
+
+    if (
+        minecraftData &&
+        minecraftData.success
+    ) {
+
+        accountType =
+            minecraftData.accountType ||
+            "unknown";
+
+
+        playerUUID =
+            minecraftData.uuid ||
+            null;
+
+    }
+
+
+    const playerData = {
+
+        minecraftName:
+            minecraftUsername,
+
+        uuid:
+            playerUUID,
+
+        accountType:
+            accountType,
+
+        region:
+            "EU",
+
+        tiers:
+            getDefaultTiers(),
+
+        stats: {
+
+            tests: 0,
+
+            wins: 0,
+
+            losses: 0
+
+        },
+
+        createdAt:
+            Date.now()
+
+    };
+
+
+    await set(
+        ref(
+            database,
+            `players/${user.uid}`
+        ),
+        playerData
+    );
+
+
+    await set(
+        ref(
+            database,
+            `users/${user.uid}`
+        ),
+        {
+
+            minecraftName:
+                minecraftUsername,
+
+            uuid:
+                playerUUID,
+
+            accountType:
+                accountType,
+
+            region:
+                "EU",
+
+            email:
+                user.email || "",
+
+            createdAt:
+                Date.now()
+
+        }
+    );
+
+
+    return playerData;
+
+}
+
+
+/*
+    SKIN URL
+*/
+
 function getSkinUrl(player) {
 
     if (player.uuid) {
@@ -668,15 +1123,31 @@ function getSkinUrl(player) {
 
     }
 
-    return `https://mc-heads.net/body/${encodeURIComponent(player.minecraftName)}/200`;
+
+    if (player.minecraftName) {
+
+        return `https://mc-heads.net/body/${encodeURIComponent(
+            player.minecraftName
+        )}/200`;
+
+    }
+
+
+    return "";
 
 }
 
 
+/*
+    OVERALL TIER
+*/
+
 function getOverallTier(tiers) {
 
     const values =
-        Object.values(tiers || {});
+        Object.values(
+            tiers || {}
+        );
 
 
     const ranked =
@@ -699,27 +1170,51 @@ function getOverallTier(tiers) {
 }
 
 
+/*
+    BADGES
+*/
+
 function renderBadges(player) {
 
     badges.innerHTML = "";
 
 
+    /*
+        ACCOUNT TYPE
+    */
+
     const accountBadge =
         document.createElement("div");
 
+
     accountBadge.className =
-        "badge " +
-        (
-            player.accountType === "premium"
-                ? "premium"
-                : "unknown"
+        "badge";
+
+
+    if (
+        player.accountType ===
+        "premium"
+    ) {
+
+        accountBadge.classList.add(
+            "premium"
         );
 
+        accountBadge.textContent =
+            "✓ Premium";
 
-    accountBadge.textContent =
-        player.accountType === "premium"
-            ? "✓ Premium"
-            : "⚠ Unverified";
+    }
+
+    else {
+
+        accountBadge.classList.add(
+            "unknown"
+        );
+
+        accountBadge.textContent =
+            "⚠ Unverified";
+
+    }
 
 
     badges.appendChild(
@@ -727,8 +1222,13 @@ function renderBadges(player) {
     );
 
 
+    /*
+        REGION
+    */
+
     const regionBadge =
         document.createElement("div");
+
 
     regionBadge.className =
         "badge";
@@ -744,12 +1244,9 @@ function renderBadges(player) {
     );
 
 
-    const rankedBadge =
-        document.createElement("div");
-
-    rankedBadge.className =
-        "badge";
-
+    /*
+        RANKED
+    */
 
     const tierValues =
         Object.values(
@@ -765,10 +1262,31 @@ function renderBadges(player) {
         );
 
 
-    rankedBadge.textContent =
-        isRanked
-            ? "✓ Ranked"
-            : "Unranked";
+    const rankedBadge =
+        document.createElement("div");
+
+
+    rankedBadge.className =
+        "badge";
+
+
+    if (isRanked) {
+
+        rankedBadge.classList.add(
+            "ranked"
+        );
+
+        rankedBadge.textContent =
+            "✓ Ranked";
+
+    }
+
+    else {
+
+        rankedBadge.textContent =
+            "Unranked";
+
+    }
 
 
     badges.appendChild(
@@ -777,6 +1295,10 @@ function renderBadges(player) {
 
 }
 
+
+/*
+    GAMEMODES
+*/
 
 function renderGamemodes(player) {
 
@@ -814,8 +1336,40 @@ function renderGamemodes(player) {
                 const card =
                     document.createElement("div");
 
+
                 card.className =
                     "gamemode";
+
+
+                const tierClass =
+                    tier !== "Unranked"
+                        ? "ranked"
+                        : "";
+
+
+                let serverName =
+                    "Not tested";
+
+
+                if (
+                    player.accountType ===
+                    "premium"
+                ) {
+
+                    serverName =
+                        "MCPVP.CLUB";
+
+                }
+
+                else if (
+                    player.accountType ===
+                    "cracked"
+                ) {
+
+                    serverName =
+                        "CRAFTIFY.LOL";
+
+                }
 
 
                 card.innerHTML = `
@@ -824,19 +1378,12 @@ function renderGamemodes(player) {
                         ${name}
                     </div>
 
-                    <div class="
-                        tier
-                        ${tier !== "Unranked" ? "ranked" : ""}
-                    ">
+                    <div class="tier ${tierClass}">
                         ${tier}
                     </div>
 
                     <div class="server">
-                        ${
-                            player.accountType === "premium"
-                                ? "MCPVP.CLUB"
-                                : "CRAFTIFY.LOL"
-                        }
+                        ${serverName}
                     </div>
 
                 `;
@@ -856,11 +1403,153 @@ function renderGamemodes(player) {
 }
 
 
+/*
+    REGION UI
+*/
+
+function setRegionUI(playerRegion) {
+
+    const selectedRegion =
+        playerRegion || "EU";
+
+
+    region.textContent =
+        selectedRegion;
+
+
+    regionSelect.value =
+        selectedRegion;
+
+}
+
+
+/*
+    SAVE REGION
+*/
+
+saveRegion.addEventListener(
+    "click",
+    async () => {
+
+        if (!currentUser) {
+
+            return;
+
+        }
+
+
+        const selectedRegion =
+            regionSelect.value;
+
+
+        saveRegion.disabled =
+            true;
+
+
+        regionStatus.style.display =
+            "none";
+
+
+        try {
+
+            await update(
+                ref(
+                    database,
+                    `players/${currentUser.uid}`
+                ),
+                {
+
+                    region:
+                        selectedRegion
+
+                }
+            );
+
+
+            await update(
+                ref(
+                    database,
+                    `users/${currentUser.uid}`
+                ),
+                {
+
+                    region:
+                        selectedRegion
+
+                }
+            );
+
+
+            if (currentPlayer) {
+
+                currentPlayer.region =
+                    selectedRegion;
+
+            }
+
+
+            region.textContent =
+                selectedRegion;
+
+
+            renderBadges(
+                currentPlayer
+            );
+
+
+            regionStatus.style.display =
+                "inline";
+
+
+            setTimeout(
+                () => {
+
+                    regionStatus.style.display =
+                        "none";
+
+                },
+                2000
+            );
+
+        }
+
+        catch (err) {
+
+            console.error(
+                err
+            );
+
+
+            alert(
+                "Could not save region."
+            );
+
+        }
+
+        finally {
+
+            saveRegion.disabled =
+                false;
+
+        }
+
+    }
+);
+
+
+/*
+    LOAD PROFILE
+*/
+
 async function loadProfile(user) {
+
+    currentUser =
+        user;
+
 
     try {
 
-        const snapshot =
+        let snapshot =
             await get(
                 ref(
                     database,
@@ -869,93 +1558,228 @@ async function loadProfile(user) {
             );
 
 
+        /*
+            PROFILE DOES NOT EXIST
+            CREATE IT AUTOMATICALLY
+        */
+
         if (!snapshot.exists()) {
 
             loading.textContent =
-                "Profile data not found.";
+                "Setting up your profile...";
 
-            return;
+
+            const newProfile =
+                await createMissingProfile(
+                    user
+                );
+
+
+            currentPlayer =
+                newProfile;
+
+        }
+
+        else {
+
+            currentPlayer =
+                snapshot.val();
 
         }
 
 
-        const player =
-            snapshot.val();
+        /*
+            DEFAULT VALUES
+        */
+
+        if (
+            !currentPlayer.tiers
+        ) {
+
+            currentPlayer.tiers =
+                getDefaultTiers();
+
+        }
 
 
-        minecraftName.textContent =
-            player.minecraftName ||
+        if (
+            !currentPlayer.stats
+        ) {
+
+            currentPlayer.stats = {
+
+                tests: 0,
+
+                wins: 0,
+
+                losses: 0
+
+            };
+
+        }
+
+
+        if (
+            !currentPlayer.region
+        ) {
+
+            currentPlayer.region =
+                "EU";
+
+        }
+
+
+        /*
+            NAME
+        */
+
+        const playerName =
+            currentPlayer.minecraftName ||
             user.displayName ||
             "Unknown";
 
 
+        minecraftName.textContent =
+            playerName;
+
+
+        /*
+            UUID
+        */
+
         uuid.textContent =
-            player.uuid
-                ? "UUID: " + player.uuid
+            currentPlayer.uuid
+                ? "UUID: " +
+                  currentPlayer.uuid
                 : "UUID: Not available";
 
 
+        /*
+            SKIN
+        */
+
         skin.src =
-            getSkinUrl(player);
+            getSkinUrl(
+                currentPlayer
+            );
 
 
         skin.onerror =
             () => {
 
-                skin.src =
-                    `https://mc-heads.net/body/${encodeURIComponent(
-                        player.minecraftName
-                    )}/200`;
+                if (
+                    currentPlayer.minecraftName
+                ) {
+
+                    skin.src =
+                        `https://mc-heads.net/body/${encodeURIComponent(
+                            currentPlayer.minecraftName
+                        )}/200`;
+
+                }
 
             };
 
 
-        region.textContent =
-            player.region ||
-            "EU";
+        /*
+            REGION
+        */
 
-
-        tests.textContent =
-            player.stats?.tests ||
-            0;
-
-
-        overallTier.textContent =
-            getOverallTier(
-                player.tiers
-            );
-
-
-        renderBadges(
-            player
+        setRegionUI(
+            currentPlayer.region
         );
 
 
+        /*
+            TESTS
+        */
+
+        tests.textContent =
+            currentPlayer.stats?.tests ||
+            0;
+
+
+        /*
+            OVERALL
+        */
+
+        overallTier.textContent =
+            getOverallTier(
+                currentPlayer.tiers
+            );
+
+
+        /*
+            BADGES
+        */
+
+        renderBadges(
+            currentPlayer
+        );
+
+
+        /*
+            GAMEMODES
+        */
+
         renderGamemodes(
-            player
+            currentPlayer
+        );
+
+
+        /*
+            SHOW PROFILE
+        */
+
+        loading.style.display =
+            "none";
+
+
+        errorBox.style.display =
+            "none";
+
+
+        profile.style.display =
+            "block";
+
+    }
+
+
+    catch (err) {
+
+        console.error(
+            "Profile error:",
+            err
         );
 
 
         loading.style.display =
             "none";
 
+
         profile.style.display =
+            "none";
+
+
+        errorBox.style.display =
             "block";
 
 
-    }
-
-    catch (error) {
-
-        console.error(error);
-
-        loading.textContent =
-            "Could not load profile.";
+        errorBox.textContent =
+            "Could not load profile: " +
+            (
+                err.message ||
+                "Unknown error"
+            );
 
     }
 
 }
 
+
+/*
+    AUTH
+*/
 
 onAuthStateChanged(
     auth,
@@ -971,7 +1795,9 @@ onAuthStateChanged(
         }
 
 
-        loadProfile(user);
+        loadProfile(
+            user
+        );
 
     }
 );
