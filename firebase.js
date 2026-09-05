@@ -1,12 +1,10 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
 import {
     getAuth,
     setPersistence,
     browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-import {
-    getFirestore
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCHHywPPpPDpOE2kRTjxLxCKzG_ZciimYA",
@@ -21,15 +19,9 @@ const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 
-const db = getFirestore(app);
-
 setPersistence(auth, browserLocalPersistence)
     .catch((error) => {
         console.error("Persistence error:", error);
     });
 
-export {
-    app,
-    auth,
-    db
-};
+export { app, auth };
