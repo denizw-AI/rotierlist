@@ -1,445 +1,1474 @@
-<script type="module">
-    import { app } from "./firebase.js";
-    import {
-        getDatabase,
-        ref,
-        onValue
-    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    const database = getDatabase(app);
+    <title>RO TierList | Minecraft PvP Rankings</title>
 
-    /* =========================
-       CONFIG
-    ========================= */
+    <meta
+        name="description"
+        content="Romania's Minecraft PvP Tier List. View players, rankings, results and tiers."
+    >
 
-    const WORKER_URL = "https://rotierlist-minecraft.denizzzezw.workers.dev";
+    <link rel="stylesheet" href="./style.css">
 
-    const TIER_SCORE = {
-        "HT1": 100,
-        "LT1": 90,
-        "HT2": 80,
-        "LT2": 70,
-        "HT3": 60,
-        "LT3": 50,
-        "HT4": 40,
-        "LT4": 30,
-        "HT5": 20,
-        "LT5": 10,
-        "Unranked": 0
-    };
+    <style>
+        /* =========================================
+           HOMEPAGE LEADERBOARD
+        ========================================= */
 
-    const GAMEMODE = "sword";
-
-    /* =========================
-       ELEMENTS
-    ========================= */
-
-    const podium = document.getElementById("podium");
-    const leaderboardBody = document.getElementById("leaderboardBody");
-    const searchInput = document.getElementById("searchInput");
-
-    const playersCount = document.getElementById("playersCount");
-    const rankedCount = document.getElementById("rankedCount");
-    const testsCount = document.getElementById("testsCount");
-    const testersCount = document.getElementById("testersCount");
-
-    let allPlayers = [];
-
-    /* =========================
-       HELPERS
-    ========================= */
-
-    function getTierScore(tier) {
-        return TIER_SCORE[tier] || 0;
-    }
-
-    function getSkin(uuid) {
-        if (!uuid) {
-            return "https://mc-heads.net/avatar/MHF_Steve/64";
+        .empty-leaderboard {
+            width: 100%;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 30px;
         }
 
-        return `https://mc-heads.net/avatar/${uuid.replace(/-/g, "")}/64`;
-    }
-
-    function getBody(uuid) {
-        if (!uuid) {
-            return "https://mc-heads.net/body/MHF_Steve/100";
+        .empty-leaderboard .empty-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
         }
 
-        return `https://mc-heads.net/body/${uuid.replace(/-/g, "")}/100`;
-    }
-
-    function getTierClass(tier) {
-        if (!tier || tier === "Unranked") {
-            return "unranked";
+        .empty-leaderboard h3 {
+            margin: 0 0 6px;
         }
 
-        return tier.toLowerCase().replace(" ", "");
-    }
-
-    function escapeHTML(value) {
-        return String(value ?? "")
-            .replaceAll("&", "&amp;")
-            .replaceAll("<", "&lt;")
-            .replaceAll(">", "&gt;")
-            .replaceAll('"', "&quot;")
-            .replaceAll("'", "&#039;");
-    }
-
-    function getTier(player) {
-        return player?.tiers?.[GAMEMODE] || "Unranked";
-    }
-
-    /* =========================
-       SORT PLAYERS
-    ========================= */
-
-    function getRankedPlayers() {
-        return allPlayers
-            .filter(player => {
-                if (!player) return false;
-
-                // Homepage = PREMIUM leaderboard
-                if (player.accountType !== "premium") {
-                    return false;
-                }
-
-                const tier = getTier(player);
-
-                return tier !== "Unranked";
-            })
-            .sort((a, b) => {
-                const tierA = getTier(a);
-                const tierB = getTier(b);
-
-                const scoreA = getTierScore(tierA);
-                const scoreB = getTierScore(tierB);
-
-                if (scoreB !== scoreA) {
-                    return scoreB - scoreA;
-                }
-
-                const testsA = Number(a?.stats?.tests || 0);
-                const testsB = Number(b?.stats?.tests || 0);
-
-                return testsB - testsA;
-            });
-    }
-
-    /* =========================
-       PODIUM
-    ========================= */
-
-    function renderPodium(players) {
-        if (!podium) return;
-
-        const top3 = players.slice(0, 3);
-
-        if (top3.length === 0) {
-            podium.innerHTML = `
-                <div class="empty-leaderboard">
-                    <div class="empty-icon">🏆</div>
-                    <h3>No ranked players yet</h3>
-                    <p>Be the first player to get ranked.</p>
-                </div>
-            `;
-
-            return;
+        .empty-leaderboard p {
+            margin: 0;
+            opacity: .65;
         }
 
-        podium.innerHTML = top3.map((player, index) => {
-            const position = index + 1;
-            const name = escapeHTML(
-                player.minecraftName || "Unknown"
-            );
-
-            const tier = getTier(player);
-            const uuid = player.uuid || "";
-            const score = getTierScore(tier);
-
-            return `
-                <div class="podium-card place-${position}">
-                    <div class="podium-rank">
-                        #${position}
-                    </div>
-
-                    <div class="podium-player">
-                        <img
-                            src="${getBody(uuid)}"
-                            alt="${name}"
-                            class="podium-skin"
-                            onerror="this.src='https://mc-heads.net/body/MHF_Steve/100'"
-                        >
-
-                        <div class="podium-name">
-                            ${name}
-                        </div>
-
-                        <div class="podium-tier ${getTierClass(tier)}">
-                            ${escapeHTML(tier)}
-                        </div>
-
-                        <div class="podium-score">
-                            ${score} pts
-                        </div>
-                    </div>
-                </div>
-            `;
-        }).join("");
-    }
-
-    /* =========================
-       LEADERBOARD ROWS
-    ========================= */
-
-    function renderRows(players) {
-        if (!leaderboardBody) return;
-
-        const top50 = players.slice(3, 50);
-
-        if (top50.length === 0) {
-            leaderboardBody.innerHTML = `
-                <div class="empty-row">
-                    No other ranked players.
-                </div>
-            `;
-
-            return;
+        .empty-row {
+            width: 100%;
+            padding: 30px;
+            text-align: center;
+            opacity: .65;
         }
 
-        leaderboardBody.innerHTML = top50.map((player, index) => {
-            const position = index + 4;
-
-            const name = escapeHTML(
-                player.minecraftName || "Unknown"
-            );
-
-            const tier = getTier(player);
-            const uuid = player.uuid || "";
-
-            const tests = Number(
-                player?.stats?.tests || 0
-            );
-
-            const wins = Number(
-                player?.stats?.wins || 0
-            );
-
-            const losses = Number(
-                player?.stats?.losses || 0
-            );
-
-            const score = getTierScore(tier);
-
-            return `
-                <div class="leaderboard-row">
-
-                    <div class="rank-number">
-                        #${position}
-                    </div>
-
-                    <div class="player-cell">
-                        <img
-                            src="${getSkin(uuid)}"
-                            alt="${name}"
-                            class="player-skin"
-                            onerror="this.src='https://mc-heads.net/avatar/MHF_Steve/64'"
-                        >
-
-                        <div class="player-info">
-                            <div class="player-name">
-                                ${name}
-                            </div>
-
-                            <div class="player-region">
-                                ${escapeHTML(player.region || "EU")}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tier-cell">
-                        <span class="tier-badge ${getTierClass(tier)}">
-                            ${escapeHTML(tier)}
-                        </span>
-                    </div>
-
-                    <div class="score-cell">
-                        ${score}
-                    </div>
-
-                    <div class="tests-cell">
-                        ${tests}
-                    </div>
-
-                    <div class="record-cell">
-                        ${wins}W / ${losses}L
-                    </div>
-
-                </div>
-            `;
-        }).join("");
-    }
-
-    /* =========================
-       STATS
-    ========================= */
-
-    function renderStats(players) {
-        if (playersCount) {
-            playersCount.textContent = players.length;
+        .podium-skin {
+            object-fit: contain;
+            image-rendering: auto;
         }
 
-        const ranked = players.filter(player => {
-            if (!player) return false;
+        .player-skin {
+            width: 42px;
+            height: 42px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
 
-            if (player.accountType !== "premium") {
-                return false;
+        .tier-badge,
+        .podium-tier {
+            white-space: nowrap;
+        }
+
+        .leaderboard-row {
+            cursor: pointer;
+        }
+
+        /* =========================================
+           TIER COLORS
+        ========================================= */
+
+        .tier-badge.ht1,
+        .podium-tier.ht1 {
+            color: #ff5555;
+        }
+
+        .tier-badge.lt1,
+        .podium-tier.lt1 {
+            color: #ff7777;
+        }
+
+        .tier-badge.ht2,
+        .podium-tier.ht2 {
+            color: #ffaa00;
+        }
+
+        .tier-badge.lt2,
+        .podium-tier.lt2 {
+            color: #ffbb33;
+        }
+
+        .tier-badge.ht3,
+        .podium-tier.ht3 {
+            color: #ffff55;
+        }
+
+        .tier-badge.lt3,
+        .podium-tier.lt3 {
+            color: #eeee55;
+        }
+
+        .tier-badge.ht4,
+        .podium-tier.ht4 {
+            color: #55ff55;
+        }
+
+        .tier-badge.lt4,
+        .podium-tier.lt4 {
+            color: #77dd77;
+        }
+
+        .tier-badge.ht5,
+        .podium-tier.ht5 {
+            color: #55ffff;
+        }
+
+        .tier-badge.lt5,
+        .podium-tier.lt5 {
+            color: #77dddd;
+        }
+
+        .tier-badge.unranked,
+        .podium-tier.unranked {
+            opacity: .55;
+        }
+
+        /* =========================================
+           LOADING
+        ========================================= */
+
+        .leaderboard-loading {
+            width: 100%;
+            padding: 45px;
+            text-align: center;
+            opacity: .7;
+        }
+
+        /* =========================================
+           MOBILE
+        ========================================= */
+
+        @media (max-width: 700px) {
+            .record-cell {
+                display: none;
             }
 
-            return getTier(player) !== "Unranked";
-        });
+            .tests-cell {
+                display: none;
+            }
+        }
+    </style>
+</head>
 
-        if (rankedCount) {
-            rankedCount.textContent = ranked.length;
+<body>
+
+    <!-- =========================================
+         NAVBAR
+    ========================================= -->
+
+    <header class="navbar">
+        <div class="nav-container">
+
+            <a href="./index.html" class="logo">
+                RO<span>TierList</span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="./index.html" class="active">Home</a>
+                <a href="./players.html">Players</a>
+                <a href="./leaderboards.html">Leaderboards</a>
+                <a href="./results.html">Results</a>
+                <a href="./tiers.html">Tiers</a>
+                <a href="https://discord.gg/bms3jPBD9p" target="_blank">Discord</a>
+            </nav>
+
+            <div class="nav-auth">
+                <a href="./login.html" class="login-btn">Login</a>
+                <a href="./register.html" class="register-btn">Register</a>
+            </div>
+
+        </div>
+    </header>
+
+
+    <!-- =========================================
+         HERO
+    ========================================= -->
+
+    <main>
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <div class="hero-badge">
+                    🇷🇴 ROMANIA MINECRAFT PVP
+                </div>
+
+                <h1>
+                    The Romanian
+                    <span>Minecraft PvP</span>
+                    Tier List
+                </h1>
+
+                <p>
+                    Discover the best Minecraft PvP players in Romania.
+                    Get tested, earn your tier and climb the leaderboard.
+                </p>
+
+                <div class="hero-buttons">
+                    <a href="./register.html" class="primary-btn">
+                        Get Tested
+                    </a>
+
+                    <a href="./leaderboards.html" class="secondary-btn">
+                        View Leaderboards
+                    </a>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             STATS
+        ========================================= -->
+
+        <section class="stats-section">
+
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+
+                <div class="stat-info">
+                    <span class="stat-value" id="playersCount">0</span>
+                    <span class="stat-label">Players</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">🏆</div>
+
+                <div class="stat-info">
+                    <span class="stat-value" id="rankedCount">0</span>
+                    <span class="stat-label">Ranked Players</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">⚔️</div>
+
+                <div class="stat-info">
+                    <span class="stat-value" id="testsCount">0</span>
+                    <span class="stat-label">Tests</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">🛡️</div>
+
+                <div class="stat-info">
+                    <span class="stat-value" id="testersCount">0</span>
+                    <span class="stat-label">Testers</span>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             MAIN LEADERBOARD
+        ========================================= -->
+
+        <section class="leaderboard-section">
+
+            <div class="section-header">
+
+                <div>
+                    <div class="section-eyebrow">
+                        PREMIUM RANKINGS
+                    </div>
+
+                    <h2>
+                        Top Minecraft PvP Players
+                    </h2>
+
+                    <p>
+                        Sword leaderboard • Live rankings
+                    </p>
+                </div>
+
+                <a
+                    href="./leaderboards.html"
+                    class="view-all-btn"
+                >
+                    View Full Leaderboard →
+                </a>
+
+            </div>
+
+
+            <!-- PODIUM -->
+
+            <div id="podium" class="podium">
+
+                <div class="leaderboard-loading">
+                    Loading leaderboard...
+                </div>
+
+            </div>
+
+
+            <!-- TABLE -->
+
+            <div class="leaderboard-container">
+
+                <div class="leaderboard-head">
+
+                    <div>Rank</div>
+
+                    <div>Player</div>
+
+                    <div>Tier</div>
+
+                    <div>Score</div>
+
+                    <div>Tests</div>
+
+                    <div>Record</div>
+
+                </div>
+
+                <div id="leaderboardBody">
+
+                    <div class="leaderboard-loading">
+                        Loading players...
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CRACKED -->
+
+            <div class="cracked-leaderboard">
+
+                <div class="cracked-info">
+
+                    <div class="cracked-icon">
+                        ⛏
+                    </div>
+
+                    <div>
+                        <h3>Looking for cracked players?</h3>
+
+                        <p>
+                            View the CRAFTIFY.LOL cracked leaderboard.
+                        </p>
+                    </div>
+
+                </div>
+
+                <a
+                    href="./leaderboards.html#cracked"
+                    class="cracked-btn"
+                >
+                    Cracked Leaderboard →
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             HOW TO GET TESTED
+        ========================================= -->
+
+        <section class="how-section">
+
+            <div class="section-header centered">
+
+                <div>
+                    <div class="section-eyebrow">
+                        HOW IT WORKS
+                    </div>
+
+                    <h2>
+                        How to get ranked
+                    </h2>
+
+                    <p>
+                        Getting your official tier is simple.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="steps-grid">
+
+                <div class="step-card">
+
+                    <div class="step-number">
+                        01
+                    </div>
+
+                    <div class="step-icon">
+                        👤
+                    </div>
+
+                    <h3>
+                        Create an account
+                    </h3>
+
+                    <p>
+                        Register your Minecraft account on ROTierList.
+                    </p>
+
+                </div>
+
+
+                <div class="step-card">
+
+                    <div class="step-number">
+                        02
+                    </div>
+
+                    <div class="step-icon">
+                        ⚔️
+                    </div>
+
+                    <h3>
+                        Get tested
+                    </h3>
+
+                    <p>
+                        Play against one of our official testers.
+                    </p>
+
+                </div>
+
+
+                <div class="step-card">
+
+                    <div class="step-number">
+                        03
+                    </div>
+
+                    <div class="step-icon">
+                        🏆
+                    </div>
+
+                    <h3>
+                        Get your tier
+                    </h3>
+
+                    <p>
+                        Your official tier will appear on your profile.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             SEARCH
+        ========================================= -->
+
+        <section class="search-section">
+
+            <div class="search-content">
+
+                <div class="section-eyebrow">
+                    FIND A PLAYER
+                </div>
+
+                <h2>
+                    Search the rankings
+                </h2>
+
+                <p>
+                    Search for any registered Minecraft player.
+                </p>
+
+                <div class="search-box">
+
+                    <span class="search-icon">
+                        🔍
+                    </span>
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Enter Minecraft username..."
+                        autocomplete="off"
+                    >
+
+                    <button
+                        type="button"
+                        id="searchButton"
+                    >
+                        Search
+                    </button>
+
+                </div>
+
+                <div
+                    id="searchMessage"
+                    class="search-message"
+                ></div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================= -->
+
+    <footer class="footer">
+
+        <div class="footer-container">
+
+            <div class="footer-brand">
+
+                <a href="./index.html" class="logo">
+                    RO<span>TierList</span>
+                </a>
+
+                <p>
+                    Romania's Minecraft PvP ranking platform.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="./players.html">
+                    Players
+                </a>
+
+                <a href="./leaderboards.html">
+                    Leaderboards
+                </a>
+
+                <a href="./results.html">
+                    Results
+                </a>
+
+                <a href="./tiers.html">
+                    Tiers
+                </a>
+
+                <a
+                    href="https://discord.gg/bms3jPBD9p"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Discord
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            © 2026 ROTierList. All rights reserved.
+        </div>
+
+    </footer>
+
+
+    <!-- =========================================
+         FIREBASE LEADERBOARD
+    ========================================= -->
+
+    <script type="module">
+
+        import { app } from "./firebase.js";
+
+        import {
+            getDatabase,
+            ref,
+            onValue
+        } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+
+
+        /* =========================================
+           DATABASE
+        ========================================= */
+
+        const database = getDatabase(app);
+
+
+        /* =========================================
+           CONFIG
+        ========================================= */
+
+        const GAMEMODE = "sword";
+
+
+        const TIER_SCORE = {
+
+            "HT1": 100,
+            "LT1": 90,
+
+            "HT2": 80,
+            "LT2": 70,
+
+            "HT3": 60,
+            "LT3": 50,
+
+            "HT4": 40,
+            "LT4": 30,
+
+            "HT5": 20,
+            "LT5": 10,
+
+            "Unranked": 0
+
+        };
+
+
+        /* =========================================
+           ELEMENTS
+        ========================================= */
+
+        const podium =
+            document.getElementById("podium");
+
+        const leaderboardBody =
+            document.getElementById("leaderboardBody");
+
+        const searchInput =
+            document.getElementById("searchInput");
+
+        const searchButton =
+            document.getElementById("searchButton");
+
+        const searchMessage =
+            document.getElementById("searchMessage");
+
+        const playersCount =
+            document.getElementById("playersCount");
+
+        const rankedCount =
+            document.getElementById("rankedCount");
+
+        const testsCount =
+            document.getElementById("testsCount");
+
+        const testersCount =
+            document.getElementById("testersCount");
+
+
+        let allPlayers = [];
+
+
+        /* =========================================
+           HELPERS
+        ========================================= */
+
+        function escapeHTML(value) {
+
+            return String(value ?? "")
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+
         }
 
-        const totalTests = players.reduce((total, player) => {
-            return total + Number(
-                player?.stats?.tests || 0
-            );
-        }, 0);
 
-        if (testsCount) {
-            testsCount.textContent = totalTests;
+        function getTier(player) {
+
+            return player?.tiers?.[GAMEMODE] || "Unranked";
+
         }
 
-        if (testersCount) {
-            testersCount.textContent = "0";
-        }
-    }
 
-    /* =========================
-       SEARCH
-    ========================= */
+        function getTierScore(tier) {
 
-    function searchPlayers(query) {
-        const value = query
-            .trim()
-            .toLowerCase();
+            return TIER_SCORE[tier] || 0;
 
-        if (!value) {
-            return getRankedPlayers();
         }
 
-        return getRankedPlayers().filter(player => {
-            const name = String(
-                player.minecraftName || ""
-            ).toLowerCase();
 
-            return name.includes(value);
-        });
-    }
+        function getTierClass(tier) {
 
-    function renderLeaderboard(players) {
-        renderPodium(players);
-        renderRows(players);
-    }
+            if (!tier || tier === "Unranked") {
 
-    /* =========================
-       FIREBASE REALTIME DATABASE
-    ========================= */
+                return "unranked";
 
-    const playersRef = ref(database, "players");
+            }
 
-    onValue(
-        playersRef,
-        snapshot => {
-            const data = snapshot.val() || {};
+            return tier
+                .toLowerCase()
+                .replace(/\s+/g, "");
 
-            allPlayers = Object.entries(data)
-                .map(([uid, player]) => ({
-                    uid,
-                    ...player
-                }))
-                .filter(player => player.minecraftName);
+        }
 
-            const rankedPlayers = getRankedPlayers();
 
-            renderLeaderboard(rankedPlayers);
-            renderStats(allPlayers);
+        function cleanUUID(uuid) {
 
-            console.log(
-                "[ROTierList] Players loaded:",
-                allPlayers.length
-            );
+            if (!uuid) return "";
 
-            console.log(
-                "[ROTierList] Ranked premium players:",
-                rankedPlayers.length
-            );
-        },
-        error => {
-            console.error(
-                "[ROTierList] Firebase error:",
-                error
-            );
+            return String(uuid)
+                .replaceAll("-", "")
+                .trim();
 
-            if (podium) {
+        }
+
+
+        function getSkin(uuid) {
+
+            const clean = cleanUUID(uuid);
+
+            if (!clean) {
+
+                return "https://mc-heads.net/avatar/MHF_Steve/64";
+
+            }
+
+            return `https://mc-heads.net/avatar/${clean}/64`;
+
+        }
+
+
+        function getBody(uuid) {
+
+            const clean = cleanUUID(uuid);
+
+            if (!clean) {
+
+                return "https://mc-heads.net/body/MHF_Steve/100";
+
+            }
+
+            return `https://mc-heads.net/body/${clean}/100`;
+
+        }
+
+
+        /* =========================================
+           GET RANKED PLAYERS
+        ========================================= */
+
+        function getRankedPlayers() {
+
+            return allPlayers
+
+                .filter(player => {
+
+                    if (!player) return false;
+
+                    /*
+                     * Homepage = Premium only
+                     */
+
+                    if (player.accountType !== "premium") {
+
+                        return false;
+
+                    }
+
+
+                    /*
+                     * Only players ranked in Sword
+                     */
+
+                    return getTier(player) !== "Unranked";
+
+                })
+
+
+                .sort((a, b) => {
+
+                    const tierA = getTier(a);
+                    const tierB = getTier(b);
+
+                    const scoreA = getTierScore(tierA);
+                    const scoreB = getTierScore(tierB);
+
+
+                    /*
+                     * First: Tier
+                     */
+
+                    if (scoreA !== scoreB) {
+
+                        return scoreB - scoreA;
+
+                    }
+
+
+                    /*
+                     * Second: Tests
+                     */
+
+                    const testsA =
+                        Number(a?.stats?.tests || 0);
+
+                    const testsB =
+                        Number(b?.stats?.tests || 0);
+
+                    if (testsA !== testsB) {
+
+                        return testsB - testsA;
+
+                    }
+
+
+                    /*
+                     * Third: Wins
+                     */
+
+                    const winsA =
+                        Number(a?.stats?.wins || 0);
+
+                    const winsB =
+                        Number(b?.stats?.wins || 0);
+
+                    return winsB - winsA;
+
+                });
+
+        }
+
+
+        /* =========================================
+           PODIUM
+        ========================================= */
+
+        function renderPodium(players) {
+
+            if (!podium) return;
+
+
+            const top3 =
+                players.slice(0, 3);
+
+
+            if (top3.length === 0) {
+
                 podium.innerHTML = `
+
                     <div class="empty-leaderboard">
-                        <div class="empty-icon">⚠️</div>
-                        <h3>Leaderboard unavailable</h3>
-                        <p>Could not load player data.</p>
+
+                        <div class="empty-icon">
+                            🏆
+                        </div>
+
+                        <h3>
+                            No ranked players yet
+                        </h3>
+
+                        <p>
+                            Be the first player to get ranked.
+                        </p>
+
                     </div>
+
                 `;
+
+                return;
+
             }
 
-            if (leaderboardBody) {
-                leaderboardBody.innerHTML = `
-                    <div class="empty-row">
-                        Could not load leaderboard data.
-                    </div>
-                `;
-            }
+
+            podium.innerHTML = top3
+                .map((player, index) => {
+
+                    const position =
+                        index + 1;
+
+                    const name =
+                        escapeHTML(
+                            player.minecraftName ||
+                            "Unknown"
+                        );
+
+                    const tier =
+                        getTier(player);
+
+                    const uuid =
+                        player.uuid || "";
+
+                    const score =
+                        getTierScore(tier);
+
+
+                    return `
+
+                        <div
+                            class="podium-card place-${position}"
+                            data-player="${escapeHTML(
+                                player.minecraftName || ""
+                            )}"
+                        >
+
+                            <div class="podium-rank">
+                                #${position}
+                            </div>
+
+
+                            <div class="podium-player">
+
+                                <img
+                                    src="${getBody(uuid)}"
+                                    alt="${name}"
+                                    class="podium-skin"
+                                    onerror="
+                                        this.onerror=null;
+                                        this.src='https://mc-heads.net/body/MHF_Steve/100';
+                                    "
+                                >
+
+
+                                <div class="podium-name">
+                                    ${name}
+                                </div>
+
+
+                                <div
+                                    class="podium-tier ${getTierClass(tier)}"
+                                >
+                                    ${escapeHTML(tier)}
+                                </div>
+
+
+                                <div class="podium-score">
+                                    ${score} pts
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                })
+                .join("");
+
+
+            podium
+                .querySelectorAll("[data-player]")
+                .forEach(card => {
+
+                    card.addEventListener(
+                        "click",
+                        () => {
+
+                            const username =
+                                card.dataset.player;
+
+                            if (!username) return;
+
+                            window.location.href =
+                                `./players.html?player=${encodeURIComponent(username)}`;
+
+                        }
+                    );
+
+                });
+
         }
-    );
 
-    /* =========================
-       SEARCH EVENT
-    ========================= */
 
-    if (searchInput) {
-        searchInput.addEventListener("input", event => {
-            const results = searchPlayers(
-                event.target.value
+        /* =========================================
+           ROWS
+        ========================================= */
+
+        function renderRows(players) {
+
+            if (!leaderboardBody) return;
+
+
+            /*
+             * Top 3 are already displayed
+             * in the podium.
+             */
+
+            const remaining =
+                players.slice(3, 50);
+
+
+            if (remaining.length === 0) {
+
+                leaderboardBody.innerHTML = `
+
+                    <div class="empty-row">
+                        No other ranked players.
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            leaderboardBody.innerHTML =
+                remaining.map((player, index) => {
+
+                    const position =
+                        index + 4;
+
+                    const name =
+                        escapeHTML(
+                            player.minecraftName ||
+                            "Unknown"
+                        );
+
+                    const tier =
+                        getTier(player);
+
+                    const uuid =
+                        player.uuid || "";
+
+                    const tests =
+                        Number(
+                            player?.stats?.tests || 0
+                        );
+
+                    const wins =
+                        Number(
+                            player?.stats?.wins || 0
+                        );
+
+                    const losses =
+                        Number(
+                            player?.stats?.losses || 0
+                        );
+
+                    const score =
+                        getTierScore(tier);
+
+                    const region =
+                        escapeHTML(
+                            player.region || "EU"
+                        );
+
+
+                    return `
+
+                        <div
+                            class="leaderboard-row"
+                            data-player="${escapeHTML(
+                                player.minecraftName || ""
+                            )}"
+                        >
+
+                            <div class="rank-number">
+                                #${position}
+                            </div>
+
+
+                            <div class="player-cell">
+
+                                <img
+                                    src="${getSkin(uuid)}"
+                                    alt="${name}"
+                                    class="player-skin"
+                                    onerror="
+                                        this.onerror=null;
+                                        this.src='https://mc-heads.net/avatar/MHF_Steve/64';
+                                    "
+                                >
+
+
+                                <div class="player-info">
+
+                                    <div class="player-name">
+                                        ${name}
+                                    </div>
+
+                                    <div class="player-region">
+                                        ${region}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="tier-cell">
+
+                                <span
+                                    class="tier-badge ${getTierClass(tier)}"
+                                >
+                                    ${escapeHTML(tier)}
+                                </span>
+
+                            </div>
+
+
+                            <div class="score-cell">
+                                ${score}
+                            </div>
+
+
+                            <div class="tests-cell">
+                                ${tests}
+                            </div>
+
+
+                            <div class="record-cell">
+                                ${wins}W / ${losses}L
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }).join("");
+
+
+            /*
+             * Click row -> player profile
+             */
+
+            leaderboardBody
+                .querySelectorAll("[data-player]")
+                .forEach(row => {
+
+                    row.addEventListener(
+                        "click",
+                        () => {
+
+                            const username =
+                                row.dataset.player;
+
+                            if (!username) return;
+
+                            window.location.href =
+                                `./players.html?player=${encodeURIComponent(username)}`;
+
+                        }
+                    );
+
+                });
+
+        }
+
+
+        /* =========================================
+           STATS
+        ========================================= */
+
+        function renderStats(players) {
+
+            if (playersCount) {
+
+                playersCount.textContent =
+                    players.length;
+
+            }
+
+
+            const ranked =
+                players.filter(player => {
+
+                    return (
+                        player?.accountType === "premium" &&
+                        getTier(player) !== "Unranked"
+                    );
+
+                });
+
+
+            if (rankedCount) {
+
+                rankedCount.textContent =
+                    ranked.length;
+
+            }
+
+
+            const totalTests =
+                players.reduce(
+                    (total, player) => {
+
+                        return total +
+                            Number(
+                                player?.stats?.tests || 0
+                            );
+
+                    },
+                    0
+                );
+
+
+            if (testsCount) {
+
+                testsCount.textContent =
+                    totalTests;
+
+            }
+
+
+            /*
+             * There is currently no testers
+             * collection in the database.
+             */
+
+            if (testersCount) {
+
+                testersCount.textContent =
+                    "0";
+
+            }
+
+        }
+
+
+        /* =========================================
+           RENDER
+        ========================================= */
+
+        function renderLeaderboard(players) {
+
+            renderPodium(players);
+            renderRows(players);
+
+        }
+
+
+        /* =========================================
+           SEARCH
+        ========================================= */
+
+        function searchPlayer() {
+
+            if (!searchInput) return;
+
+
+            const query =
+                searchInput.value
+                    .trim()
+                    .toLowerCase();
+
+
+            if (!query) {
+
+                if (searchMessage) {
+
+                    searchMessage.textContent = "";
+
+                }
+
+                renderLeaderboard(
+                    getRankedPlayers()
+                );
+
+                return;
+
+            }
+
+
+            const player =
+                allPlayers.find(item => {
+
+                    const name =
+                        String(
+                            item.minecraftName || ""
+                        ).toLowerCase();
+
+                    return name === query;
+
+                });
+
+
+            if (!player) {
+
+                if (searchMessage) {
+
+                    searchMessage.textContent =
+                        "Player not found.";
+
+                }
+
+                return;
+
+            }
+
+
+            if (searchMessage) {
+
+                searchMessage.textContent = "";
+
+            }
+
+
+            window.location.href =
+                `./players.html?player=${encodeURIComponent(
+                    player.minecraftName
+                )}`;
+
+        }
+
+
+        if (searchButton) {
+
+            searchButton.addEventListener(
+                "click",
+                searchPlayer
             );
 
-            renderLeaderboard(results);
-        });
-    }
+        }
 
-    /* =========================
-       ENTER SEARCH
-    ========================= */
 
-    if (searchInput) {
-        searchInput.addEventListener("keydown", event => {
-            if (event.key !== "Enter") return;
+        if (searchInput) {
 
-            const query = searchInput.value.trim();
+            searchInput.addEventListener(
+                "keydown",
+                event => {
 
-            if (!query) return;
+                    if (event.key === "Enter") {
 
-            const player = allPlayers.find(p => {
-                return String(
-                    p.minecraftName || ""
-                ).toLowerCase() === query.toLowerCase();
-            });
+                        searchPlayer();
 
-            if (player) {
-                window.location.href =
-                    `./players.html?player=${encodeURIComponent(player.minecraftName)}`;
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =========================================
+           FIREBASE REALTIME DATABASE
+        ========================================= */
+
+        const playersRef =
+            ref(database, "players");
+
+
+        onValue(
+
+            playersRef,
+
+            snapshot => {
+
+                const data =
+                    snapshot.val() || {};
+
+
+                allPlayers =
+                    Object.entries(data)
+
+                        .map(([uid, player]) => ({
+
+                            uid,
+
+                            ...(player || {})
+
+                        }))
+
+                        .filter(player => {
+
+                            return Boolean(
+                                player.minecraftName
+                            );
+
+                        });
+
+
+                const rankedPlayers =
+                    getRankedPlayers();
+
+
+                renderLeaderboard(
+                    rankedPlayers
+                );
+
+
+                renderStats(
+                    allPlayers
+                );
+
+
+                console.log(
+                    "[ROTierList] Players loaded:",
+                    allPlayers.length
+                );
+
+
+                console.log(
+                    "[ROTierList] Ranked premium Sword players:",
+                    rankedPlayers.length
+                );
+
+            },
+
+
+            error => {
+
+                console.error(
+                    "[ROTierList] Firebase error:",
+                    error
+                );
+
+
+                if (podium) {
+
+                    podium.innerHTML = `
+
+                        <div class="empty-leaderboard">
+
+                            <div class="empty-icon">
+                                ⚠️
+                            </div>
+
+                            <h3>
+                                Leaderboard unavailable
+                            </h3>
+
+                            <p>
+                                Could not load player data.
+                            </p>
+
+                        </div>
+
+                    `;
+
+                }
+
+
+                if (leaderboardBody) {
+
+                    leaderboardBody.innerHTML = `
+
+                        <div class="empty-row">
+                            Could not load leaderboard data.
+                        </div>
+
+                    `;
+
+                }
+
             }
-        });
-    }
-</script>
+
+        );
+
+    </script>
+
+
+    <!-- =========================================
+         AUTH UI
+    ========================================= -->
+
+    <script
+        type="module"
+        src="./auth-ui.js"
+    ></script>
+
+</body>
+</html>
