@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | RO Tier List</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Inter, Arial, sans-serif;
+            background:
+                radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.14), transparent 35%),
+                #07070b;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        nav {
+            height: 72px;
+            padding: 0 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,.07);
+            background: rgba(7,7,11,.78);
+            backdrop-filter: blur(15px);
+        }
+
+        .logo {
+            color: #fff;
+            text-decoration: none;
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: #8b5cf6;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 26px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #999;
+            text-decoration: none;
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+        }
+
+        .nav-login {
+            color: #fff !important;
+            padding: 10px 17px;
+            border-radius: 9px;
+            background: rgba(139,92,246,.15);
+            border: 1px solid rgba(139,92,246,.3);
+        }
+
+        main {
+            min-height: calc(100vh - 72px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 20px;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 430px;
+            padding: 38px;
+            border-radius: 18px;
+            background: rgba(15,15,22,.9);
+            border: 1px solid rgba(255,255,255,.08);
+            box-shadow:
+                0 25px 80px rgba(0,0,0,.45),
+                0 0 50px rgba(139,92,246,.08);
+        }
+
+        .icon {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            border-radius: 14px;
+            background: rgba(139,92,246,.13);
+            border: 1px solid rgba(139,92,246,.25);
+            font-size: 24px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            color: #bbb;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,.09);
+            outline: none;
+            background: #0b0b10;
+            color: #fff;
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        input:focus {
+            border-color: rgba(139,92,246,.65);
+            box-shadow: 0 0 0 3px rgba(139,92,246,.08);
+        }
+
+        input::placeholder {
+            color: #555;
+        }
+
+        .forgot {
+            display: block;
+            text-align: right;
+            margin-top: -8px;
+            margin-bottom: 20px;
+            color: #8b5cf6;
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .forgot:hover {
+            text-decoration: underline;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: #8b5cf6;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        button:hover {
+            background: #7c3aed;
+            transform: translateY(-1px);
+        }
+
+        button:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            display: none;
+            margin-top: 17px;
+            padding: 12px;
+            border-radius: 9px;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .message.error {
+            display: block;
+            color: #ff8d8d;
+            background: rgba(239,68,68,.08);
+            border: 1px solid rgba(239,68,68,.2);
+        }
+
+        .message.success {
+            display: block;
+            color: #9df5bb;
+            background: rgba(34,197,94,.08);
+            border: 1px solid rgba(34,197,94,.2);
+        }
+
+        .register {
+            margin-top: 25px;
+            padding-top: 22px;
+            border-top: 1px solid rgba(255,255,255,.07);
+            text-align: center;
+            color: #777;
+            font-size: 13px;
+        }
+
+        .register a {
+            color: #8b5cf6;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 850px) {
+            .nav-links {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-box {
+                padding: 28px 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>
+    <a href="index.html" class="logo">
+        RO<span>TierList</span>
+    </a>
+
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="players.html">Players</a>
+        <a href="leaderboards.html">Leaderboards</a>
+        <a href="results.html">Results</a>
+        <a href="tiers.html">Tiers</a>
+        <a href="https://discord.gg/bms3jPBD9p" target="_blank">Discord</a>
+        <a href="login.html" class="nav-login">Login</a>
+    </div>
+</nav>
+
+<main>
+
+    <div class="login-box">
+
+        <div class="icon">🔐</div>
+
+        <h1>Welcome back</h1>
+
+        <p class="subtitle">
+            Login to your RO TierList account
+        </p>
+
+        <form id="loginForm">
+
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="you@example.com"
+                    autocomplete="email"
+                    required
+                >
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                >
+            </div>
+
+            <a href="#" class="forgot" id="forgotPassword">
+                Forgot password?
+            </a>
+
+            <button type="submit" id="loginButton">
+                Login
+            </button>
+
+            <div id="message" class="message"></div>
+
+        </form>
+
+        <div class="register">
+            Don't have an account?
+            <a href="register.html">Create one</a>
+        </div>
+
+    </div>
+
+</main>
+
+<script type="module">
+
+    /*
+        FIREBASE AUTH WILL BE CONNECTED HERE.
+
+        Dupa ce facem register.html:
+        1. Cream Firebase project
+        2. Activam Email/Password Authentication
+        3. Adaugam Firebase config
+        4. Conectam login-ul
+        5. Adaugam email verification
+        6. Adaugam persistent login
+        7. Redirect dupa login
+        8. Admin Panel pentru owner
+    */
+
+    const loginForm = document.getElementById("loginForm");
+    const loginButton = document.getElementById("loginButton");
+    const message = document.getElementById("message");
+    const forgotPassword = document.getElementById("forgotPassword");
+
+    function showMessage(text, type) {
+        message.textContent = text;
+        message.className = "message " + type;
+    }
+
+    loginForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+
+        if (!email || !password) {
+            showMessage("Completeaza toate campurile.", "error");
+            return;
+        }
+
+        /*
+            Firebase login va fi adaugat aici.
+        */
+
+        loginButton.disabled = true;
+        loginButton.textContent = "Logging in...";
+
+        setTimeout(() => {
+            loginButton.disabled = false;
+            loginButton.textContent = "Login";
+
+            showMessage(
+                "Firebase Auth nu este conectat inca. Urmatorul pas este configurarea autentificarii.",
+                "error"
+            );
+        }, 600);
+    });
+
+    forgotPassword.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        showMessage(
+            "Resetarea parolei va fi disponibila dupa conectarea Firebase.",
+            "error"
+        );
+    });
+
+</script>
+
+</body>
+</html>
