@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>RO TierList | Tiers</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #07080c;
+      --card: #0d1017;
+      --card2: #11141c;
+      --border: rgba(255,255,255,.07);
+      --text: #f4f5f7;
+      --muted: #858a98;
+      --accent: #7c5cff;
+      --accent2: #a78bfa;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 50% -10%, rgba(124,92,255,.15), transparent 36%),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    nav {
+      height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6%;
+      border-bottom: 1px solid var(--border);
+      background: rgba(7,8,12,.82);
+      backdrop-filter: blur(18px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .logo span {
+      color: var(--accent2);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 27px;
+    }
+
+    .nav-links a {
+      color: #9ca1ae;
+      font-size: 14px;
+      font-weight: 700;
+      transition: .2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: white;
+    }
+
+    .login-btn {
+      padding: 10px 17px;
+      border-radius: 9px;
+      background: white;
+      color: #090a0e !important;
+    }
+
+    .container {
+      width: min(1100px, 92%);
+      margin: auto;
+    }
+
+    .header {
+      text-align: center;
+      padding: 75px 0 45px;
+    }
+
+    .small {
+      color: var(--accent2);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-size: 11px;
+      font-weight: 900;
+      margin-bottom: 13px;
+    }
+
+    h1 {
+      font-size: clamp(40px, 6vw, 64px);
+      letter-spacing: -3px;
+      line-height: 1;
+    }
+
+    .header p {
+      color: var(--muted);
+      margin-top: 16px;
+      font-size: 14px;
+    }
+
+    /* SWITCH */
+
+    .switch {
+      width: fit-content;
+      margin: 0 auto 25px;
+      padding: 5px;
+      display: flex;
+      gap: 5px;
+      background: #0d1016;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+    }
+
+    .switch button {
+      border: 0;
+      background: transparent;
+      color: #777d8b;
+      padding: 11px 22px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .switch button.active {
+      color: white;
+      background: linear-gradient(135deg,#7455f5,#9276ff);
+    }
+
+    /* GAMEMODES */
+
+    .modes {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 10px;
+      margin-bottom: 35px;
+    }
+
+    .mode {
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 12px;
+      padding: 15px;
+      cursor: pointer;
+      text-align: left;
+      transition: .2s;
+    }
+
+    .mode:hover {
+      transform: translateY(-2px);
+      border-color: rgba(124,92,255,.3);
+    }
+
+    .mode.active {
+      border-color: rgba(124,92,255,.5);
+      background: rgba(124,92,255,.1);
+    }
+
+    .mode-icon {
+      font-size: 18px;
+      margin-bottom: 9px;
+    }
+
+    .mode-name {
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .mode-server {
+      color: #606674;
+      font-size: 9px;
+      margin-top: 4px;
+    }
+
+    /* TIER SECTION */
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .section-title h2 {
+      font-size: 19px;
+    }
+
+    .section-title span {
+      color: #626876;
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .tier-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      margin-bottom: 60px;
+    }
+
+    .tier {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      min-height: 70px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--card);
+    }
+
+    .tier-name {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 950;
+      background: rgba(255,255,255,.035);
+    }
+
+    .tier-players {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 7px;
+      padding: 10px;
+    }
+
+    .player {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 9px;
+      border-radius: 7px;
+      background: rgba(255,255,255,.04);
+      color: #858b99;
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .player img {
+      width: 25px;
+      height: 30px;
+      object-fit: contain;
+      image-rendering: pixelated;
+    }
+
+    .unranked {
+      color: #747a87;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    /* COLORS */
+
+    .ht1 {
+      border-color: rgba(255,195,55,.25);
+    }
+
+    .ht1 .tier-name {
+      color: #ffd15c;
+    }
+
+    .lt1 {
+      border-color: rgba(205,205,215,.2);
+    }
+
+    .lt1 .tier-name {
+      color: #d8dbe4;
+    }
+
+    .ht2 .tier-name {
+      color: #a98cff;
+    }
+
+    .lt2 .tier-name {
+      color: #9278dc;
+    }
+
+    .ht3 .tier-name {
+      color: #6fcbff;
+    }
+
+    .lt3 .tier-name {
+      color: #63b4dd;
+    }
+
+    .ht4 .tier-name {
+      color: #55d98b;
+    }
+
+    .lt4 .tier-name {
+      color: #48b979;
+    }
+
+    .ht5 .tier-name {
+      color: #e9a65d;
+    }
+
+    .lt5 .tier-name {
+      color: #c8874b;
+    }
+
+    /* INFO */
+
+    .info {
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: var(--card);
+      padding: 23px;
+      margin-bottom: 60px;
+    }
+
+    .info h2 {
+      font-size: 17px;
+      margin-bottom: 9px;
+    }
+
+    .info p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 35px 6%;
+      color: #565c69;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    @media(max-width:800px) {
+
+      nav {
+        padding: 0 4%;
+      }
+
+      .nav-links {
+        gap: 12px;
+      }
+
+      .nav-links a:nth-child(2),
+      .nav-links a:nth-child(3),
+      .nav-links a:nth-child(4),
+      .nav-links a:nth-child(5) {
+        display: none;
+      }
+
+      .modes {
+        grid-template-columns: repeat(2,1fr);
+      }
+
+      .tier {
+        grid-template-columns: 75px 1fr;
+      }
+    }
+
+    @media(max-width:450px) {
+
+      .modes {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .tier {
+        grid-template-columns: 65px 1fr;
+      }
+
+      .tier-name {
+        font-size: 11px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+
+    <a href="index.html" class="logo">
+      RO<span>TierList</span>
+    </a>
+
+    <div class="nav-links">
+
+      <a href="index.html">
+        Home
+      </a>
+
+      <a href="players.html">
+        Players
+      </a>
+
+      <a href="leaderboards.html">
+        Leaderboards
+      </a>
+
+      <a href="results.html">
+        Results
+      </a>
+
+      <a href="tiers.html" class="active">
+        Tiers
+      </a>
+
+      <a
+        href="https://discord.gg/bms3jPBD9p"
+        target="_blank"
+      >
+        Discord
+      </a>
+
+      <a href="login.html" class="login-btn">
+        Login
+      </a>
+
+    </div>
+
+  </nav>
+
+
+  <main class="container">
+
+    <section class="header">
+
+      <div class="small">
+        RO / EU Minecraft PvP
+      </div>
+
+      <h1>
+        Tier System
+      </h1>
+
+      <p>
+        Understand how the RO TierList ranking system works.
+      </p>
+
+    </section>
+
+
+    <!-- PREMIUM / CRACKED -->
+
+    <div class="switch">
+
+      <button
+        id="premiumBtn"
+        class="active"
+      >
+        💎 Premium
+      </button>
+
+      <button id="crackedBtn">
+        🔓 Cracked
+      </button>
+
+    </div>
+
+
+    <!-- GAMEMODES -->
+
+    <div class="modes">
+
+      <button
+        class="mode active"
+        data-mode="Vanilla"
+      >
+        <div class="mode-icon">⚔️</div>
+
+        <div class="mode-name">
+          Vanilla
+        </div>
+
+        <div class="mode-server">
+          MCPVP.CLUB
+        </div>
+      </button>
+
+
+      <button
+        class="mode"
+        data-mode="Sword"
+      >
+        <div class="mode-icon">⚔</div>
+
+        <div class="mode-name">
+          Sword
+        </div>
+
+        <div class="mode-server">
+          MCPVP.CLUB
+        </div>
+      </button>
+
+
+      <button
+        class="mode"
+        data-mode="Axe"
+      >
+        <div class="mode-icon">🪓</div>
+
+        <div class="mode-name">
+          Axe
+        </div>
+
+        <div class="mode-server">
+          MCPVP.CLUB
+        </div>
+      </button>
+
+
+      <button
+        class="mode"
+        data-mode="UHC"
+      >
+        <div class="mode-icon">❤</div>
+
+        <div class="mode-name">
+          UHC
+        </div>
+
+        <div class="mode-server">
+          MCPVP.CLUB
+        </div>
+      </button>
+
+
+      <button
+        class="mode"
+        data-mode="Pot"
+      >
+        <div class="mode-icon">🧪</div>
+
+        <div class="mode-name">
+          Pot
+        </div>
+
+        <div class="mode-server">
+          MCPVP.CLUB
+        </div>
+      </button>
+
+
+      <button
+        class="mode"
+        data-mode="Mace"
+      >
+        <div class="mode-icon">◆</div>
+
+        <div class="mode-name">
+          Mace
+        </div>
+
+        <div class="mode-server">
+          MCPVP.CLUB
+        </div>
+      </button>
+
+
+      <button
+        class="mode"
+        data-mode="SMP"
+      >
+        <div class="mode-icon">◈</div>
+
+        <div class="mode-name">
+          SMP
+        </div>
+
+        <div class="mode-server">
+          MCPVP.CLUB
+        </div>
+      </button>
+
+
+      <button
+        class="mode"
+        data-mode="Crystal"
+      >
+        <div class="mode-icon">✦</div>
+
+        <div class="mode-name">
+          Crystal
+        </div>
+
+        <div class="mode-server">
+          MCPVP.CLUB
+        </div>
+      </button>
+
+    </div>
+
+
+    <!-- TIERS -->
+
+    <div class="section-title">
+
+      <h2 id="selectedMode">
+        Vanilla Tiers
+      </h2>
+
+      <span>
+        HIGHEST → LOWEST
+      </span>
+
+    </div>
+
+
+    <div class="tier-list">
+
+
+      <div class="tier ht1">
+
+        <div class="tier-name">
+          HT1
+        </div>
+
+        <div class="tier-players">
+
+          <span class="unranked">
+            No ranked players
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="tier lt1">
+
+        <div class="tier-name">
+          LT1
+        </div>
+
+        <div class="tier-players">
+
+          <span class="unranked">
+            No ranked players
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="tier ht2">
+
+        <div class="tier-name">
+          HT2
+        </div>
+
+        <div class="tier-players">
+
+          <span class="unranked">
+            No ranked players
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="tier lt2">
+
+        <div class="tier-name">
+          LT2
+        </div>
+
+        <div class="tier-players">
+
+          <span class="unranked">
+            No ranked players
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="tier ht3">
+
+        <div class="tier-name">
+          HT3
+        </div>
+
+        <div class="tier-players">
+
+          <span class="unranked">
+            No ranked players
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="tier lt3">
+
+        <div class="tier-name">
+          LT3
+        </div>
+
+        <div class="tier-players">
+
+          <span class="unranked">
+            No ranked players
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="tier ht4">
+
+        <div class="tier-name">
+          HT4
+        </div>
+
+        <div class="tier-players">
+
+          <span class="unranked">
+            No ranked players
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="tier lt4">
+
+        <div class="tier-name">
+          LT4
+        </div>
+
+        <div class="tier-players">
+
+          <span class="unranked">
+            No ranked players
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="tier ht5">
+
+        <div class="tier-name">
+          HT5
+        </div>
+
+        <div class="tier-players">
+
+          <span class="unranked">
+            No ranked players
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="tier lt5">
+
+        <div class="tier-name">
+          LT5
+        </div>
+
+        <div class="tier-players">
+
+          <span class="unranked">
+            No ranked players
+          </span>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+    <!-- INFO -->
+
+    <section class="info">
+
+      <h2>
+        How the tier system works
+      </h2>
+
+      <p>
+        Players receive a tier after completing an official
+        PvP test. Higher tiers represent stronger performance
+        within the selected gamemode. Each gamemode has its
+        own ranking and players can have different tiers
+        across different gamemodes.
+      </p>
+
+    </section>
+
+  </main>
+
+
+  <footer>
+    © 2026 RO TierList · Minecraft PvP Tier Rankings
+  </footer>
+
+
+  <script>
+
+    const modes =
+      document.querySelectorAll(".mode");
+
+    const selectedMode =
+      document.getElementById("selectedMode");
+
+    const premiumBtn =
+      document.getElementById("premiumBtn");
+
+    const crackedBtn =
+      document.getElementById("crackedBtn");
+
+
+    let accountType = "Premium";
+
+
+    modes.forEach(mode => {
+
+      mode.addEventListener("click", () => {
+
+        modes.forEach(item =>
+          item.classList.remove("active")
+        );
+
+        mode.classList.add("active");
+
+        const name =
+          mode.dataset.mode;
+
+        selectedMode.textContent =
+          name + " Tiers";
+
+      });
+
+    });
+
+
+    premiumBtn.addEventListener("click", () => {
+
+      accountType = "Premium";
+
+      premiumBtn.classList.add("active");
+      crackedBtn.classList.remove("active");
+
+      document
+        .querySelectorAll(".mode-server")
+        .forEach(server => {
+          server.textContent = "MCPVP.CLUB";
+        });
+
+    });
+
+
+    crackedBtn.addEventListener("click", () => {
+
+      accountType = "Cracked";
+
+      crackedBtn.classList.add("active");
+      premiumBtn.classList.remove("active");
+
+      document
+        .querySelectorAll(".mode-server")
+        .forEach(server => {
+          server.textContent = "CRAFTIFY.LOL";
+        });
+
+    });
+
+
+  </script>
+
+</body>
+</html>
