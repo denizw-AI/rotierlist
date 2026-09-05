@@ -7,7 +7,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCHHywPPpPDpOE2kRTjxLxCKzG_ZciimYA",
+    apiKey: "AIzaSyCHHyWpppPDpOE2kRTjxLxCKzG_ZciimYA",
     authDomain: "rotierlist.firebaseapp.com",
     projectId: "rotierlist",
     storageBucket: "rotierlist.firebasestorage.app",
@@ -24,4 +24,7 @@ setPersistence(auth, browserLocalPersistence)
         console.error("Persistence error:", error);
     });
 
-export { app, auth };
+export {
+    app,
+    auth
+};
