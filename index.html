@@ -1,1576 +1,445 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>RO/EU Tiers</title>
-
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-:root {
-    --bg: #070912;
-    --card: #0b0e19;
-    --border: rgba(255,255,255,.08);
-    --purple: #9277ff;
-    --gold: #ffc400;
-    --silver: #d8dbe2;
-    --bronze: #c87835;
-    --muted: #858b9e;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    min-height: 100vh;
-    color: #fff;
-    font-family: Inter, Arial, sans-serif;
-    background:
-        radial-gradient(circle at 50% -10%, rgba(120,90,255,.15), transparent 38%),
-        radial-gradient(circle at 10% 50%, rgba(70,80,150,.08), transparent 30%),
-        var(--bg);
-    overflow-x: hidden;
-}
-
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background-image:
-        radial-gradient(circle, rgba(255,255,255,.7) 1px, transparent 1px);
-    background-size: 170px 170px;
-    opacity: .06;
-    pointer-events: none;
-}
-
-/* NAV */
-
-nav {
-    height: 72px;
-    width: 100%;
-    padding: 0 6%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(5,7,14,.82);
-    backdrop-filter: blur(18px);
-    border-bottom: 1px solid var(--border);
-}
-
-.logo {
-    color: white;
-    text-decoration: none;
-    font-size: 20px;
-    font-weight: 800;
-}
-
-.logo span {
-    color: var(--purple);
-}
-
-.nav-links {
-    display: flex;
-    align-items: center;
-    gap: 25px;
-}
-
-.nav-links a {
-    color: #8f95a8;
-    text-decoration: none;
-    font-size: 12px;
-    font-weight: 700;
-    transition: .2s;
-}
-
-.nav-links a:hover {
-    color: white;
-}
-
-.login {
-    padding: 10px 17px;
-    color: #bcaeff !important;
-    border-radius: 9px;
-    background: rgba(145,117,255,.1);
-    border: 1px solid rgba(145,117,255,.25);
-}
-
-/* HERO */
-
-.hero {
-    text-align: center;
-    max-width: 950px;
-    margin: auto;
-    padding: 110px 20px 90px;
-}
-
-.badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 7px 13px;
-    border-radius: 999px;
-    background: rgba(145,117,255,.08);
-    border: 1px solid rgba(145,117,255,.2);
-    color: #a997ff;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: .8px;
-    margin-bottom: 25px;
-}
-
-.dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #65e58a;
-    box-shadow: 0 0 12px #65e58a;
-}
-
-.hero h1 {
-    font-size: clamp(46px, 7vw, 80px);
-    line-height: .98;
-    letter-spacing: -4px;
-    font-weight: 800;
-    background: linear-gradient(
-        180deg,
-        #fff,
-        #d2ceff 48%,
-        #806cff
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-.hero p {
-    max-width: 630px;
-    margin: 23px auto 0;
-    color: var(--muted);
-    font-size: 14px;
-    line-height: 1.7;
-}
-
-.buttons {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 32px;
-}
-
-.button {
-    padding: 13px 21px;
-    border-radius: 10px;
-    text-decoration: none;
-    font-size: 12px;
-    font-weight: 800;
-    transition: .25s;
-}
-
-.primary {
-    color: white;
-    background: linear-gradient(135deg, #9277ff, #6345e8);
-    box-shadow: 0 12px 35px rgba(100,70,230,.22);
-}
-
-.primary:hover {
-    transform: translateY(-2px);
-}
-
-.secondary {
-    color: #d7d9e3;
-    background: rgba(255,255,255,.025);
-    border: 1px solid var(--border);
-}
-
-.secondary:hover {
-    background: rgba(255,255,255,.06);
-}
-
-/* STATS */
-
-.stats {
-    width: min(1000px, 92%);
-    margin: 0 auto 100px;
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    background: rgba(10,12,22,.7);
-    border: 1px solid var(--border);
-    border-radius: 15px;
-    overflow: hidden;
-}
-
-.stat {
-    text-align: center;
-    padding: 25px 15px;
-    border-right: 1px solid var(--border);
-}
-
-.stat:last-child {
-    border-right: none;
-}
-
-.stat-number {
-    font-size: 24px;
-    font-weight: 800;
-}
-
-.stat-label {
-    margin-top: 5px;
-    color: #747b90;
-    font-size: 10px;
-    font-weight: 700;
-}
-
-/* SECTION */
-
-.section {
-    width: min(1200px, 92%);
-    margin: auto;
-}
-
-.heading {
-    margin-bottom: 25px;
-}
-
-.heading h2 {
-    font-size: 28px;
-    font-weight: 800;
-}
-
-.heading p {
-    margin-top: 6px;
-    color: var(--muted);
-    font-size: 12px;
-}
-
-/* PREMIUM */
-
-.premium-box {
-    position: relative;
-    padding: 28px;
-    border-radius: 18px;
-    background:
-        radial-gradient(
-            circle at 50% 0%,
-            rgba(145,117,255,.13),
-            transparent 50%
-        ),
-        rgba(10,12,22,.8);
-    border: 1px solid rgba(145,117,255,.18);
-}
-
-.premium-small {
-    color: #a896ff;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 1.7px;
-}
-
-.premium-box h2 {
-    margin-top: 7px;
-    font-size: 27px;
-}
-
-.premium-box p {
-    margin-top: 6px;
-    color: #777d91;
-    font-size: 12px;
-}
-
-.server {
-    position: absolute;
-    top: 25px;
-    right: 25px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    background: rgba(255,255,255,.035);
-    border: 1px solid var(--border);
-    color: #9ca2b5;
-    font-size: 10px;
-    font-weight: 800;
-}
-
-/* PODIUM */
-
-.podium {
-    min-height: 540px;
-    margin-top: 30px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    gap: 17px;
-}
-
-.podium-card {
-    width: 255px;
-    position: relative;
-    overflow: hidden;
-    text-align: center;
-    border-radius: 17px;
-    background:
-        linear-gradient(
-            180deg,
-            rgba(7,8,14,.98),
-            rgba(15,17,27,.98)
-        );
-    border: 1px solid var(--border);
-    transition: .3s;
-}
-
-.podium-card:hover {
-    transform: translateY(-7px);
-}
-
-.first {
-    width: 285px;
-    min-height: 470px;
-    border-color: rgba(255,196,0,.25);
-    box-shadow: 0 0 55px rgba(255,196,0,.07);
-}
-
-.first::before {
-    content: "";
-    position: absolute;
-    width: 350px;
-    height: 220px;
-    left: 50%;
-    top: -40px;
-    transform: translateX(-50%);
-    background: radial-gradient(
-        circle,
-        rgba(255,196,0,.17),
-        transparent 70%
-    );
-}
-
-.second {
-    min-height: 405px;
-    border-color: rgba(210,216,225,.16);
-}
-
-.third {
-    min-height: 380px;
-    border-color: rgba(198,121,53,.2);
-}
-
-.player-name {
-    position: relative;
-    z-index: 2;
-    padding-top: 22px;
-    font-size: 16px;
-    font-weight: 800;
-}
-
-.first .player-name {
-    color: var(--gold);
-    font-size: 19px;
-}
-
-.second .player-name {
-    color: var(--silver);
-}
-
-.third .player-name {
-    color: var(--bronze);
-}
-
-.skin-area {
-    height: 255px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
-.first .skin-area {
-    height: 285px;
-}
-
-.skin {
-    width: 165px;
-    image-rendering: pixelated;
-    filter: drop-shadow(0 18px 25px rgba(0,0,0,.65));
-    transition: .3s;
-}
-
-.first .skin {
-    width: 190px;
-    filter:
-        drop-shadow(0 0 20px rgba(255,196,0,.2))
-        drop-shadow(0 18px 27px rgba(0,0,0,.7));
-}
-
-.podium-card:hover .skin {
-    transform: translateY(-5px) scale(1.02);
-}
-
-.position {
-    height: 92px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 54px;
-    font-weight: 900;
-    text-shadow: 0 5px 13px rgba(0,0,0,.8);
-    background: rgba(255,255,255,.025);
-}
-
-.first .position {
-    color: var(--gold);
-    background: linear-gradient(
-        180deg,
-        rgba(255,196,0,.18),
-        rgba(255,196,0,.035)
-    );
-}
-
-.second .position {
-    color: var(--silver);
-    background: linear-gradient(
-        180deg,
-        rgba(210,216,225,.12),
-        rgba(210,216,225,.025)
-    );
-}
-
-.third .position {
-    color: var(--bronze);
-    background: linear-gradient(
-        180deg,
-        rgba(198,121,53,.14),
-        rgba(198,121,53,.025)
-    );
-}
-
-.player-details {
-    min-height: 53px;
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.tier {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    font-size: 11px;
-    font-weight: 800;
-}
-
-.mode-icon {
-    width: 18px;
-    height: 18px;
-    object-fit: contain;
-    image-rendering: pixelated;
-}
-
-.points {
-    color: #8d94a8;
-    font-size: 10px;
-    font-weight: 700;
-}
-
-/* TOP 50 */
-
-.top-list {
-    margin-top: 22px;
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-}
-
-.top-row {
-    min-height: 66px;
-    display: grid;
-    grid-template-columns: 55px 1fr 140px 130px;
-    align-items: center;
-    padding: 8px 18px;
-    border-radius: 11px;
-    background: rgba(9,11,19,.78);
-    border: 1px solid rgba(255,255,255,.05);
-    transition: .2s;
-}
-
-.top-row:hover {
-    transform: translateX(4px);
-    background: rgba(255,255,255,.035);
-    border-color: rgba(145,117,255,.13);
-}
-
-.top-rank {
-    color: #666d81;
-    font-size: 12px;
-    font-weight: 800;
-}
-
-.top-user {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.top-skin {
-    width: 42px;
-    height: 42px;
-    object-fit: contain;
-    image-rendering: pixelated;
-}
-
-.top-name {
-    font-size: 12px;
-    font-weight: 800;
-}
-
-.top-server {
-    margin-top: 3px;
-    color: #666d80;
-    font-size: 9px;
-    font-weight: 700;
-}
-
-.top-mode {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    color: #80879a;
-    font-size: 10px;
-    font-weight: 700;
-}
-
-.top-tier {
-    text-align: right;
-    color: #9298a9;
-    font-size: 11px;
-    font-weight: 800;
-}
-
-/* CRACKED BUTTON */
-
-.cracked-access {
-    margin: 28px 0 100px;
-    display: flex;
-    justify-content: center;
-}
-
-.cracked-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 14px 23px;
-    border-radius: 11px;
-    color: #d3b08f;
-    text-decoration: none;
-    font-size: 11px;
-    font-weight: 800;
-    background:
-        linear-gradient(
-            135deg,
-            rgba(125,78,40,.16),
-            rgba(255,255,255,.025)
-        );
-    border: 1px solid rgba(175,111,54,.2);
-    transition: .25s;
-}
-
-.cracked-button:hover {
-    transform: translateY(-2px);
-    background: rgba(175,111,54,.1);
-    border-color: rgba(175,111,54,.35);
-}
-
-/* TESTING */
-
-.testing {
-    width: min(1200px, 92%);
-    margin: 0 auto 100px;
-}
-
-.testing-heading {
-    text-align: center;
-    margin-bottom: 28px;
-}
-
-.testing-heading h2 {
-    font-size: 28px;
-    font-weight: 800;
-}
-
-.testing-heading p {
-    margin-top: 7px;
-    color: #777d91;
-    font-size: 12px;
-}
-
-.testing-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-}
-
-.testing-card {
-    position: relative;
-    padding: 27px;
-    border-radius: 17px;
-    background:
-        radial-gradient(
-            circle at 100% 0%,
-            rgba(145,117,255,.11),
-            transparent 48%
-        ),
-        rgba(10,12,22,.8);
-    border: 1px solid rgba(145,117,255,.15);
-    overflow: hidden;
-}
-
-.testing-card.cracked-card {
-    background:
-        radial-gradient(
-            circle at 100% 0%,
-            rgba(175,111,54,.1),
-            transparent 48%
-        ),
-        rgba(10,12,22,.8);
-    border-color: rgba(175,111,54,.15);
-}
-
-.testing-icon {
-    width: 42px;
-    height: 42px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 11px;
-    color: #bcaeff;
-    background: rgba(145,117,255,.1);
-    border: 1px solid rgba(145,117,255,.18);
-    font-size: 18px;
-    font-weight: 900;
-}
-
-.cracked-card .testing-icon {
-    color: #d0a77d;
-    background: rgba(175,111,54,.1);
-    border-color: rgba(175,111,54,.18);
-}
-
-.testing-card h3 {
-    margin-top: 18px;
-    font-size: 18px;
-}
-
-.testing-card p {
-    margin-top: 8px;
-    color: #777d91;
-    font-size: 11px;
-    line-height: 1.7;
-}
-
-.steps {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.step {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: #a3a8b7;
-    font-size: 10px;
-    font-weight: 700;
-}
-
-.step-number {
-    width: 24px;
-    height: 24px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 7px;
-    color: #bcaeff;
-    background: rgba(145,117,255,.09);
-    border: 1px solid rgba(145,117,255,.15);
-    font-size: 9px;
-}
-
-.cracked-card .step-number {
-    color: #d0a77d;
-    background: rgba(175,111,54,.09);
-    border-color: rgba(175,111,54,.15);
-}
-
-.testing-discord {
-    display: inline-flex;
-    margin-top: 22px;
-    padding: 11px 16px;
-    border-radius: 9px;
-    color: white;
-    text-decoration: none;
-    background: linear-gradient(135deg, #9277ff, #6345e8);
-    font-size: 10px;
-    font-weight: 800;
-    transition: .2s;
-}
-
-.testing-discord:hover {
-    transform: translateY(-2px);
-}
-
-.cracked-card .testing-discord {
-    background: linear-gradient(135deg, #9b663e, #674027);
-}
-
-/* SEARCH */
-
-.search {
-    width: min(800px,92%);
-    margin: 0 auto 110px;
-    text-align: center;
-}
-
-.search h2 {
-    font-size: 27px;
-    font-weight: 800;
-}
-
-.search p {
-    margin-top: 7px;
-    color: #777d91;
-    font-size: 12px;
-}
-
-.search-box {
-    margin-top: 22px;
-    display: flex;
-    padding: 6px;
-    border-radius: 12px;
-    background: rgba(10,12,22,.85);
-    border: 1px solid var(--border);
-}
-
-.search-box input {
-    flex: 1;
-    min-width: 0;
-    padding: 12px 13px;
-    border: none;
-    outline: none;
-    background: transparent;
-    color: white;
-    font-size: 12px;
-}
-
-.search-box input::placeholder {
-    color: #606679;
-}
-
-.search-box button {
-    padding: 0 20px;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    background: linear-gradient(
-        135deg,
-        #9277ff,
-        #6345e8
-    );
-    font-size: 11px;
-    font-weight: 800;
-    cursor: pointer;
-}
-
-/* FOOTER */
-
-footer {
-    padding: 35px 20px;
-    text-align: center;
-    border-top: 1px solid var(--border);
-    color: #5f6578;
-    font-size: 10px;
-}
-
-/* MOBILE */
-
-@media(max-width:850px) {
-
-    .nav-links {
-        display: none;
+<script type="module">
+    import { app } from "./firebase.js";
+    import {
+        getDatabase,
+        ref,
+        onValue
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+
+    const database = getDatabase(app);
+
+    /* =========================
+       CONFIG
+    ========================= */
+
+    const WORKER_URL = "https://rotierlist-minecraft.denizzzezw.workers.dev";
+
+    const TIER_SCORE = {
+        "HT1": 100,
+        "LT1": 90,
+        "HT2": 80,
+        "LT2": 70,
+        "HT3": 60,
+        "LT3": 50,
+        "HT4": 40,
+        "LT4": 30,
+        "HT5": 20,
+        "LT5": 10,
+        "Unranked": 0
+    };
+
+    const GAMEMODE = "sword";
+
+    /* =========================
+       ELEMENTS
+    ========================= */
+
+    const podium = document.getElementById("podium");
+    const leaderboardBody = document.getElementById("leaderboardBody");
+    const searchInput = document.getElementById("searchInput");
+
+    const playersCount = document.getElementById("playersCount");
+    const rankedCount = document.getElementById("rankedCount");
+    const testsCount = document.getElementById("testsCount");
+    const testersCount = document.getElementById("testersCount");
+
+    let allPlayers = [];
+
+    /* =========================
+       HELPERS
+    ========================= */
+
+    function getTierScore(tier) {
+        return TIER_SCORE[tier] || 0;
     }
 
-    .stats {
-        grid-template-columns: repeat(2,1fr);
+    function getSkin(uuid) {
+        if (!uuid) {
+            return "https://mc-heads.net/avatar/MHF_Steve/64";
+        }
+
+        return `https://mc-heads.net/avatar/${uuid.replace(/-/g, "")}/64`;
     }
 
-    .stat:nth-child(2) {
-        border-right: none;
+    function getBody(uuid) {
+        if (!uuid) {
+            return "https://mc-heads.net/body/MHF_Steve/100";
+        }
+
+        return `https://mc-heads.net/body/${uuid.replace(/-/g, "")}/100`;
     }
 
-    .stat:nth-child(-n+2) {
-        border-bottom: 1px solid var(--border);
+    function getTierClass(tier) {
+        if (!tier || tier === "Unranked") {
+            return "unranked";
+        }
+
+        return tier.toLowerCase().replace(" ", "");
     }
 
-    .podium {
-        flex-direction: column;
-        align-items: center;
-        min-height: auto;
+    function escapeHTML(value) {
+        return String(value ?? "")
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
     }
 
-    .first,
-    .second,
-    .third {
-        width: min(300px,100%);
-        min-height: 400px;
+    function getTier(player) {
+        return player?.tiers?.[GAMEMODE] || "Unranked";
     }
 
-    .first {
-        order: 1;
+    /* =========================
+       SORT PLAYERS
+    ========================= */
+
+    function getRankedPlayers() {
+        return allPlayers
+            .filter(player => {
+                if (!player) return false;
+
+                // Homepage = PREMIUM leaderboard
+                if (player.accountType !== "premium") {
+                    return false;
+                }
+
+                const tier = getTier(player);
+
+                return tier !== "Unranked";
+            })
+            .sort((a, b) => {
+                const tierA = getTier(a);
+                const tierB = getTier(b);
+
+                const scoreA = getTierScore(tierA);
+                const scoreB = getTierScore(tierB);
+
+                if (scoreB !== scoreA) {
+                    return scoreB - scoreA;
+                }
+
+                const testsA = Number(a?.stats?.tests || 0);
+                const testsB = Number(b?.stats?.tests || 0);
+
+                return testsB - testsA;
+            });
     }
 
-    .second {
-        order: 2;
-    }
-
-    .third {
-        order: 3;
-    }
-
-    .server {
-        position: static;
-        display: inline-block;
-        margin-top: 15px;
-    }
-
-    .top-row {
-        grid-template-columns: 40px 1fr 85px;
-    }
-
-    .top-mode {
-        display: none;
-    }
-
-    .top-tier {
-        text-align: right;
-    }
-
-    .testing-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media(max-width:500px) {
-
-    .hero {
-        padding-top: 75px;
-    }
-
-    .buttons {
-        flex-direction: column;
-    }
-
-    .button {
-        width: 100%;
-    }
-
-    .search-box {
-        flex-direction: column;
-        gap: 6px;
-    }
-
-    .search-box button {
-        height: 42px;
-    }
-}
-</style>
-</head>
-
-<body>
-
-<nav>
-
-    <a href="index.html" class="logo">
-        RO/EU <span>TIERS</span>
-    </a>
-
-    <div class="nav-links">
-
-        <a href="index.html">Home</a>
-
-        <a href="leaderboards.html">
-            Leaderboards
-        </a>
-
-        <a href="players.html">
-            Players
-        </a>
-
-        <a href="results.html">
-            Results
-        </a>
-
-        <a href="tiers.html">
-            Tiers
-        </a>
-
-        <a
-            href="https://discord.gg/bms3jPBD9p"
-            target="_blank"
-        >
-            Discord
-        </a>
-
-        <a href="login.html" class="login">
-            Login
-        </a>
-
-    </div>
-
-</nav>
-
-
-<section class="hero">
-
-    <div class="badge">
-        <span class="dot"></span>
-        RO / EU MINECRAFT PVP TIER LIST
-    </div>
-
-    <h1>
-        Minecraft PvP.<br>
-        Ranked.
-    </h1>
-
-    <p>
-        Compete, get tested and prove your skill.
-        Track your Minecraft PvP tier across
-        multiple gamemodes.
-    </p>
-
-    <div class="buttons">
-
-        <a href="#leaderboards" class="button primary">
-            View Leaderboards
-        </a>
-
-        <a
-            href="https://discord.gg/bms3jPBD9p"
-            target="_blank"
-            class="button secondary"
-        >
-            Join Discord
-        </a>
-
-    </div>
-
-</section>
-
-
-<section class="stats">
-
-    <div class="stat">
-
-        <div class="stat-number" id="rankedPlayers">
-            0
-        </div>
-
-        <div class="stat-label">
-            RANKED PLAYERS
-        </div>
-
-    </div>
-
-    <div class="stat">
-
-        <div class="stat-number" id="testers">
-            0
-        </div>
-
-        <div class="stat-label">
-            TESTERS
-        </div>
-
-    </div>
-
-    <div class="stat">
-
-        <div class="stat-number" id="tests">
-            0
-        </div>
-
-        <div class="stat-label">
-            TESTS COMPLETED
-        </div>
-
-    </div>
-
-    <div class="stat">
-
-        <div class="stat-number">
-            8
-        </div>
-
-        <div class="stat-label">
-            GAME MODES
-        </div>
-
-    </div>
-
-</section>
-
-
-<section class="section" id="leaderboards">
-
-    <div class="heading">
-
-        <h2>
-            Leaderboards
-        </h2>
-
-        <p>
-            Premium rankings and player statistics.
-        </p>
-
-    </div>
-
-
-    <!-- PREMIUM -->
-
-    <div class="premium-box">
-
-        <div class="premium-small">
-            PREMIUM TIERS
-        </div>
-
-        <h2>
-            Premium Leaderboard
-        </h2>
-
-        <p>
-            Players tested on verified Minecraft accounts.
-        </p>
-
-        <div class="server">
-            MCPVP.CLUB
-        </div>
-
-    </div>
-
-
-    <!-- TOP 3 -->
-
-    <div class="podium">
-
-        <div class="podium-card second">
-
-            <div class="player-name">
-                Steve
-            </div>
-
-            <div class="skin-area">
-
-                <img
-                    class="skin"
-                    src="https://mc-heads.net/body/Steve/180"
-                    alt="Steve"
-                >
-
-            </div>
-
-            <div class="position">
-                2
-            </div>
-
-            <div class="player-details">
-
-                <div class="tier">
-                    Unranked
+    /* =========================
+       PODIUM
+    ========================= */
+
+    function renderPodium(players) {
+        if (!podium) return;
+
+        const top3 = players.slice(0, 3);
+
+        if (top3.length === 0) {
+            podium.innerHTML = `
+                <div class="empty-leaderboard">
+                    <div class="empty-icon">🏆</div>
+                    <h3>No ranked players yet</h3>
+                    <p>Be the first player to get ranked.</p>
                 </div>
+            `;
 
-                <div class="points">
-                    0 Points
-                </div>
+            return;
+        }
 
-            </div>
+        podium.innerHTML = top3.map((player, index) => {
+            const position = index + 1;
+            const name = escapeHTML(
+                player.minecraftName || "Unknown"
+            );
 
-        </div>
+            const tier = getTier(player);
+            const uuid = player.uuid || "";
+            const score = getTierScore(tier);
 
-
-        <div class="podium-card first">
-
-            <div class="player-name">
-                Alex
-            </div>
-
-            <div class="skin-area">
-
-                <img
-                    class="skin"
-                    src="https://mc-heads.net/body/Alex/200"
-                    alt="Alex"
-                >
-
-            </div>
-
-            <div class="position">
-                1
-            </div>
-
-            <div class="player-details">
-
-                <div class="tier">
-                    Unranked
-                </div>
-
-                <div class="points">
-                    0 Points
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="podium-card third">
-
-            <div class="player-name">
-                Steve
-            </div>
-
-            <div class="skin-area">
-
-                <img
-                    class="skin"
-                    src="https://mc-heads.net/body/Steve/180"
-                    alt="Steve"
-                >
-
-            </div>
-
-            <div class="position">
-                3
-            </div>
-
-            <div class="player-details">
-
-                <div class="tier">
-                    Unranked
-                </div>
-
-                <div class="points">
-                    0 Points
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- TOP 50 -->
-
-    <div class="top-list" id="top50"></div>
-
-
-    <!-- CRACKED BUTTON -->
-
-    <div class="cracked-access">
-
-        <a
-            href="leaderboards.html#cracked"
-            class="cracked-button"
-        >
-            ◈ VIEW CRACKED LEADERBOARD
-        </a>
-
-    </div>
-
-</section>
-
-
-<!-- HOW TO GET TESTED -->
-
-<section class="testing">
-
-    <div class="testing-heading">
-
-        <h2>
-            How to Get Tested
-        </h2>
-
-        <p>
-            Choose your account type and request a PvP test.
-        </p>
-
-    </div>
-
-
-    <div class="testing-grid">
-
-
-        <!-- PREMIUM -->
-
-        <div class="testing-card">
-
-            <div class="testing-icon">
-                ◆
-            </div>
-
-            <h3>
-                Premium Testing
-            </h3>
-
-            <p>
-                Have a legitimate Minecraft Premium account?
-                Get tested on our Premium testing server.
-            </p>
-
-            <div class="steps">
-
-                <div class="step">
-
-                    <div class="step-number">
-                        01
+            return `
+                <div class="podium-card place-${position}">
+                    <div class="podium-rank">
+                        #${position}
                     </div>
 
-                    Join the RO/EU Tiers Discord.
-                </div>
+                    <div class="podium-player">
+                        <img
+                            src="${getBody(uuid)}"
+                            alt="${name}"
+                            class="podium-skin"
+                            onerror="this.src='https://mc-heads.net/body/MHF_Steve/100'"
+                        >
 
-                <div class="step">
+                        <div class="podium-name">
+                            ${name}
+                        </div>
 
-                    <div class="step-number">
-                        02
+                        <div class="podium-tier ${getTierClass(tier)}">
+                            ${escapeHTML(tier)}
+                        </div>
+
+                        <div class="podium-score">
+                            ${score} pts
+                        </div>
                     </div>
-
-                    Open a testing request / contact a tester.
                 </div>
-
-                <div class="step">
-
-                    <div class="step-number">
-                        03
-                    </div>
-
-                    Join <strong>MCPVP.CLUB</strong> when requested.
-                </div>
-
-                <div class="step">
-
-                    <div class="step-number">
-                        04
-                    </div>
-
-                    Complete your PvP test and receive your tier.
-                </div>
-
-            </div>
-
-            <a
-                href="https://discord.gg/bms3jPBD9p"
-                target="_blank"
-                class="testing-discord"
-            >
-                JOIN DISCORD →
-            </a>
-
-        </div>
-
-
-        <!-- CRACKED -->
-
-        <div class="testing-card cracked-card">
-
-            <div class="testing-icon">
-                ◈
-            </div>
-
-            <h3>
-                Cracked Testing
-            </h3>
-
-            <p>
-                Don't own a Premium Minecraft account?
-                You can still get tested through our Cracked system.
-            </p>
-
-            <div class="steps">
-
-                <div class="step">
-
-                    <div class="step-number">
-                        01
-                    </div>
-
-                    Join the RO/EU Tiers Discord.
-                </div>
-
-                <div class="step">
-
-                    <div class="step-number">
-                        02
-                    </div>
-
-                    Open a testing request / contact a tester.
-                </div>
-
-                <div class="step">
-
-                    <div class="step-number">
-                        03
-                    </div>
-
-                    Join <strong>CRAFTIFY.LOL</strong> when requested.
-                </div>
-
-                <div class="step">
-
-                    <div class="step-number">
-                        04
-                    </div>
-
-                    Complete your PvP test and receive your tier.
-                </div>
-
-            </div>
-
-            <a
-                href="https://discord.gg/bms3jPBD9p"
-                target="_blank"
-                class="testing-discord"
-            >
-                JOIN DISCORD →
-            </a>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- SEARCH -->
-
-<section class="search">
-
-    <h2>
-        Find a Player
-    </h2>
-
-    <p>
-        Search any Minecraft username.
-    </p>
-
-    <div class="search-box">
-
-        <input
-            id="playerSearch"
-            type="text"
-            placeholder="Enter Minecraft username..."
-            autocomplete="off"
-        >
-
-        <button onclick="searchPlayer()">
-            Search
-        </button>
-
-    </div>
-
-</section>
-
-
-<footer>
-
-    RO/EU Tiers © 2026
-
-    <br><br>
-
-    Minecraft is a trademark of Microsoft.
-    RO/EU Tiers is not affiliated with Mojang or Microsoft.
-
-</footer>
-
-
-<script>
-
-/* TOP 50 DEMO PLAYERS */
-
-const demoPlayers = [
-
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve",
-    "Alex",
-    "Steve"
-
-];
-
-
-/* GENERATE #4 - #50 */
-
-const top50 = document.getElementById("top50");
-
-for (let i = 3; i < 50; i++) {
-
-    const player = demoPlayers[i];
-
-    const skin =
-        player === "Alex"
-            ? "https://mc-heads.net/avatar/Alex/64"
-            : "https://mc-heads.net/avatar/Steve/64";
-
-    const row = document.createElement("div");
-
-    row.className = "top-row";
-
-    row.innerHTML = `
-
-        <div class="top-rank">
-            #${i + 1}
-        </div>
-
-        <div class="top-user">
-
-            <img
-                class="top-skin"
-                src="${skin}"
-                alt="${player}"
-            >
-
-            <div>
-
-                <div class="top-name">
-                    ${player}
-                </div>
-
-                <div class="top-server">
-                    MCPVP.CLUB
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="top-mode">
-
-            <img
-                class="mode-icon"
-                src="https://minecraft.wiki/images/Diamond_Sword_JE3_BE3.png"
-                alt="Sword"
-            >
-
-            Sword
-
-        </div>
-
-        <div class="top-tier">
-            Unranked
-        </div>
-
-    `;
-
-    top50.appendChild(row);
-
-}
-
-
-/* PLAYER SEARCH */
-
-function searchPlayer() {
-
-    const input =
-        document.getElementById("playerSearch");
-
-    const username =
-        input.value.trim();
-
-    if (username === "") {
-
-        input.focus();
-
-        return;
-
+            `;
+        }).join("");
     }
 
-    window.location.href =
-        "players.html?player=" +
-        encodeURIComponent(username);
+    /* =========================
+       LEADERBOARD ROWS
+    ========================= */
 
-}
+    function renderRows(players) {
+        if (!leaderboardBody) return;
 
+        const top50 = players.slice(3, 50);
 
-document
-    .getElementById("playerSearch")
-    .addEventListener(
-        "keydown",
-        function(event) {
+        if (top50.length === 0) {
+            leaderboardBody.innerHTML = `
+                <div class="empty-row">
+                    No other ranked players.
+                </div>
+            `;
 
-            if (event.key === "Enter") {
+            return;
+        }
 
-                searchPlayer();
+        leaderboardBody.innerHTML = top50.map((player, index) => {
+            const position = index + 4;
 
+            const name = escapeHTML(
+                player.minecraftName || "Unknown"
+            );
+
+            const tier = getTier(player);
+            const uuid = player.uuid || "";
+
+            const tests = Number(
+                player?.stats?.tests || 0
+            );
+
+            const wins = Number(
+                player?.stats?.wins || 0
+            );
+
+            const losses = Number(
+                player?.stats?.losses || 0
+            );
+
+            const score = getTierScore(tier);
+
+            return `
+                <div class="leaderboard-row">
+
+                    <div class="rank-number">
+                        #${position}
+                    </div>
+
+                    <div class="player-cell">
+                        <img
+                            src="${getSkin(uuid)}"
+                            alt="${name}"
+                            class="player-skin"
+                            onerror="this.src='https://mc-heads.net/avatar/MHF_Steve/64'"
+                        >
+
+                        <div class="player-info">
+                            <div class="player-name">
+                                ${name}
+                            </div>
+
+                            <div class="player-region">
+                                ${escapeHTML(player.region || "EU")}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tier-cell">
+                        <span class="tier-badge ${getTierClass(tier)}">
+                            ${escapeHTML(tier)}
+                        </span>
+                    </div>
+
+                    <div class="score-cell">
+                        ${score}
+                    </div>
+
+                    <div class="tests-cell">
+                        ${tests}
+                    </div>
+
+                    <div class="record-cell">
+                        ${wins}W / ${losses}L
+                    </div>
+
+                </div>
+            `;
+        }).join("");
+    }
+
+    /* =========================
+       STATS
+    ========================= */
+
+    function renderStats(players) {
+        if (playersCount) {
+            playersCount.textContent = players.length;
+        }
+
+        const ranked = players.filter(player => {
+            if (!player) return false;
+
+            if (player.accountType !== "premium") {
+                return false;
             }
 
+            return getTier(player) !== "Unranked";
+        });
+
+        if (rankedCount) {
+            rankedCount.textContent = ranked.length;
+        }
+
+        const totalTests = players.reduce((total, player) => {
+            return total + Number(
+                player?.stats?.tests || 0
+            );
+        }, 0);
+
+        if (testsCount) {
+            testsCount.textContent = totalTests;
+        }
+
+        if (testersCount) {
+            testersCount.textContent = "0";
+        }
+    }
+
+    /* =========================
+       SEARCH
+    ========================= */
+
+    function searchPlayers(query) {
+        const value = query
+            .trim()
+            .toLowerCase();
+
+        if (!value) {
+            return getRankedPlayers();
+        }
+
+        return getRankedPlayers().filter(player => {
+            const name = String(
+                player.minecraftName || ""
+            ).toLowerCase();
+
+            return name.includes(value);
+        });
+    }
+
+    function renderLeaderboard(players) {
+        renderPodium(players);
+        renderRows(players);
+    }
+
+    /* =========================
+       FIREBASE REALTIME DATABASE
+    ========================= */
+
+    const playersRef = ref(database, "players");
+
+    onValue(
+        playersRef,
+        snapshot => {
+            const data = snapshot.val() || {};
+
+            allPlayers = Object.entries(data)
+                .map(([uid, player]) => ({
+                    uid,
+                    ...player
+                }))
+                .filter(player => player.minecraftName);
+
+            const rankedPlayers = getRankedPlayers();
+
+            renderLeaderboard(rankedPlayers);
+            renderStats(allPlayers);
+
+            console.log(
+                "[ROTierList] Players loaded:",
+                allPlayers.length
+            );
+
+            console.log(
+                "[ROTierList] Ranked premium players:",
+                rankedPlayers.length
+            );
+        },
+        error => {
+            console.error(
+                "[ROTierList] Firebase error:",
+                error
+            );
+
+            if (podium) {
+                podium.innerHTML = `
+                    <div class="empty-leaderboard">
+                        <div class="empty-icon">⚠️</div>
+                        <h3>Leaderboard unavailable</h3>
+                        <p>Could not load player data.</p>
+                    </div>
+                `;
+            }
+
+            if (leaderboardBody) {
+                leaderboardBody.innerHTML = `
+                    <div class="empty-row">
+                        Could not load leaderboard data.
+                    </div>
+                `;
+            }
         }
     );
 
+    /* =========================
+       SEARCH EVENT
+    ========================= */
+
+    if (searchInput) {
+        searchInput.addEventListener("input", event => {
+            const results = searchPlayers(
+                event.target.value
+            );
+
+            renderLeaderboard(results);
+        });
+    }
+
+    /* =========================
+       ENTER SEARCH
+    ========================= */
+
+    if (searchInput) {
+        searchInput.addEventListener("keydown", event => {
+            if (event.key !== "Enter") return;
+
+            const query = searchInput.value.trim();
+
+            if (!query) return;
+
+            const player = allPlayers.find(p => {
+                return String(
+                    p.minecraftName || ""
+                ).toLowerCase() === query.toLowerCase();
+            });
+
+            if (player) {
+                window.location.href =
+                    `./players.html?player=${encodeURIComponent(player.minecraftName)}`;
+            }
+        });
+    }
 </script>
-<script type="module" src="./auth-ui.js"></script>
-</body>
-</html>
