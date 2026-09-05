@@ -68,7 +68,7 @@ function createAccountUI(user) {
         menu.appendChild(item);
     }
 
-    addMenuItem("👤 My Profile", "players.html");
+    addMenuItem("👤 My Profile", "profile.html");
 
     addMenuItem("⚙ Settings", "settings.html");
 
