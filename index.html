@@ -1,464 +1,709 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>RO/EU Tiers</title>
-    <meta name="description" content="RO/EU Minecraft PvP Tier List">
+<title>RO/EU Tiers</title>
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #08090d;
-            color: #ffffff;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+html {
+    scroll-behavior: smooth;
+}
 
-        body::before {
-            content: "";
-            position: fixed;
-            width: 600px;
-            height: 600px;
-            background: rgba(100, 70, 255, 0.12);
-            filter: blur(140px);
-            border-radius: 50%;
-            top: -250px;
-            left: 50%;
-            transform: translateX(-50%);
-            pointer-events: none;
-        }
+body {
+    font-family: Arial, sans-serif;
+    background: #07080c;
+    color: white;
+    min-height: 100vh;
+}
 
-        nav {
-            width: 100%;
-            height: 76px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 7%;
-            border-bottom: 1px solid rgba(255,255,255,0.07);
-            background: rgba(8,9,13,0.72);
-            backdrop-filter: blur(20px);
-            position: relative;
-            z-index: 10;
-        }
+body::before {
+    content: "";
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    top: -300px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(110, 80, 255, 0.14);
+    filter: blur(150px);
+    border-radius: 50%;
+    pointer-events: none;
+}
 
-        .logo {
-            font-size: 21px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-        }
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: 74px;
+    padding: 0 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-        .logo span {
-            color: #8b6cff;
-        }
+    background: rgba(7, 8, 12, 0.82);
+    backdrop-filter: blur(20px);
 
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-        }
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+}
 
-        .nav-links a {
-            color: #a9abb7;
-            text-decoration: none;
-            font-size: 14px;
-            transition: 0.2s;
-        }
+.logo {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 900;
+}
 
-        .nav-links a:hover {
-            color: white;
-        }
+.logo span {
+    color: #9277ff;
+}
 
-        .login-btn {
-            padding: 11px 18px;
-            border-radius: 10px;
-            background: #ffffff;
-            color: #08090d !important;
-            font-weight: 700;
-        }
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+}
 
-        .hero {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 130px 25px 90px;
-            text-align: center;
-            position: relative;
-        }
+.nav-links a {
+    color: #9295a2;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s;
+}
 
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 14px;
-            border: 1px solid rgba(139,108,255,0.25);
-            background: rgba(139,108,255,0.08);
-            color: #b9a9ff;
-            border-radius: 999px;
-            font-size: 12px;
-            font-weight: 700;
-            margin-bottom: 25px;
-        }
+.nav-links a:hover {
+    color: white;
+}
 
-        .dot {
-            width: 7px;
-            height: 7px;
-            background: #8b6cff;
-            border-radius: 50%;
-            box-shadow: 0 0 12px #8b6cff;
-        }
+.login {
+    background: white;
+    color: #08090d !important;
+    padding: 10px 17px;
+    border-radius: 10px;
+    font-weight: 800 !important;
+}
 
-        h1 {
-            font-size: clamp(48px, 8vw, 86px);
-            line-height: 0.95;
-            letter-spacing: -4px;
-            font-weight: 900;
-            margin-bottom: 25px;
-        }
+.hero {
+    max-width: 1100px;
+    margin: auto;
+    text-align: center;
+    padding: 125px 25px 90px;
+}
 
-        h1 span {
-            color: #8b6cff;
-        }
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 
-        .hero p {
-            max-width: 620px;
-            margin: auto;
-            color: #8f919d;
-            font-size: 17px;
-            line-height: 1.7;
-        }
+    padding: 8px 14px;
 
-        .buttons {
-            margin-top: 35px;
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
+    border-radius: 50px;
 
-        .primary,
-        .secondary {
-            text-decoration: none;
-            padding: 14px 22px;
-            border-radius: 11px;
-            font-size: 14px;
-            font-weight: 700;
-            transition: 0.2s;
-        }
+    background: rgba(146,119,255,0.08);
+    border: 1px solid rgba(146,119,255,0.25);
 
-        .primary {
-            background: #ffffff;
-            color: #08090d;
-        }
+    color: #bdb0ff;
 
-        .primary:hover {
-            transform: translateY(-2px);
-        }
+    font-size: 11px;
+    font-weight: 800;
 
-        .secondary {
-            color: white;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.04);
-        }
+    margin-bottom: 25px;
+}
 
-        .secondary:hover {
-            background: rgba(255,255,255,0.08);
-        }
+.dot {
+    width: 7px;
+    height: 7px;
 
-        .stats {
-            max-width: 950px;
-            margin: 20px auto 0;
-            padding: 0 25px;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 14px;
-        }
+    border-radius: 50%;
 
-        .stat {
-            padding: 25px;
-            border: 1px solid rgba(255,255,255,0.07);
-            background: rgba(255,255,255,0.025);
-            border-radius: 16px;
-        }
+    background: #9277ff;
 
-        .stat-number {
-            font-size: 25px;
-            font-weight: 800;
-            margin-bottom: 7px;
-        }
+    box-shadow: 0 0 14px #9277ff;
+}
 
-        .stat-label {
-            color: #777a87;
-            font-size: 12px;
-        }
+h1 {
+    font-size: clamp(50px, 8vw, 88px);
+    line-height: 0.94;
+    letter-spacing: -5px;
+    font-weight: 900;
+}
 
-        .section {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 90px 25px;
-        }
+h1 span {
+    color: #9277ff;
+}
 
-        .section-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: end;
-            margin-bottom: 25px;
-        }
+.hero p {
+    max-width: 600px;
+    margin: 25px auto 0;
 
-        .section-title h2 {
-            font-size: 28px;
-            letter-spacing: -1px;
-        }
+    color: #858894;
 
-        .section-title p {
-            color: #777a87;
-            font-size: 13px;
-        }
+    font-size: 16px;
+    line-height: 1.7;
+}
 
-        .leaderboard {
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 18px;
-            overflow: hidden;
-            background: rgba(255,255,255,0.025);
-        }
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
 
-        .player {
-            display: grid;
-            grid-template-columns: 70px 1fr 120px 120px;
-            align-items: center;
-            min-height: 85px;
-            padding: 10px 25px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            transition: 0.2s;
-        }
+    margin-top: 35px;
+}
 
-        .player:last-child {
-            border-bottom: 0;
-        }
+.button {
+    padding: 14px 22px;
 
-        .player:hover {
-            background: rgba(255,255,255,0.035);
-        }
+    border-radius: 11px;
 
-        .position {
-            color: #777a87;
-            font-size: 14px;
-            font-weight: 700;
-        }
+    text-decoration: none;
 
-        .player-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+    font-size: 13px;
+    font-weight: 800;
 
-        .skin {
-            width: 45px;
-            height: 55px;
-            object-fit: contain;
-            image-rendering: pixelated;
-        }
+    transition: 0.2s;
+}
 
-        .player-name {
-            font-weight: 700;
-            font-size: 15px;
-        }
+.primary {
+    background: white;
+    color: #08090d;
+}
 
-        .region {
-            color: #777a87;
-            font-size: 11px;
-            margin-top: 4px;
-        }
+.secondary {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+}
 
-        .mode {
-            color: #999ba7;
-            font-size: 13px;
-        }
+.button:hover {
+    transform: translateY(-2px);
+}
 
-        .tier {
-            display: inline-flex;
-            justify-content: center;
-            padding: 7px 11px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 800;
-            background: rgba(139,108,255,0.1);
-            border: 1px solid rgba(139,108,255,0.18);
-            color: #b9a9ff;
-        }
+.stats {
+    max-width: 950px;
+    margin: auto;
 
-        footer {
-            border-top: 1px solid rgba(255,255,255,0.07);
-            padding: 30px 7%;
-            color: #626570;
-            font-size: 12px;
-            text-align: center;
-        }
+    padding: 0 25px;
 
-        @media (max-width: 750px) {
-            .nav-links a:not(.login-btn) {
-                display: none;
-            }
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 13px;
+}
 
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
+.stat {
+    padding: 25px;
 
-            .player {
-                grid-template-columns: 35px 1fr 75px;
-            }
+    background: rgba(255,255,255,0.025);
 
-            .mode {
-                display: none;
-            }
+    border: 1px solid rgba(255,255,255,0.07);
 
-            .tier {
-                font-size: 11px;
-            }
+    border-radius: 16px;
 
-            h1 {
-                letter-spacing: -2px;
-            }
-        }
-    </style>
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 26px;
+    font-weight: 900;
+}
+
+.stat-label {
+    margin-top: 7px;
+
+    color: #70737f;
+
+    font-size: 11px;
+}
+
+.section {
+    max-width: 1100px;
+    margin: auto;
+
+    padding: 100px 25px;
+}
+
+.section-header {
+    margin-bottom: 25px;
+}
+
+.section-header h2 {
+    font-size: 28px;
+}
+
+.section-header p {
+    margin-top: 6px;
+
+    color: #70737f;
+
+    font-size: 12px;
+}
+
+.leaderboard {
+    overflow: hidden;
+
+    background: rgba(255,255,255,0.025);
+
+    border: 1px solid rgba(255,255,255,0.07);
+
+    border-radius: 18px;
+}
+
+.player {
+    min-height: 90px;
+
+    display: grid;
+
+    grid-template-columns: 65px 1fr 130px 120px;
+
+    align-items: center;
+
+    padding: 10px 25px;
+
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+
+    transition: 0.2s;
+}
+
+.player:last-child {
+    border-bottom: none;
+}
+
+.player:hover {
+    background: rgba(255,255,255,0.035);
+}
+
+.position {
+    color: #70737f;
+    font-weight: 800;
+}
+
+.player-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.skin {
+    width: 48px;
+    height: 60px;
+
+    object-fit: contain;
+
+    image-rendering: pixelated;
+}
+
+.player-name {
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.region {
+    margin-top: 5px;
+
+    color: #70737f;
+
+    font-size: 10px;
+}
+
+.mode {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    color: #9295a2;
+
+    font-size: 12px;
+}
+
+.mode-icon {
+    width: 22px;
+    height: 22px;
+
+    image-rendering: pixelated;
+}
+
+.tier {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 7px 11px;
+
+    border-radius: 8px;
+
+    background: rgba(146,119,255,0.1);
+
+    border: 1px solid rgba(146,119,255,0.2);
+
+    color: #bdb0ff;
+
+    font-size: 11px;
+    font-weight: 900;
+}
+
+.search-section {
+    max-width: 700px;
+    margin: auto;
+
+    padding: 20px 25px 100px;
+
+    text-align: center;
+}
+
+.search-section h2 {
+    font-size: 28px;
+}
+
+.search-section p {
+    margin-top: 7px;
+    margin-bottom: 22px;
+
+    color: #70737f;
+
+    font-size: 12px;
+}
+
+.search-box {
+    display: flex;
+    gap: 10px;
+
+    padding: 6px;
+
+    background: rgba(255,255,255,0.035);
+
+    border: 1px solid rgba(255,255,255,0.09);
+
+    border-radius: 13px;
+}
+
+.search-box input {
+    flex: 1;
+
+    padding: 12px;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    color: white;
+
+    font-size: 13px;
+}
+
+.search-box input::placeholder {
+    color: #656874;
+}
+
+.search-box button {
+    border: none;
+
+    padding: 0 18px;
+
+    border-radius: 9px;
+
+    background: white;
+
+    color: #08090d;
+
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+footer {
+    padding: 30px;
+
+    border-top: 1px solid rgba(255,255,255,0.07);
+
+    text-align: center;
+
+    color: #5f626d;
+
+    font-size: 11px;
+}
+
+@media(max-width:750px) {
+
+    nav {
+        padding: 0 20px;
+    }
+
+    .nav-links {
+        gap: 10px;
+    }
+
+    .nav-links a:not(.login) {
+        display: none;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .player {
+        grid-template-columns: 35px 1fr 80px;
+        padding: 10px 15px;
+    }
+
+    .mode {
+        display: none;
+    }
+
+    h1 {
+        letter-spacing: -3px;
+    }
+}
+</style>
 </head>
 
 <body>
 
 <nav>
-    <div class="logo">RO/EU <span>TIERS</span></div>
 
-    <div class="nav-links">
-        <a href="#">Leaderboards</a>
-        <a href="#">Players</a>
-        <a href="#">Results</a>
-        <a href="#">Tiers</a>
-        <a href="https://discord.gg/bms3jPBD9p" target="_blank">Discord</a>
-        <a href="#" class="login-btn">Login</a>
-    </div>
+<a href="index.html" class="logo">
+RO/EU <span>TIERS</span>
+</a>
+
+<div class="nav-links">
+
+<a href="#leaderboards">
+Leaderboards
+</a>
+
+<a href="players.html">
+Players
+</a>
+
+<a href="results.html">
+Results
+</a>
+
+<a href="tiers.html">
+Tiers
+</a>
+
+<a href="https://discord.gg/bms3jPBD9p" target="_blank">
+Discord
+</a>
+
+<a href="login.html" class="login">
+Login
+</a>
+
+</div>
+
 </nav>
+
 
 <section class="hero">
 
-    <div class="badge">
-        <div class="dot"></div>
-        RO/EU PvP Rankings
-    </div>
+<div class="badge">
+<div class="dot"></div>
+RO/EU PvP Rankings
+</div>
 
-    <h1>
-        Minecraft PvP<br>
-        <span>Tier List.</span>
-    </h1>
+<h1>
+Minecraft PvP<br>
+<span>Tier List.</span>
+</h1>
 
-    <p>
-        The competitive ranking system for Minecraft PvP players
-        across Romania and Europe.
-    </p>
+<p>
+The competitive ranking system for Minecraft PvP players
+across Romania and Europe.
+</p>
 
-    <div class="buttons">
-        <a href="#" class="primary">View Leaderboards</a>
-        <a href="https://discord.gg/bms3jPBD9p" target="_blank" class="secondary">
-            Join Discord
-        </a>
-    </div>
+<div class="buttons">
+
+<a href="#leaderboards" class="button primary">
+View Leaderboards
+</a>
+
+<a
+href="https://discord.gg/bms3jPBD9p"
+target="_blank"
+class="button secondary">
+Join Discord
+</a>
+
+</div>
 
 </section>
+
 
 <section class="stats">
 
-    <div class="stat">
-        <div class="stat-number">0</div>
-        <div class="stat-label">Ranked Players</div>
-    </div>
+<div class="stat">
+<div class="stat-number">0</div>
+<div class="stat-label">Ranked Players</div>
+</div>
 
-    <div class="stat">
-        <div class="stat-number">0</div>
-        <div class="stat-label">Testers</div>
-    </div>
+<div class="stat">
+<div class="stat-number">0</div>
+<div class="stat-label">Testers</div>
+</div>
 
-    <div class="stat">
-        <div class="stat-number">0</div>
-        <div class="stat-label">Tests Completed</div>
-    </div>
+<div class="stat">
+<div class="stat-number">0</div>
+<div class="stat-label">Tests Completed</div>
+</div>
 
-    <div class="stat">
-        <div class="stat-number">8</div>
-        <div class="stat-label">Game Modes</div>
-    </div>
+<div class="stat">
+<div class="stat-number">8</div>
+<div class="stat-label">Game Modes</div>
+</div>
+
+</section>
+
+
+<section class="section" id="leaderboards">
+
+<div class="section-header">
+
+<h2>
+Top Players
+</h2>
+
+<p>
+Best ranked players across RO/EU
+</p>
+
+</div>
+
+
+<div class="leaderboard">
+
+
+<div class="player">
+
+<div class="position">
+#1
+</div>
+
+<div class="player-info">
+
+<img
+class="skin"
+src="https://mc-heads.net/body/Steve/100"
+alt="Minecraft Skin"
+>
+
+<div>
+
+<div class="player-name">
+Player
+</div>
+
+<div class="region">
+🇪🇺 Europe
+</div>
+
+</div>
+
+</div>
+
+<div class="mode">
+
+<img
+class="mode-icon"
+src="https://minecraft.wiki/images/Diamond_Sword_JE3_BE3.png"
+alt="Sword"
+>
+
+Sword
+
+</div>
+
+<div>
+
+<span class="tier">
+Unranked
+</span>
+
+</div>
+
+</div>
+
+
+</div>
 
 </section>
 
-<section class="section">
 
-    <div class="section-title">
-        <div>
-            <h2>Top Players</h2>
-            <p>Best ranked players across all modes</p>
-        </div>
-    </div>
+<section class="search-section">
 
-    <div class="leaderboard">
+<h2>
+Find a Player
+</h2>
 
-        <div class="player">
-            <div class="position">#1</div>
+<p>
+Search for a Minecraft username and view their profile.
+</p>
 
-            <div class="player-info">
-                <img
-                    class="skin"
-                    src="https://mc-heads.net/body/Smituureal/100"
-                    alt="Minecraft Skin"
-                >
 
-                <div>
-                    <div class="player-name">Smituureal</div>
-                    <div class="region">🇷🇴 Romania</div>
-                </div>
-            </div>
+<div class="search-box">
 
-            <div class="mode">Overall</div>
+<input
+id="playerSearch"
+type="text"
+placeholder="Enter Minecraft username..."
+autocomplete="off"
+>
 
-            <div>
-                <span class="tier">OWNER</span>
-            </div>
-        </div>
+<button onclick="searchPlayer()">
+Search
+</button>
 
-        <div class="player">
-            <div class="position">#2</div>
-
-            <div class="player-info">
-                <img
-                    class="skin"
-                    src="https://mc-heads.net/body/Steve/100"
-                    alt="Minecraft Skin"
-                >
-
-                <div>
-                    <div class="player-name">Player</div>
-                    <div class="region">🇪🇺 Europe</div>
-                </div>
-            </div>
-
-            <div class="mode">Sword</div>
-
-            <div>
-                <span class="tier">HT1</span>
-            </div>
-        </div>
-
-    </div>
+</div>
 
 </section>
+
 
 <footer>
-    RO/EU Tiers · Minecraft PvP Ranking System
+
+RO/EU Tiers · Minecraft PvP Ranking System
+
 </footer>
+
+
+<script>
+
+function searchPlayer() {
+
+    const input =
+        document.getElementById("playerSearch");
+
+    const username =
+        input.value.trim();
+
+    if (username === "") {
+        return;
+    }
+
+    window.location.href =
+        "players.html?player=" +
+        encodeURIComponent(username);
+
+}
+
+document
+.getElementById("playerSearch")
+.addEventListener("keydown", function(event) {
+
+    if (event.key === "Enter") {
+        searchPlayer();
+    }
+
+});
+
+</script>
 
 </body>
 </html>
