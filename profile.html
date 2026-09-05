@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile | ROTierList</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0b0b0d;
+            color: white;
+            min-height: 100vh;
+        }
+
+        nav {
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            border-bottom: 1px solid #24242a;
+            background: #0d0d0f;
+        }
+
+        .logo {
+            color: white;
+            text-decoration: none;
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: #8b5cf6;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            color: #a1a1aa;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .discord {
+            background: #5865f2;
+            color: white !important;
+            padding: 9px 15px;
+            border-radius: 8px;
+            font-weight: 700;
+        }
+
+        .page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 55px 20px;
+        }
+
+        .top {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            background: #111114;
+            border: 1px solid #292930;
+            border-radius: 18px;
+            padding: 30px;
+            margin-bottom: 25px;
+        }
+
+        .skin {
+            width: 150px;
+            height: 210px;
+            object-fit: contain;
+            image-rendering: pixelated;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-info h1 {
+            font-size: 34px;
+            margin-bottom: 12px;
+        }
+
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .badge {
+            padding: 6px 10px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 800;
+            background: #1d1d23;
+            border: 1px solid #33333b;
+            color: #d4d4d8;
+        }
+
+        .badge.premium {
+            color: #c4b5fd;
+            border-color: #6d4bc4;
+            background: #1b1429;
+        }
+
+        .badge.eu {
+            color: #93c5fd;
+            border-color: #315d9b;
+            background: #111c2d;
+        }
+
+        .email {
+            color: #71717a;
+            font-size: 14px;
+        }
+
+        .section-title {
+            font-size: 21px;
+            margin: 30px 0 15px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .stat {
+            background: #111114;
+            border: 1px solid #292930;
+            border-radius: 13px;
+            padding: 20px;
+        }
+
+        .stat-value {
+            font-size: 25px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #71717a;
+            font-size: 13px;
+        }
+
+        .gamemodes {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .mode {
+            background: #111114;
+            border: 1px solid #292930;
+            border-radius: 13px;
+            padding: 18px;
+        }
+
+        .mode-name {
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .tier {
+            font-size: 23px;
+            font-weight: 900;
+            color: #71717a;
+            margin-bottom: 7px;
+        }
+
+        .server {
+            color: #71717a;
+            font-size: 12px;
+        }
+
+        .history {
+            background: #111114;
+            border: 1px solid #292930;
+            border-radius: 13px;
+            padding: 25px;
+            color: #71717a;
+            text-align: center;
+        }
+
+        .login-required {
+            max-width: 550px;
+            margin: 100px auto;
+            text-align: center;
+            background: #111114;
+            border: 1px solid #292930;
+            border-radius: 18px;
+            padding: 40px;
+        }
+
+        .login-required h1 {
+            margin-bottom: 10px;
+        }
+
+        .login-required p {
+            color: #71717a;
+            margin-bottom: 25px;
+        }
+
+        .login-button {
+            display: inline-block;
+            background: #8b5cf6;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 9px;
+            font-weight: 800;
+        }
+
+        @media (max-width: 800px) {
+            .nav-links a:not(.discord) {
+                display: none;
+            }
+
+            nav {
+                padding: 0 18px;
+            }
+
+            .top {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .badges {
+                justify-content: center;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .gamemodes {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .stats,
+            .gamemodes {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>
+    <a href="index.html" class="logo">
+        RO<span>Tier</span>List
+    </a>
+
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="players.html">Players</a>
+        <a href="leaderboards.html">Leaderboards</a>
+        <a href="results.html">Results</a>
+        <a href="tiers.html">Tiers</a>
+        <a href="https://discord.gg/bms3jPBD9p" target="_blank" class="discord">
+            Discord
+        </a>
+    </div>
+</nav>
+
+
+<main class="page" id="profilePage">
+
+    <div id="loading">
+        Loading profile...
+    </div>
+
+</main>
+
+
+<script type="module">
+
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+    import { auth } from "./firebase.js";
+
+
+    const page = document.getElementById("profilePage");
+
+
+    onAuthStateChanged(auth, (user) => {
+
+        if (!user) {
+
+            page.innerHTML = `
+                <div class="login-required">
+
+                    <h1>Login required</h1>
+
+                    <p>
+                        You need to be logged in to view your profile.
+                    </p>
+
+                    <a href="login.html" class="login-button">
+                        Login
+                    </a>
+
+                </div>
+            `;
+
+            return;
+        }
+
+
+        const minecraftName =
+            user.displayName ||
+            user.email.split("@")[0];
+
+
+        const skinUrl =
+            "https://mc-heads.net/body/" +
+            encodeURIComponent(minecraftName) +
+            "/150";
+
+
+        page.innerHTML = `
+
+            <section class="top">
+
+                <img
+                    class="skin"
+                    src="${skinUrl}"
+                    alt="Minecraft Skin"
+                    onerror="this.src='https://mc-heads.net/body/Steve/150'"
+                >
+
+                <div class="profile-info">
+
+                    <h1>
+                        ${escapeHtml(minecraftName)}
+                    </h1>
+
+                    <div class="badges">
+
+                        <span class="badge premium">
+                            PREMIUM
+                        </span>
+
+                        <span class="badge eu">
+                            EU
+                        </span>
+
+                        <span class="badge">
+                            UNRANKED
+                        </span>
+
+                    </div>
+
+                    <div class="email">
+                        ${escapeHtml(user.email || "")}
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <h2 class="section-title">
+                Statistics
+            </h2>
+
+            <section class="stats">
+
+                <div class="stat">
+                    <div class="stat-value">Unranked</div>
+                    <div class="stat-label">Overall Tier</div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-value">0 / 8</div>
+                    <div class="stat-label">Gamemodes Ranked</div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Tests Completed</div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-value">EU</div>
+                    <div class="stat-label">Region</div>
+                </div>
+
+            </section>
+
+
+            <h2 class="section-title">
+                Gamemodes
+            </h2>
+
+            <section class="gamemodes">
+
+                ${createMode("Vanilla", "MCPVP.CLUB")}
+                ${createMode("Sword", "MCPVP.CLUB")}
+                ${createMode("Axe", "MCPVP.CLUB")}
+                ${createMode("UHC", "MCPVP.CLUB")}
+
+                ${createMode("Pot", "MCPVP.CLUB")}
+                ${createMode("Mace", "MCPVP.CLUB")}
+                ${createMode("SMP", "MCPVP.CLUB")}
+                ${createMode("Crystal", "MCPVP.CLUB")}
+
+            </section>
+
+
+            <h2 class="section-title">
+                Test History
+            </h2>
+
+            <section class="history">
+
+                No tests have been completed yet.
+
+            </section>
+
+        `;
+
+    });
+
+
+    function createMode(name, server) {
+
+        return `
+
+            <div class="mode">
+
+                <div class="mode-name">
+                    ${name}
+                </div>
+
+                <div class="tier">
+                    Unranked
+                </div>
+
+                <div class="server">
+                    ${server}
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    function escapeHtml(text) {
+
+        const div = document.createElement("div");
+
+        div.textContent = text;
+
+        return div.innerHTML;
+
+    }
+
+</script>
+
+
+<script type="module" src="./auth-ui.js"></script>
+
+</body>
+</html>
