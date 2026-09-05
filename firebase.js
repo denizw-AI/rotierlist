@@ -7,7 +7,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCHHyWpppPDpOE2kRTjxLxCKzG_ZciimYA",
+    apiKey: "AIzaSyCHHywPPpPDpOE2kRTjxLxCKzG_ZciimYA",
     authDomain: "rotierlist.firebaseapp.com",
     databaseURL: "https://rotierlist-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "rotierlist",
@@ -17,7 +17,6 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
 
 setPersistence(auth, browserLocalPersistence).catch((error) => {
