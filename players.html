@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>RO TierList | Players</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #07080c;
+      --card: #0d1017;
+      --card2: #11141c;
+      --border: rgba(255,255,255,.07);
+      --text: #f4f5f7;
+      --muted: #858a98;
+      --accent: #7c5cff;
+      --accent2: #a78bfa;
+      --green: #55d98b;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 50% -10%, rgba(124,92,255,.14), transparent 35%),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    nav {
+      height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6%;
+      border-bottom: 1px solid var(--border);
+      background: rgba(7,8,12,.82);
+      backdrop-filter: blur(18px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .logo span {
+      color: var(--accent2);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 27px;
+    }
+
+    .nav-links a {
+      color: #9ca1ae;
+      font-size: 14px;
+      font-weight: 700;
+      transition: .2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: white;
+    }
+
+    .login-btn {
+      padding: 10px 17px;
+      border-radius: 9px;
+      background: white;
+      color: #090a0e !important;
+    }
+
+    .container {
+      width: min(1100px, 92%);
+      margin: auto;
+    }
+
+    .page-header {
+      text-align: center;
+      padding: 75px 0 40px;
+    }
+
+    .small {
+      color: var(--accent2);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-size: 11px;
+      font-weight: 900;
+      margin-bottom: 13px;
+    }
+
+    h1 {
+      font-size: clamp(40px, 6vw, 64px);
+      letter-spacing: -3px;
+      line-height: 1;
+    }
+
+    .page-header p {
+      color: var(--muted);
+      margin-top: 16px;
+      font-size: 14px;
+    }
+
+    /* SEARCH */
+
+    .search-box {
+      display: flex;
+      gap: 10px;
+      max-width: 650px;
+      margin: 0 auto 45px;
+    }
+
+    .search-box input {
+      flex: 1;
+      height: 50px;
+      padding: 0 17px;
+      border-radius: 11px;
+      outline: none;
+      border: 1px solid var(--border);
+      background: #0d1017;
+      color: white;
+      font-size: 13px;
+    }
+
+    .search-box input:focus {
+      border-color: rgba(124,92,255,.55);
+    }
+
+    .search-box button {
+      border: 0;
+      border-radius: 11px;
+      padding: 0 24px;
+      background: linear-gradient(135deg,#7455f5,#9276ff);
+      color: white;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    /* PROFILE */
+
+    #profile {
+      display: none;
+    }
+
+    .profile-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(124,92,255,.16), transparent 45%),
+        var(--card);
+      padding: 35px;
+      margin-bottom: 25px;
+    }
+
+    .profile-top {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .big-skin {
+      width: 125px;
+      height: 165px;
+      object-fit: contain;
+      image-rendering: pixelated;
+      filter: drop-shadow(0 20px 25px rgba(0,0,0,.5));
+    }
+
+    .profile-name {
+      font-size: 34px;
+      font-weight: 950;
+      letter-spacing: -1px;
+    }
+
+    .profile-sub {
+      color: var(--muted);
+      margin-top: 7px;
+      font-size: 12px;
+    }
+
+    .badges {
+      display: flex;
+      gap: 7px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      padding: 7px 10px;
+      border-radius: 7px;
+      background: rgba(255,255,255,.05);
+      color: #9298a5;
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .badge.online {
+      color: var(--green);
+      background: rgba(85,217,139,.08);
+    }
+
+    /* STATS */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+
+    .stat {
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--card);
+      padding: 19px;
+    }
+
+    .stat-label {
+      color: #626876;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 900;
+    }
+
+    .stat-value {
+      margin-top: 8px;
+      font-size: 21px;
+      font-weight: 950;
+    }
+
+    /* TIERS */
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 35px 2px 13px;
+    }
+
+    .section-title h2 {
+      font-size: 18px;
+    }
+
+    .section-title span {
+      color: #626876;
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .gamemodes {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 12px;
+    }
+
+    .gamemode {
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 14px;
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: .2s;
+    }
+
+    .gamemode:hover {
+      border-color: rgba(124,92,255,.3);
+      transform: translateY(-2px);
+    }
+
+    .gm-left {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+    }
+
+    .gm-icon {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+      image-rendering: pixelated;
+      padding: 7px;
+      background: rgba(255,255,255,.04);
+      border-radius: 8px;
+    }
+
+    .gm-name {
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .gm-server {
+      color: #606674;
+      font-size: 9px;
+      margin-top: 3px;
+    }
+
+    .tier-box {
+      padding: 7px 11px;
+      border-radius: 7px;
+      background: rgba(255,255,255,.045);
+      color: #8e94a1;
+      font-size: 10px;
+      font-weight: 950;
+      text-transform: uppercase;
+    }
+
+    /* RESULTS */
+
+    .results {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--card);
+      margin-bottom: 60px;
+    }
+
+    .result {
+      display: grid;
+      grid-template-columns: 1fr 130px 130px;
+      align-items: center;
+      min-height: 68px;
+      padding: 10px 18px;
+      border-top: 1px solid var(--border);
+    }
+
+    .result:first-child {
+      border-top: 0;
+    }
+
+    .result-player {
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .result-mode,
+    .result-date {
+      color: #737987;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    /* EMPTY */
+
+    .empty {
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      background: var(--card);
+      padding: 65px 20px;
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .empty-icon {
+      font-size: 35px;
+      margin-bottom: 15px;
+      opacity: .7;
+    }
+
+    .empty h2 {
+      font-size: 19px;
+    }
+
+    .empty p {
+      color: var(--muted);
+      margin-top: 8px;
+      font-size: 12px;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 35px 6%;
+      color: #565c69;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    @media(max-width:800px) {
+
+      nav {
+        padding: 0 4%;
+      }
+
+      .nav-links {
+        gap: 12px;
+      }
+
+      .nav-links a:nth-child(2),
+      .nav-links a:nth-child(3),
+      .nav-links a:nth-child(4),
+      .nav-links a:nth-child(5) {
+        display: none;
+      }
+
+      .profile-top {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .badges {
+        justify-content: center;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2,1fr);
+      }
+
+      .gamemodes {
+        grid-template-columns: 1fr;
+      }
+
+      .result {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+
+      .search-box {
+        flex-direction: column;
+      }
+
+      .search-box button {
+        height: 45px;
+      }
+    }
+
+    @media(max-width:450px) {
+      .stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .profile-card {
+        padding: 25px 15px;
+      }
+
+      .profile-name {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+
+    <a href="index.html" class="logo">
+      RO<span>TierList</span>
+    </a>
+
+    <div class="nav-links">
+
+      <a href="index.html">Home</a>
+
+      <a href="players.html" class="active">
+        Players
+      </a>
+
+      <a href="leaderboards.html">
+        Leaderboards
+      </a>
+
+      <a href="results.html">
+        Results
+      </a>
+
+      <a href="tiers.html">
+        Tiers
+      </a>
+
+      <a
+        href="https://discord.gg/bms3jPBD9p"
+        target="_blank"
+      >
+        Discord
+      </a>
+
+      <a href="login.html" class="login-btn">
+        Login
+      </a>
+
+    </div>
+
+  </nav>
+
+
+  <main class="container">
+
+    <section class="page-header">
+
+      <div class="small">
+        RO / EU Minecraft PvP
+      </div>
+
+      <h1>
+        Players
+      </h1>
+
+      <p>
+        Search for a player and view their complete tier profile.
+      </p>
+
+    </section>
+
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+      <input
+        id="playerSearch"
+        type="text"
+        placeholder="Enter Minecraft username..."
+        autocomplete="off"
+      >
+
+      <button id="searchButton">
+        Search
+      </button>
+
+    </div>
+
+
+    <!-- PROFILE -->
+
+    <section id="profile">
+
+      <div class="profile-card">
+
+        <div class="profile-top">
+
+          <img
+            id="profileSkin"
+            class="big-skin"
+            src="https://mc-heads.net/body/Alex/150"
+            alt="Player skin"
+          >
+
+          <div>
+
+            <div
+              id="profileName"
+              class="profile-name"
+            >
+              Alex
+            </div>
+
+            <div
+              id="profileSub"
+              class="profile-sub"
+            >
+              Minecraft player
+            </div>
+
+            <div class="badges">
+
+              <div
+                id="accountBadge"
+                class="badge"
+              >
+                💎 PREMIUM
+              </div>
+
+              <div class="badge">
+                🇪🇺 EU
+              </div>
+
+              <div class="badge online">
+                ● RANKED
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- STATS -->
+
+      <div class="stats">
+
+        <div class="stat">
+
+          <div class="stat-label">
+            Overall
+          </div>
+
+          <div
+            id="overall"
+            class="stat-value"
+          >
+            Unranked
+          </div>
+
+        </div>
+
+
+        <div class="stat">
+
+          <div class="stat-label">
+            Gamemodes
+          </div>
+
+          <div
+            id="gamemodeCount"
+            class="stat-value"
+          >
+            0 / 8
+          </div>
+
+        </div>
+
+
+        <div class="stat">
+
+          <div class="stat-label">
+            Tests
+          </div>
+
+          <div
+            id="testCount"
+            class="stat-value"
+          >
+            0
+          </div>
+
+        </div>
+
+
+        <div class="stat">
+
+          <div class="stat-label">
+            Region
+          </div>
+
+          <div
+            id="region"
+            class="stat-value"
+          >
+            EU
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- TIERS -->
+
+      <div class="section-title">
+
+        <h2>
+          Gamemode Tiers
+        </h2>
+
+        <span>
+          8 GAMEMODES
+        </span>
+
+      </div>
+
+
+      <div
+        id="gamemodes"
+        class="gamemodes"
+      ></div>
+
+
+      <!-- TEST HISTORY -->
+
+      <div class="section-title">
+
+        <h2>
+          Test History
+        </h2>
+
+        <span>
+          RECENT TESTS
+        </span>
+
+      </div>
+
+
+      <div
+        id="results"
+        class="results"
+      ></div>
+
+    </section>
+
+
+    <!-- EMPTY -->
+
+    <section
+      id="empty"
+      class="empty"
+    >
+
+      <div class="empty-icon">
+        🔎
+      </div>
+
+      <h2>
+        Search for a player
+      </h2>
+
+      <p>
+        Enter a Minecraft username above to view their profile.
+      </p>
+
+    </section>
+
+  </main>
+
+
+  <footer>
+    © 2026 RO TierList · Minecraft PvP Tier Rankings
+  </footer>
+
+
+  <script>
+
+    const input =
+      document.getElementById("playerSearch");
+
+    const searchButton =
+      document.getElementById("searchButton");
+
+    const profile =
+      document.getElementById("profile");
+
+    const empty =
+      document.getElementById("empty");
+
+
+    const gamemodeContainer =
+      document.getElementById("gamemodes");
+
+    const resultsContainer =
+      document.getElementById("results");
+
+
+    /*
+      DEMO PROFILE DATA
+
+      Mai tarziu putem conecta totul
+      la Firebase.
+    */
+
+    const gamemodes = [
+      "Vanilla",
+      "Sword",
+      "Axe",
+      "UHC",
+      "Pot",
+      "Mace",
+      "SMP",
+      "Crystal"
+    ];
+
+
+    const testHistory = [];
+
+
+    function getSkin(username) {
+
+      return (
+        "https://mc-heads.net/body/" +
+        encodeURIComponent(username) +
+        "/150"
+      );
+
+    }
+
+
+    function loadPlayer(username) {
+
+      username = username.trim();
+
+      if (!username) {
+        return;
+      }
+
+
+      profile.style.display = "block";
+      empty.style.display = "none";
+
+
+      document.getElementById(
+        "profileName"
+      ).textContent = username;
+
+
+      document.getElementById(
+        "profileSub"
+      ).textContent =
+        "Minecraft player · RO TierList";
+
+
+      document.getElementById(
+        "profileSkin"
+      ).src = getSkin(username);
+
+
+      /*
+        Demo account type.
+        Mai tarziu vine din Firebase.
+      */
+
+      const accountBadge =
+        document.getElementById("accountBadge");
+
+      accountBadge.textContent =
+        "💎 PREMIUM";
+
+
+      document.getElementById(
+        "overall"
+      ).textContent = "Unranked";
+
+
+      document.getElementById(
+        "gamemodeCount"
+      ).textContent = "0 / 8";
+
+
+      document.getElementById(
+        "testCount"
+      ).textContent = "0";
+
+
+      document.getElementById(
+        "region"
+      ).textContent = "EU";
+
+
+      renderGamemodes();
+
+      renderResults();
+
+
+      /*
+        Update URL
+      */
+
+      const url =
+        new URL(window.location.href);
+
+      url.searchParams.set(
+        "player",
+        username
+      );
+
+      window.history.replaceState(
+        {},
+        "",
+        url
+      );
+
+    }
+
+
+    function renderGamemodes() {
+
+      gamemodeContainer.innerHTML = "";
+
+
+      gamemodes.forEach(mode => {
+
+        const card =
+          document.createElement("div");
+
+        card.className = "gamemode";
+
+
+        card.innerHTML = `
+
+          <div class="gm-left">
+
+            <img
+              class="gm-icon"
+              src="https://minecraft.wiki/images/Diamond_Sword_JE2_BE2.png"
+              alt="${mode}"
+            >
+
+            <div>
+
+              <div class="gm-name">
+                ${mode}
+              </div>
+
+              <div class="gm-server">
+                Not tested
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="tier-box">
+            Unranked
+          </div>
+
+        `;
+
+
+        gamemodeContainer.appendChild(card);
+
+      });
+
+    }
+
+
+    function renderResults() {
+
+      resultsContainer.innerHTML = "";
+
+
+      if (!testHistory.length) {
+
+        resultsContainer.innerHTML = `
+
+          <div
+            style="
+              padding:45px 20px;
+              text-align:center;
+              color:#626876;
+              font-size:11px;
+            "
+          >
+            No test results yet.
+          </div>
+
+        `;
+
+        return;
+
+      }
+
+
+      testHistory.forEach(test => {
+
+        const row =
+          document.createElement("div");
+
+        row.className = "result";
+
+
+        row.innerHTML = `
+
+          <div class="result-player">
+            ${test.player}
+          </div>
+
+          <div class="result-mode">
+            ${test.mode}
+          </div>
+
+          <div class="result-date">
+            ${test.date}
+          </div>
+
+        `;
+
+
+        resultsContainer.appendChild(row);
+
+      });
+
+    }
+
+
+    function searchPlayer() {
+
+      const username =
+        input.value.trim();
+
+      if (!username) {
+
+        input.focus();
+
+        return;
+
+      }
+
+      loadPlayer(username);
+
+    }
+
+
+    searchButton.addEventListener(
+      "click",
+      searchPlayer
+    );
+
+
+    input.addEventListener(
+      "keydown",
+      event => {
+
+        if (event.key === "Enter") {
+          searchPlayer();
+        }
+
+      }
+    );
+
+
+    /*
+      Load player from URL
+
+      Example:
+      players.html?player=Steve
+    */
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    const playerFromUrl =
+      params.get("player");
+
+
+    if (playerFromUrl) {
+
+      input.value =
+        playerFromUrl;
+
+      loadPlayer(playerFromUrl);
+
+    }
+
+  </script>
+
+</body>
+</html>
