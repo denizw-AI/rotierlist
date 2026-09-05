@@ -8,162 +8,253 @@
 
     <style>
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
         }
 
         body {
-            font-family: Arial, sans-serif;
-            background:
-                radial-gradient(circle at top, #172033 0%, #080b12 45%, #05070b 100%);
-            color: white;
             min-height: 100vh;
+            background:
+                radial-gradient(circle at top left, rgba(90, 70, 255, 0.16), transparent 35%),
+                radial-gradient(circle at bottom right, rgba(0, 200, 255, 0.10), transparent 35%),
+                #08080d;
+            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 30px 15px;
         }
 
         .register-box {
-            width: 420px;
-            max-width: 92%;
-            padding: 34px;
-            background: rgba(15, 20, 32, 0.94);
+            width: 100%;
+            max-width: 470px;
+            padding: 35px;
+            background: rgba(15, 15, 23, 0.92);
             border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 18px;
-            box-shadow: 0 25px 80px rgba(0,0,0,0.45);
+            border-radius: 20px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.55);
         }
 
         .logo {
             text-align: center;
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 900;
             margin-bottom: 8px;
         }
 
         .logo span {
-            color: #8b5cf6;
+            color: #7c5cff;
         }
 
         .subtitle {
             text-align: center;
-            color: #8e98aa;
+            color: #8e8e9e;
             font-size: 14px;
-            margin-bottom: 28px;
+            margin-bottom: 30px;
+        }
+
+        .field {
+            margin-bottom: 18px;
         }
 
         label {
             display: block;
-            margin-bottom: 7px;
+            margin-bottom: 8px;
+            color: #d8d8e2;
             font-size: 13px;
             font-weight: 700;
-            color: #d7dbe4;
         }
 
-        input {
+        input,
+        select {
             width: 100%;
-            padding: 13px 14px;
-            margin-bottom: 17px;
-            border-radius: 10px;
-            border: 1px solid #252c3b;
-            background: #0b0f18;
-            color: white;
+            height: 48px;
+            padding: 0 14px;
+            border-radius: 11px;
+            border: 1px solid rgba(255,255,255,0.08);
             outline: none;
+            background: #101018;
+            color: white;
             font-size: 14px;
+            transition: 0.2s;
         }
 
-        input:focus {
-            border-color: #8b5cf6;
-            box-shadow: 0 0 0 3px rgba(139,92,246,0.12);
+        select {
+            cursor: pointer;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #7c5cff;
+            box-shadow: 0 0 0 3px rgba(124,92,255,0.10);
+        }
+
+        .minecraft-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .minecraft-row input {
+            flex: 1;
+        }
+
+        .check-btn {
+            height: 48px;
+            padding: 0 16px;
+            border: none;
+            border-radius: 11px;
+            background: #191923;
+            color: white;
+            font-weight: 800;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .check-btn:hover {
+            background: #242432;
+            border-color: rgba(124,92,255,0.5);
+        }
+
+        .check-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .minecraft-status {
+            display: none;
+            margin-top: 9px;
+            padding: 10px 12px;
+            border-radius: 9px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .minecraft-status.premium {
+            display: block;
+            background: rgba(50, 220, 130, 0.08);
+            border: 1px solid rgba(50, 220, 130, 0.18);
+            color: #65e6a0;
+        }
+
+        .minecraft-status.unknown {
+            display: block;
+            background: rgba(255, 190, 60, 0.08);
+            border: 1px solid rgba(255, 190, 60, 0.18);
+            color: #ffc85a;
+        }
+
+        .minecraft-status.error {
+            display: block;
+            background: rgba(255, 70, 90, 0.08);
+            border: 1px solid rgba(255, 70, 90, 0.18);
+            color: #ff7888;
         }
 
         .terms {
             display: flex;
             align-items: flex-start;
-            gap: 9px;
-            margin: 3px 0 20px;
-            color: #8992a3;
+            gap: 10px;
+            margin: 5px 0 20px;
+            color: #92929f;
             font-size: 12px;
             line-height: 1.5;
         }
 
         .terms input {
-            width: auto;
-            margin: 3px 0 0;
+            width: 16px;
+            height: 16px;
+            margin-top: 1px;
+            accent-color: #7c5cff;
         }
 
-        button {
+        .terms a {
+            color: #9b85ff;
+            text-decoration: none;
+        }
+
+        .register-btn {
             width: 100%;
-            padding: 14px;
+            height: 50px;
             border: none;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #8b5cf6, #6d3ee8);
+            border-radius: 12px;
+            background: linear-gradient(135deg, #7c5cff, #5f43db);
             color: white;
-            font-weight: 800;
             font-size: 14px;
+            font-weight: 900;
             cursor: pointer;
             transition: 0.2s;
+            box-shadow: 0 10px 30px rgba(124,92,255,0.20);
         }
 
-        button:hover {
+        .register-btn:hover {
             transform: translateY(-1px);
-            box-shadow: 0 10px 30px rgba(139,92,246,0.25);
+            box-shadow: 0 14px 35px rgba(124,92,255,0.28);
         }
 
-        button:disabled {
-            opacity: 0.6;
+        .register-btn:disabled {
+            opacity: 0.55;
             cursor: not-allowed;
             transform: none;
         }
 
+        .login-link {
+            text-align: center;
+            margin-top: 22px;
+            color: #858592;
+            font-size: 13px;
+        }
+
+        .login-link a {
+            color: #9b85ff;
+            text-decoration: none;
+            font-weight: 800;
+        }
+
         .message {
             display: none;
-            margin-top: 16px;
-            padding: 12px;
-            border-radius: 9px;
+            margin-bottom: 18px;
+            padding: 12px 14px;
+            border-radius: 10px;
             font-size: 13px;
             line-height: 1.5;
         }
 
-        .error {
+        .message.error {
             display: block;
-            background: rgba(239,68,68,0.1);
-            border: 1px solid rgba(239,68,68,0.25);
-            color: #ff8b8b;
+            background: rgba(255,70,90,0.08);
+            border: 1px solid rgba(255,70,90,0.18);
+            color: #ff7c8a;
         }
 
-        .success {
+        .message.success {
             display: block;
-            background: rgba(34,197,94,0.1);
-            border: 1px solid rgba(34,197,94,0.25);
-            color: #75e69b;
+            background: rgba(50,220,130,0.08);
+            border: 1px solid rgba(50,220,130,0.18);
+            color: #65e6a0;
         }
 
-        .login {
-            text-align: center;
-            margin-top: 22px;
-            color: #8992a3;
-            font-size: 13px;
+        .region-info {
+            margin-top: 7px;
+            color: #666673;
+            font-size: 11px;
         }
 
-        .login a {
-            color: #a78bfa;
-            text-decoration: none;
-            font-weight: 700;
-        }
+        @media (max-width: 500px) {
+            .register-box {
+                padding: 25px 20px;
+            }
 
-        .back {
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-            color: #697386;
-            font-size: 12px;
-            text-decoration: none;
-        }
+            .minecraft-row {
+                flex-direction: column;
+            }
 
-        .back:hover,
-        .login a:hover {
-            color: #c4b5fd;
+            .check-btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -177,74 +268,129 @@
     </div>
 
     <div class="subtitle">
-        Create your Minecraft PvP account
+        Create your player account
     </div>
+
+    <div id="message" class="message"></div>
 
     <form id="registerForm">
 
-        <label for="minecraftName">Minecraft Name</label>
-        <input
-            id="minecraftName"
-            type="text"
-            placeholder="e.g. Steve"
-            maxlength="16"
-            autocomplete="off"
-            required
+        <!-- Minecraft -->
+        <div class="field">
+            <label>Minecraft Name</label>
+
+            <div class="minecraft-row">
+                <input
+                    type="text"
+                    id="minecraftName"
+                    placeholder="Ex: Smituureal"
+                    maxlength="16"
+                    autocomplete="off"
+                    required
+                >
+
+                <button
+                    type="button"
+                    class="check-btn"
+                    id="checkMinecraft"
+                >
+                    Check
+                </button>
+            </div>
+
+            <div id="minecraftStatus" class="minecraft-status"></div>
+        </div>
+
+        <!-- Region -->
+        <div class="field">
+            <label>Region</label>
+
+            <select id="region" required>
+                <option value="">Select your region</option>
+                <option value="EU">🇪🇺 Europe</option>
+                <option value="NA">🇺🇸 North America</option>
+                <option value="AS">🌏 Asia</option>
+                <option value="SA">🌎 South America</option>
+                <option value="AU">🇦🇺 Oceania</option>
+            </select>
+
+            <div class="region-info">
+                Your region will be displayed on your profile and leaderboard.
+            </div>
+        </div>
+
+        <!-- Email -->
+        <div class="field">
+            <label>Email</label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="you@example.com"
+                autocomplete="email"
+                required
+            >
+        </div>
+
+        <!-- Password -->
+        <div class="field">
+            <label>Password</label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Create a password"
+                autocomplete="new-password"
+                required
+            >
+        </div>
+
+        <!-- Confirm -->
+        <div class="field">
+            <label>Confirm Password</label>
+
+            <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Repeat your password"
+                autocomplete="new-password"
+                required
+            >
+        </div>
+
+        <!-- Terms -->
+        <div class="terms">
+            <input
+                type="checkbox"
+                id="terms"
+                required
+            >
+
+            <div>
+                I agree to the
+                <a href="#">Terms of Service</a>
+                and
+                <a href="#">Privacy Policy</a>.
+            </div>
+        </div>
+
+        <button
+            type="submit"
+            class="register-btn"
+            id="registerBtn"
         >
-
-        <label for="email">Email</label>
-        <input
-            id="email"
-            type="email"
-            placeholder="you@example.com"
-            autocomplete="email"
-            required
-        >
-
-        <label for="password">Password</label>
-        <input
-            id="password"
-            type="password"
-            placeholder="Minimum 6 characters"
-            autocomplete="new-password"
-            required
-        >
-
-        <label for="confirmPassword">Confirm Password</label>
-        <input
-            id="confirmPassword"
-            type="password"
-            placeholder="Repeat your password"
-            autocomplete="new-password"
-            required
-        >
-
-        <label class="terms">
-            <input id="terms" type="checkbox" required>
-            <span>
-                I agree to the RO TierList rules and understand that
-                fake information or cheating in tests can result in a blacklist.
-            </span>
-        </label>
-
-        <button id="registerButton" type="submit">
-            CREATE ACCOUNT
+            Create Account
         </button>
 
     </form>
 
-    <div id="message" class="message"></div>
-
-    <div class="login">
+    <div class="login-link">
         Already have an account?
         <a href="login.html">Login</a>
     </div>
 
-    <a class="back" href="index.html">
-        ← Back to website
-    </a>
-
 </div>
+
 
 <script type="module">
 
@@ -256,152 +402,574 @@
 
     import { auth } from "./firebase.js";
 
+
+    /*
+     * CLOUDFLARE WORKER
+     */
+
+    const WORKER_URL =
+        "https://rotierlist-minecraft.denizzzezw.workers.dev";
+
+
+    /*
+     * ELEMENTS
+     */
+
     const form = document.getElementById("registerForm");
-    const button = document.getElementById("registerButton");
-    const message = document.getElementById("message");
+
+    const minecraftNameInput =
+        document.getElementById("minecraftName");
+
+    const regionInput =
+        document.getElementById("region");
+
+    const emailInput =
+        document.getElementById("email");
+
+    const passwordInput =
+        document.getElementById("password");
+
+    const confirmPasswordInput =
+        document.getElementById("confirmPassword");
+
+    const termsInput =
+        document.getElementById("terms");
+
+    const checkMinecraftButton =
+        document.getElementById("checkMinecraft");
+
+    const registerButton =
+        document.getElementById("registerBtn");
+
+    const minecraftStatus =
+        document.getElementById("minecraftStatus");
+
+    const message =
+        document.getElementById("message");
+
+
+    /*
+     * TEMPORARY PROFILE DATA
+     */
+
+    let minecraftData = null;
+
+
+    /*
+     * SHOW MESSAGE
+     */
 
     function showMessage(text, type) {
+
         message.textContent = text;
-        message.className = "message " + type;
+
+        message.className =
+            "message " + type;
     }
 
-    form.addEventListener("submit", async (event) => {
 
-        event.preventDefault();
+    /*
+     * MINECRAFT USERNAME VALIDATION
+     */
 
-        const minecraftName =
-            document.getElementById("minecraftName").value.trim();
+    function validMinecraftName(name) {
 
-        const email =
-            document.getElementById("email").value.trim();
+        return /^[A-Za-z0-9_]{3,16}$/.test(name);
+    }
 
-        const password =
-            document.getElementById("password").value;
 
-        const confirmPassword =
-            document.getElementById("confirmPassword").value;
+    /*
+     * CHECK MINECRAFT ACCOUNT
+     */
 
-        const terms =
-            document.getElementById("terms").checked;
+    async function checkMinecraft() {
 
-        message.className = "message";
-        message.textContent = "";
+        const username =
+            minecraftNameInput.value.trim();
 
-        if (minecraftName.length < 3) {
-            showMessage("Minecraft Name must have at least 3 characters.", "error");
+        if (!validMinecraftName(username)) {
+
+            minecraftStatus.className =
+                "minecraft-status error";
+
+            minecraftStatus.textContent =
+                "Invalid Minecraft username. Use 3-16 letters, numbers or _. ";
+
+            minecraftData = null;
+
             return;
         }
 
-        if (minecraftName.length > 16) {
-            showMessage("Minecraft Name is too long.", "error");
-            return;
-        }
 
-        if (!/^[A-Za-z0-9_]+$/.test(minecraftName)) {
-            showMessage(
-                "Minecraft Name can only contain letters, numbers and underscores.",
-                "error"
-            );
-            return;
-        }
+        checkMinecraftButton.disabled = true;
 
-        if (password.length < 6) {
-            showMessage(
-                "Password must contain at least 6 characters.",
-                "error"
-            );
-            return;
-        }
+        checkMinecraftButton.textContent =
+            "Checking...";
 
-        if (password !== confirmPassword) {
-            showMessage(
-                "Passwords do not match.",
-                "error"
-            );
-            return;
-        }
 
-        if (!terms) {
-            showMessage(
-                "You must accept the rules.",
-                "error"
-            );
-            return;
-        }
+        minecraftStatus.className =
+            "minecraft-status premium";
 
-        button.disabled = true;
-        button.textContent = "CREATING ACCOUNT...";
+        minecraftStatus.textContent =
+            "Checking Minecraft account...";
+
 
         try {
 
-            const userCredential =
-                await createUserWithEmailAndPassword(
-                    auth,
-                    email,
-                    password
-                );
-
-            const user = userCredential.user;
-
-            /*
-             * We store the Minecraft name inside
-             * Firebase Authentication as displayName.
-             */
-            await updateProfile(user, {
-                displayName: minecraftName
-            });
-
-            /*
-             * Send verification email.
-             */
-            await sendEmailVerification(user);
-
-            showMessage(
-                "Account created! Check your email and verify your account before logging in.",
-                "success"
+            const response = await fetch(
+                `${WORKER_URL}/?username=${encodeURIComponent(username)}`
             );
 
-            button.textContent = "ACCOUNT CREATED";
 
-            setTimeout(() => {
-                window.location.href = "login.html";
-            }, 3000);
+            if (!response.ok) {
+                throw new Error("Worker request failed");
+            }
 
-        } catch (error) {
+
+            const data =
+                await response.json();
+
+
+            /*
+             * PREMIUM
+             */
+
+            if (
+                data.success &&
+                data.accountType === "premium" &&
+                data.uuid
+            ) {
+
+                minecraftData = {
+
+                    username:
+                        data.username || username,
+
+                    uuid:
+                        data.uuid,
+
+                    accountType:
+                        "premium"
+
+                };
+
+
+                minecraftStatus.className =
+                    "minecraft-status premium";
+
+
+                minecraftStatus.innerHTML =
+                    "✓ <strong>Premium account detected</strong><br>" +
+                    "Username: " +
+                    escapeHtml(data.username || username) +
+                    "<br>" +
+                    "UUID: " +
+                    escapeHtml(data.uuid);
+
+            }
+
+
+            /*
+             * UNKNOWN
+             */
+
+            else if (
+                data.success &&
+                data.accountType === "unknown"
+            ) {
+
+                minecraftData = {
+
+                    username:
+                        username,
+
+                    uuid:
+                        null,
+
+                    accountType:
+                        "unknown"
+
+                };
+
+
+                minecraftStatus.className =
+                    "minecraft-status unknown";
+
+
+                minecraftStatus.innerHTML =
+                    "⚠ <strong>Premium account could not be verified.</strong><br>" +
+                    "You can continue, but your account will remain unverified until we can confirm it.";
+            }
+
+
+            /*
+             * ERROR
+             */
+
+            else {
+
+                minecraftData = null;
+
+                minecraftStatus.className =
+                    "minecraft-status error";
+
+
+                minecraftStatus.textContent =
+                    "Minecraft account could not be checked.";
+            }
+
+        }
+
+        catch (error) {
 
             console.error(error);
 
-            let errorMessage =
-                "Something went wrong. Please try again.";
+            minecraftData = null;
 
-            if (error.code === "auth/email-already-in-use") {
-                errorMessage =
-                    "This email is already registered.";
-            }
+            minecraftStatus.className =
+                "minecraft-status error";
 
-            else if (error.code === "auth/invalid-email") {
-                errorMessage =
-                    "Please enter a valid email address.";
-            }
 
-            else if (error.code === "auth/weak-password") {
-                errorMessage =
-                    "Password is too weak.";
-            }
-
-            else if (error.code === "auth/operation-not-allowed") {
-                errorMessage =
-                    "Email/Password authentication is not enabled in Firebase.";
-            }
-
-            showMessage(errorMessage, "error");
-
-            button.disabled = false;
-            button.textContent = "CREATE ACCOUNT";
+            minecraftStatus.textContent =
+                "Could not connect to the Minecraft verification service.";
         }
-    });
+
+
+        checkMinecraftButton.disabled = false;
+
+        checkMinecraftButton.textContent =
+            "Check";
+    }
+
+
+    /*
+     * ESCAPE HTML
+     */
+
+    function escapeHtml(value) {
+
+        return String(value)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+    }
+
+
+    /*
+     * CHECK BUTTON
+     */
+
+    checkMinecraftButton.addEventListener(
+        "click",
+        checkMinecraft
+    );
+
+
+    /*
+     * RECHECK WHEN USER CHANGES NAME
+     */
+
+    minecraftNameInput.addEventListener(
+        "input",
+        () => {
+
+            minecraftData = null;
+
+            minecraftStatus.className =
+                "minecraft-status";
+
+            minecraftStatus.textContent =
+                "";
+        }
+    );
+
+
+    /*
+     * REGISTER
+     */
+
+    form.addEventListener(
+        "submit",
+        async (event) => {
+
+            event.preventDefault();
+
+
+            const minecraftName =
+                minecraftNameInput.value.trim();
+
+            const region =
+                regionInput.value;
+
+            const email =
+                emailInput.value.trim();
+
+            const password =
+                passwordInput.value;
+
+            const confirmPassword =
+                confirmPasswordInput.value;
+
+
+            /*
+             * VALIDATION
+             */
+
+            if (!validMinecraftName(minecraftName)) {
+
+                showMessage(
+                    "Please enter a valid Minecraft username.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (!region) {
+
+                showMessage(
+                    "Please select your region.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (password.length < 6) {
+
+                showMessage(
+                    "Password must contain at least 6 characters.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (password !== confirmPassword) {
+
+                showMessage(
+                    "Passwords do not match.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (!termsInput.checked) {
+
+                showMessage(
+                    "You must accept the Terms of Service.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            /*
+             * AUTOMATIC MINECRAFT CHECK
+             */
+
+            if (
+                !minecraftData ||
+                minecraftData.username.toLowerCase() !==
+                minecraftName.toLowerCase()
+            ) {
+
+                await checkMinecraft();
+
+
+                if (!minecraftData) {
+
+                    showMessage(
+                        "Please verify your Minecraft username first.",
+                        "error"
+                    );
+
+                    return;
+                }
+            }
+
+
+            /*
+             * DISABLE BUTTON
+             */
+
+            registerButton.disabled = true;
+
+            registerButton.textContent =
+                "Creating Account...";
+
+
+            try {
+
+                /*
+                 * CREATE FIREBASE ACCOUNT
+                 */
+
+                const credential =
+                    await createUserWithEmailAndPassword(
+                        auth,
+                        email,
+                        password
+                    );
+
+
+                const user =
+                    credential.user;
+
+
+                /*
+                 * SAVE MINECRAFT NAME
+                 * IN FIREBASE AUTH PROFILE
+                 */
+
+                await updateProfile(
+                    user,
+                    {
+                        displayName:
+                            minecraftData.username
+                    }
+                );
+
+
+                /*
+                 * SEND EMAIL VERIFICATION
+                 */
+
+                await sendEmailVerification(user);
+
+
+                /*
+                 * TEMPORARY PROFILE STORAGE
+                 *
+                 * Later we will move this to
+                 * Firebase database.
+                 */
+
+                const profileData = {
+
+                    minecraftName:
+                        minecraftData.username,
+
+                    uuid:
+                        minecraftData.uuid,
+
+                    accountType:
+                        minecraftData.accountType,
+
+                    region:
+                        region,
+
+                    email:
+                        email
+                };
+
+
+                localStorage.setItem(
+                    "rotierlist_profile",
+                    JSON.stringify(profileData)
+                );
+
+
+                /*
+                 * SUCCESS
+                 */
+
+                showMessage(
+                    "Account created! Check your email to verify your account.",
+                    "success"
+                );
+
+
+                /*
+                 * REDIRECT
+                 */
+
+                setTimeout(
+                    () => {
+                        window.location.href =
+                            "login.html";
+                    },
+                    1800
+                );
+
+            }
+
+            catch (error) {
+
+                console.error(error);
+
+
+                let errorMessage =
+                    "Something went wrong.";
+
+
+                if (
+                    error.code ===
+                    "auth/email-already-in-use"
+                ) {
+
+                    errorMessage =
+                        "This email is already registered.";
+                }
+
+                else if (
+                    error.code ===
+                    "auth/invalid-email"
+                ) {
+
+                    errorMessage =
+                        "Please enter a valid email address.";
+                }
+
+                else if (
+                    error.code ===
+                    "auth/weak-password"
+                ) {
+
+                    errorMessage =
+                        "Your password is too weak.";
+                }
+
+                else if (
+                    error.code ===
+                    "auth/network-request-failed"
+                ) {
+
+                    errorMessage =
+                        "Network error. Please try again.";
+                }
+
+
+                showMessage(
+                    errorMessage,
+                    "error"
+                );
+
+
+                registerButton.disabled = false;
+
+                registerButton.textContent =
+                    "Create Account";
+            }
+
+        }
+    );
 
 </script>
-<script type="module" src="./auth-ui.js"></script>
+
+
+<script
+    type="module"
+    src="./auth-ui.js">
+</script>
+
 </body>
 </html>
