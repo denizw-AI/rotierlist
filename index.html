@@ -26,6 +26,10 @@
     --muted: #858b9e;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     min-height: 100vh;
     color: #fff;
@@ -478,112 +482,256 @@ nav {
     font-weight: 700;
 }
 
-/* CRACKED */
+/* TOP 50 */
 
-.cracked {
-    margin-top: 65px;
-    margin-bottom: 100px;
-}
-
-.cracked-box {
-    padding: 25px;
-    border-radius: 16px;
-    background:
-        linear-gradient(
-            135deg,
-            rgba(77,52,34,.16),
-            rgba(10,12,20,.8)
-        );
-    border: 1px solid rgba(175,111,54,.16);
-}
-
-.cracked-label {
-    color: #c88a52;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 1.6px;
-}
-
-.cracked-box h2 {
-    margin-top: 7px;
-    font-size: 25px;
-}
-
-.cracked-box p {
-    margin-top: 6px;
-    color: #777d91;
-    font-size: 12px;
-}
-
-.cracked-list {
-    margin-top: 17px;
+.top-list {
+    margin-top: 22px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 7px;
 }
 
-.cracked-player {
-    min-height: 70px;
+.top-row {
+    min-height: 66px;
     display: grid;
-    grid-template-columns: 50px 1fr 150px 120px;
+    grid-template-columns: 55px 1fr 140px 130px;
     align-items: center;
-    padding: 9px 17px;
+    padding: 8px 18px;
     border-radius: 11px;
     background: rgba(9,11,19,.78);
     border: 1px solid rgba(255,255,255,.05);
     transition: .2s;
 }
 
-.cracked-player:hover {
-    transform: translateX(3px);
+.top-row:hover {
+    transform: translateX(4px);
     background: rgba(255,255,255,.035);
+    border-color: rgba(145,117,255,.13);
 }
 
-.cracked-rank {
-    color: #6e7589;
+.top-rank {
+    color: #666d81;
     font-size: 12px;
     font-weight: 800;
 }
 
-.cracked-user {
+.top-user {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-.cracked-skin {
-    width: 40px;
-    height: 40px;
+.top-skin {
+    width: 42px;
+    height: 42px;
     object-fit: contain;
     image-rendering: pixelated;
 }
 
-.cracked-name {
+.top-name {
     font-size: 12px;
     font-weight: 800;
 }
 
-.cracked-server {
+.top-server {
     margin-top: 3px;
-    color: #9b7a5d;
+    color: #666d80;
     font-size: 9px;
     font-weight: 700;
 }
 
-.cracked-mode {
+.top-mode {
     display: flex;
     align-items: center;
     gap: 7px;
-    color: #7f8699;
+    color: #80879a;
     font-size: 10px;
     font-weight: 700;
 }
 
-.cracked-tier {
+.top-tier {
+    text-align: right;
     color: #9298a9;
     font-size: 11px;
     font-weight: 800;
-    text-align: right;
+}
+
+/* CRACKED BUTTON */
+
+.cracked-access {
+    margin: 28px 0 100px;
+    display: flex;
+    justify-content: center;
+}
+
+.cracked-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 23px;
+    border-radius: 11px;
+    color: #d3b08f;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 800;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(125,78,40,.16),
+            rgba(255,255,255,.025)
+        );
+    border: 1px solid rgba(175,111,54,.2);
+    transition: .25s;
+}
+
+.cracked-button:hover {
+    transform: translateY(-2px);
+    background: rgba(175,111,54,.1);
+    border-color: rgba(175,111,54,.35);
+}
+
+/* TESTING */
+
+.testing {
+    width: min(1200px, 92%);
+    margin: 0 auto 100px;
+}
+
+.testing-heading {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.testing-heading h2 {
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.testing-heading p {
+    margin-top: 7px;
+    color: #777d91;
+    font-size: 12px;
+}
+
+.testing-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.testing-card {
+    position: relative;
+    padding: 27px;
+    border-radius: 17px;
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(145,117,255,.11),
+            transparent 48%
+        ),
+        rgba(10,12,22,.8);
+    border: 1px solid rgba(145,117,255,.15);
+    overflow: hidden;
+}
+
+.testing-card.cracked-card {
+    background:
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(175,111,54,.1),
+            transparent 48%
+        ),
+        rgba(10,12,22,.8);
+    border-color: rgba(175,111,54,.15);
+}
+
+.testing-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    color: #bcaeff;
+    background: rgba(145,117,255,.1);
+    border: 1px solid rgba(145,117,255,.18);
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.cracked-card .testing-icon {
+    color: #d0a77d;
+    background: rgba(175,111,54,.1);
+    border-color: rgba(175,111,54,.18);
+}
+
+.testing-card h3 {
+    margin-top: 18px;
+    font-size: 18px;
+}
+
+.testing-card p {
+    margin-top: 8px;
+    color: #777d91;
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+.steps {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #a3a8b7;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.step-number {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 7px;
+    color: #bcaeff;
+    background: rgba(145,117,255,.09);
+    border: 1px solid rgba(145,117,255,.15);
+    font-size: 9px;
+}
+
+.cracked-card .step-number {
+    color: #d0a77d;
+    background: rgba(175,111,54,.09);
+    border-color: rgba(175,111,54,.15);
+}
+
+.testing-discord {
+    display: inline-flex;
+    margin-top: 22px;
+    padding: 11px 16px;
+    border-radius: 9px;
+    color: white;
+    text-decoration: none;
+    background: linear-gradient(135deg, #9277ff, #6345e8);
+    font-size: 10px;
+    font-weight: 800;
+    transition: .2s;
+}
+
+.testing-discord:hover {
+    transform: translateY(-2px);
+}
+
+.cracked-card .testing-discord {
+    background: linear-gradient(135deg, #9b663e, #674027);
 }
 
 /* SEARCH */
@@ -705,16 +853,20 @@ footer {
         margin-top: 15px;
     }
 
-    .cracked-player {
-        grid-template-columns: 35px 1fr 80px;
+    .top-row {
+        grid-template-columns: 40px 1fr 85px;
     }
 
-    .cracked-mode {
+    .top-mode {
         display: none;
     }
 
-    .cracked-tier {
+    .top-tier {
         text-align: right;
+    }
+
+    .testing-grid {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -724,7 +876,7 @@ footer {
         padding-top: 75px;
     }
 
-    .hero-buttons {
+    .buttons {
         flex-direction: column;
     }
 
@@ -779,10 +931,7 @@ footer {
             Discord
         </a>
 
-        <a
-            href="login.html"
-            class="login"
-        >
+        <a href="login.html" class="login">
             Login
         </a>
 
@@ -811,10 +960,7 @@ footer {
 
     <div class="buttons">
 
-        <a
-            href="#leaderboards"
-            class="button primary"
-        >
+        <a href="#leaderboards" class="button primary">
             View Leaderboards
         </a>
 
@@ -835,10 +981,7 @@ footer {
 
     <div class="stat">
 
-        <div
-            class="stat-number"
-            id="rankedPlayers"
-        >
+        <div class="stat-number" id="rankedPlayers">
             0
         </div>
 
@@ -850,10 +993,7 @@ footer {
 
     <div class="stat">
 
-        <div
-            class="stat-number"
-            id="testers"
-        >
+        <div class="stat-number" id="testers">
             0
         </div>
 
@@ -865,10 +1005,7 @@ footer {
 
     <div class="stat">
 
-        <div
-            class="stat-number"
-            id="tests"
-        >
+        <div class="stat-number" id="tests">
             0
         </div>
 
@@ -893,10 +1030,7 @@ footer {
 </section>
 
 
-<section
-    class="section"
-    id="leaderboards"
->
+<section class="section" id="leaderboards">
 
     <div class="heading">
 
@@ -905,7 +1039,7 @@ footer {
         </h2>
 
         <p>
-            Premium and Cracked rankings.
+            Premium rankings and player statistics.
         </p>
 
     </div>
@@ -934,22 +1068,22 @@ footer {
     </div>
 
 
-    <div class="podium">
+    <!-- TOP 3 -->
 
-        <!-- SECOND -->
+    <div class="podium">
 
         <div class="podium-card second">
 
             <div class="player-name">
-                Crozzor
+                Steve
             </div>
 
             <div class="skin-area">
 
                 <img
                     class="skin"
-                    src="https://mc-heads.net/body/Crozzor/180"
-                    alt="Crozzor"
+                    src="https://mc-heads.net/body/Steve/180"
+                    alt="Steve"
                 >
 
             </div>
@@ -961,15 +1095,7 @@ footer {
             <div class="player-details">
 
                 <div class="tier">
-
-                    <img
-                        class="mode-icon"
-                        src="https://minecraft.wiki/images/Diamond_Sword_JE3_BE3.png"
-                        alt="Sword"
-                    >
-
-                    HT4
-
+                    Unranked
                 </div>
 
                 <div class="points">
@@ -981,20 +1107,18 @@ footer {
         </div>
 
 
-        <!-- FIRST -->
-
         <div class="podium-card first">
 
             <div class="player-name">
-                Opminer17
+                Alex
             </div>
 
             <div class="skin-area">
 
                 <img
                     class="skin"
-                    src="https://mc-heads.net/body/Opminer17/200"
-                    alt="Opminer17"
+                    src="https://mc-heads.net/body/Alex/200"
+                    alt="Alex"
                 >
 
             </div>
@@ -1006,15 +1130,7 @@ footer {
             <div class="player-details">
 
                 <div class="tier">
-
-                    <img
-                        class="mode-icon"
-                        src="https://minecraft.wiki/images/Diamond_Sword_JE3_BE3.png"
-                        alt="Sword"
-                    >
-
-                    HT3
-
+                    Unranked
                 </div>
 
                 <div class="points">
@@ -1026,20 +1142,18 @@ footer {
         </div>
 
 
-        <!-- THIRD -->
-
         <div class="podium-card third">
 
             <div class="player-name">
-                Aximity
+                Steve
             </div>
 
             <div class="skin-area">
 
                 <img
                     class="skin"
-                    src="https://mc-heads.net/body/Aximity/180"
-                    alt="Aximity"
+                    src="https://mc-heads.net/body/Steve/180"
+                    alt="Steve"
                 >
 
             </div>
@@ -1051,15 +1165,7 @@ footer {
             <div class="player-details">
 
                 <div class="tier">
-
-                    <img
-                        class="mode-icon"
-                        src="https://minecraft.wiki/images/Diamond_Sword_JE3_BE3.png"
-                        alt="Sword"
-                    >
-
-                    HT4
-
+                    Unranked
                 </div>
 
                 <div class="points">
@@ -1073,75 +1179,179 @@ footer {
     </div>
 
 
-    <!-- CRACKED -->
+    <!-- TOP 50 -->
 
-    <div class="cracked">
+    <div class="top-list" id="top50"></div>
 
-        <div class="cracked-box">
 
-            <div class="cracked-label">
-                CRACKED TIERS
+    <!-- CRACKED BUTTON -->
+
+    <div class="cracked-access">
+
+        <a
+            href="leaderboards.html#cracked"
+            class="cracked-button"
+        >
+            ◈ VIEW CRACKED LEADERBOARD
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- HOW TO GET TESTED -->
+
+<section class="testing">
+
+    <div class="testing-heading">
+
+        <h2>
+            How to Get Tested
+        </h2>
+
+        <p>
+            Choose your account type and request a PvP test.
+        </p>
+
+    </div>
+
+
+    <div class="testing-grid">
+
+
+        <!-- PREMIUM -->
+
+        <div class="testing-card">
+
+            <div class="testing-icon">
+                ◆
             </div>
 
-            <h2>
-                Cracked Leaderboard
-            </h2>
+            <h3>
+                Premium Testing
+            </h3>
 
             <p>
-                Players tested without a Premium Minecraft
-                account through Craftify.
+                Have a legitimate Minecraft Premium account?
+                Get tested on our Premium testing server.
             </p>
+
+            <div class="steps">
+
+                <div class="step">
+
+                    <div class="step-number">
+                        01
+                    </div>
+
+                    Join the RO/EU Tiers Discord.
+                </div>
+
+                <div class="step">
+
+                    <div class="step-number">
+                        02
+                    </div>
+
+                    Open a testing request / contact a tester.
+                </div>
+
+                <div class="step">
+
+                    <div class="step-number">
+                        03
+                    </div>
+
+                    Join <strong>MCPVP.CLUB</strong> when requested.
+                </div>
+
+                <div class="step">
+
+                    <div class="step-number">
+                        04
+                    </div>
+
+                    Complete your PvP test and receive your tier.
+                </div>
+
+            </div>
+
+            <a
+                href="https://discord.gg/bms3jPBD9p"
+                target="_blank"
+                class="testing-discord"
+            >
+                JOIN DISCORD →
+            </a>
 
         </div>
 
 
-        <div class="cracked-list">
+        <!-- CRACKED -->
 
-            <div class="cracked-player">
+        <div class="testing-card cracked-card">
 
-                <div class="cracked-rank">
-                    #1
-                </div>
+            <div class="testing-icon">
+                ◈
+            </div>
 
-                <div class="cracked-user">
+            <h3>
+                Cracked Testing
+            </h3>
 
-                    <img
-                        class="cracked-skin"
-                        src="https://mc-heads.net/avatar/Steve/64"
-                        alt="Player"
-                    >
+            <p>
+                Don't own a Premium Minecraft account?
+                You can still get tested through our Cracked system.
+            </p>
 
-                    <div>
+            <div class="steps">
 
-                        <div class="cracked-name">
-                            Player
-                        </div>
+                <div class="step">
 
-                        <div class="cracked-server">
-                            craftify.lol
-                        </div>
-
+                    <div class="step-number">
+                        01
                     </div>
 
+                    Join the RO/EU Tiers Discord.
                 </div>
 
-                <div class="cracked-mode">
+                <div class="step">
 
-                    <img
-                        class="mode-icon"
-                        src="https://minecraft.wiki/images/Diamond_Sword_JE3_BE3.png"
-                        alt="Sword"
-                    >
+                    <div class="step-number">
+                        02
+                    </div>
 
-                    Sword
-
+                    Open a testing request / contact a tester.
                 </div>
 
-                <div class="cracked-tier">
-                    Unranked
+                <div class="step">
+
+                    <div class="step-number">
+                        03
+                    </div>
+
+                    Join <strong>CRAFTIFY.LOL</strong> when requested.
+                </div>
+
+                <div class="step">
+
+                    <div class="step-number">
+                        04
+                    </div>
+
+                    Complete your PvP test and receive your tier.
                 </div>
 
             </div>
+
+            <a
+                href="https://discord.gg/bms3jPBD9p"
+                target="_blank"
+                class="testing-discord"
+            >
+                JOIN DISCORD →
+            </a>
 
         </div>
 
@@ -1149,6 +1359,8 @@ footer {
 
 </section>
 
+
+<!-- SEARCH -->
 
 <section class="search">
 
@@ -1191,6 +1403,134 @@ footer {
 
 
 <script>
+
+/* TOP 50 DEMO PLAYERS */
+
+const demoPlayers = [
+
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve",
+    "Alex",
+    "Steve"
+
+];
+
+
+/* GENERATE #4 - #50 */
+
+const top50 = document.getElementById("top50");
+
+for (let i = 3; i < 50; i++) {
+
+    const player = demoPlayers[i];
+
+    const skin =
+        player === "Alex"
+            ? "https://mc-heads.net/avatar/Alex/64"
+            : "https://mc-heads.net/avatar/Steve/64";
+
+    const row = document.createElement("div");
+
+    row.className = "top-row";
+
+    row.innerHTML = `
+
+        <div class="top-rank">
+            #${i + 1}
+        </div>
+
+        <div class="top-user">
+
+            <img
+                class="top-skin"
+                src="${skin}"
+                alt="${player}"
+            >
+
+            <div>
+
+                <div class="top-name">
+                    ${player}
+                </div>
+
+                <div class="top-server">
+                    MCPVP.CLUB
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="top-mode">
+
+            <img
+                class="mode-icon"
+                src="https://minecraft.wiki/images/Diamond_Sword_JE3_BE3.png"
+                alt="Sword"
+            >
+
+            Sword
+
+        </div>
+
+        <div class="top-tier">
+            Unranked
+        </div>
+
+    `;
+
+    top50.appendChild(row);
+
+}
+
+
+/* PLAYER SEARCH */
 
 function searchPlayer() {
 
