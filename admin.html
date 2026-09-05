@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Admin Panel | RO TierList</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at top left,
+                    rgba(124,92,255,0.14),
+                    transparent 35%
+                ),
+                #08080d;
+
+            color: white;
+
+            padding: 110px 20px 60px;
+
+        }
+
+
+        .container {
+
+            width: 100%;
+            max-width: 1200px;
+
+            margin: auto;
+
+        }
+
+
+        .header {
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .title {
+
+            font-size: 34px;
+
+            font-weight: 900;
+
+        }
+
+
+        .subtitle {
+
+            color: #777783;
+
+            margin-top: 7px;
+
+            font-size: 14px;
+
+        }
+
+
+        .admin-badge {
+
+            display: inline-block;
+
+            margin-top: 15px;
+
+            padding: 7px 12px;
+
+            border-radius: 8px;
+
+            background:
+                rgba(124,92,255,0.10);
+
+            border:
+                1px solid rgba(124,92,255,0.20);
+
+            color: #a994ff;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+        }
+
+
+        .layout {
+
+            display: grid;
+
+            grid-template-columns:
+                330px 1fr;
+
+            gap: 20px;
+
+        }
+
+
+        .panel {
+
+            background:
+                rgba(15,15,23,0.94);
+
+            border:
+                1px solid rgba(255,255,255,0.07);
+
+            border-radius: 18px;
+
+            padding: 22px;
+
+        }
+
+
+        .panel-title {
+
+            font-size: 15px;
+
+            font-weight: 900;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .search {
+
+            width: 100%;
+
+            height: 46px;
+
+            padding: 0 13px;
+
+            background: #101018;
+
+            border:
+                1px solid rgba(255,255,255,0.08);
+
+            border-radius: 10px;
+
+            color: white;
+
+            outline: none;
+
+        }
+
+
+        .search:focus {
+
+            border-color: #7c5cff;
+
+        }
+
+
+        .player-list {
+
+            margin-top: 15px;
+
+            max-height: 650px;
+
+            overflow-y: auto;
+
+        }
+
+
+        .player {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 11px;
+
+            border-radius: 11px;
+
+            cursor: pointer;
+
+            transition: 0.15s;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .player:hover {
+
+            background: #171720;
+
+        }
+
+
+        .player.active {
+
+            background:
+                rgba(124,92,255,0.12);
+
+            border:
+                1px solid rgba(124,92,255,0.18);
+
+        }
+
+
+        .player-skin {
+
+            width: 42px;
+
+            height: 42px;
+
+            object-fit: contain;
+
+            image-rendering: pixelated;
+
+        }
+
+
+        .player-name {
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+        }
+
+
+        .player-meta {
+
+            color: #686875;
+
+            font-size: 10px;
+
+            margin-top: 4px;
+
+        }
+
+
+        .empty {
+
+            color: #666673;
+
+            text-align: center;
+
+            padding: 30px 10px;
+
+            font-size: 13px;
+
+        }
+
+
+        .editor {
+
+            display: none;
+
+        }
+
+
+        .editor.visible {
+
+            display: block;
+
+        }
+
+
+        .profile {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 18px;
+
+            padding-bottom: 22px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.06);
+
+            margin-bottom: 22px;
+
+        }
+
+
+        .profile-skin {
+
+            width: 90px;
+
+            height: 120px;
+
+            object-fit: contain;
+
+            image-rendering: pixelated;
+
+        }
+
+
+        .profile-name {
+
+            font-size: 26px;
+
+            font-weight: 900;
+
+        }
+
+
+        .badges {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 7px;
+
+            margin-top: 10px;
+
+        }
+
+
+        .badge {
+
+            padding: 6px 9px;
+
+            border-radius: 7px;
+
+            background: #171720;
+
+            color: #9b9ba8;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+        }
+
+
+        .badge.premium {
+
+            color: #65e6a0;
+
+            background:
+                rgba(50,220,130,0.08);
+
+        }
+
+
+        .form-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+
+        }
+
+
+        .field {
+
+            margin-bottom: 3px;
+
+        }
+
+
+        .field.full {
+
+            grid-column:
+                1 / -1;
+
+        }
+
+
+        label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #9999a5;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+        }
+
+
+        select,
+        input {
+
+            width: 100%;
+
+            height: 44px;
+
+            padding: 0 12px;
+
+            border-radius: 9px;
+
+            border:
+                1px solid rgba(255,255,255,0.08);
+
+            background: #101018;
+
+            color: white;
+
+            outline: none;
+
+        }
+
+
+        select:focus,
+        input:focus {
+
+            border-color: #7c5cff;
+
+        }
+
+
+        .tier-select {
+
+            font-weight: 900;
+
+        }
+
+
+        .save {
+
+            width: 100%;
+
+            height: 48px;
+
+            margin-top: 20px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #7c5cff,
+                    #5f43db
+                );
+
+            color: white;
+
+            font-weight: 900;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+        }
+
+
+        .save:hover {
+
+            transform: translateY(-1px);
+
+        }
+
+
+        .save:disabled {
+
+            opacity: 0.5;
+
+            cursor: not-allowed;
+
+        }
+
+
+        .message {
+
+            display: none;
+
+            margin-top: 15px;
+
+            padding: 11px;
+
+            border-radius: 9px;
+
+            font-size: 12px;
+
+        }
+
+
+        .message.success {
+
+            display: block;
+
+            color: #65e6a0;
+
+            background:
+                rgba(50,220,130,0.08);
+
+            border:
+                1px solid rgba(50,220,130,0.16);
+
+        }
+
+
+        .message.error {
+
+            display: block;
+
+            color: #ff7888;
+
+            background:
+                rgba(255,70,90,0.08);
+
+            border:
+                1px solid rgba(255,70,90,0.16);
+
+        }
+
+
+        .section {
+
+            margin-top: 25px;
+
+        }
+
+
+        .section-title {
+
+            font-size: 14px;
+
+            font-weight: 900;
+
+            margin-bottom: 13px;
+
+        }
+
+
+        @media(max-width: 850px) {
+
+            .layout {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+
+        @media(max-width: 550px) {
+
+            body {
+
+                padding-left: 12px;
+                padding-right: 12px;
+
+            }
+
+            .form-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .field.full {
+
+                grid-column: auto;
+
+            }
+
+            .profile {
+
+                align-items: flex-start;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <div class="header">
+
+        <div class="title">
+            Admin Panel
+        </div>
+
+        <div class="subtitle">
+            Manage players, tiers and test statistics.
+        </div>
+
+        <div class="admin-badge">
+            🛡 OWNER / ADMIN
+        </div>
+
+    </div>
+
+
+    <div class="layout">
+
+
+        <!-- PLAYER LIST -->
+
+        <div class="panel">
+
+            <div class="panel-title">
+                Players
+            </div>
+
+            <input
+                id="search"
+                class="search"
+                placeholder="Search Minecraft username..."
+                autocomplete="off"
+            >
+
+            <div
+                id="playerList"
+                class="player-list"
+            >
+
+                <div class="empty">
+                    Loading players...
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- EDITOR -->
+
+        <div
+            id="editor"
+            class="panel editor"
+        >
+
+            <div class="profile">
+
+                <img
+                    id="profileSkin"
+                    class="profile-skin"
+                    src=""
+                    alt=""
+                >
+
+                <div>
+
+                    <div
+                        id="profileName"
+                        class="profile-name"
+                    >
+                        -
+                    </div>
+
+                    <div
+                        id="badges"
+                        class="badges"
+                    ></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="section">
+
+                <div class="section-title">
+                    Tier
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <div class="field full">
+
+                        <label>
+                            GAMEMODE
+                        </label>
+
+                        <select
+                            id="gamemode"
+                        >
+
+                            <option value="vanilla">
+                                Vanilla
+                            </option>
+
+                            <option value="sword">
+                                Sword
+                            </option>
+
+                            <option value="axe">
+                                Axe
+                            </option>
+
+                            <option value="uhc">
+                                UHC
+                            </option>
+
+                            <option value="pot">
+                                Pot
+                            </option>
+
+                            <option value="mace">
+                                Mace
+                            </option>
+
+                            <option value="smp">
+                                SMP
+                            </option>
+
+                            <option value="crystal">
+                                Crystal
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="field full">
+
+                        <label>
+                            TIER
+                        </label>
+
+                        <select
+                            id="tier"
+                            class="tier-select"
+                        >
+
+                            <option value="Unranked">
+                                Unranked
+                            </option>
+
+                            <option value="HT1">
+                                HT1
+                            </option>
+
+                            <option value="LT1">
+                                LT1
+                            </option>
+
+                            <option value="HT2">
+                                HT2
+                            </option>
+
+                            <option value="LT2">
+                                LT2
+                            </option>
+
+                            <option value="HT3">
+                                HT3
+                            </option>
+
+                            <option value="LT3">
+                                LT3
+                            </option>
+
+                            <option value="HT4">
+                                HT4
+                            </option>
+
+                            <option value="LT4">
+                                LT4
+                            </option>
+
+                            <option value="HT5">
+                                HT5
+                            </option>
+
+                            <option value="LT5">
+                                LT5
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="section">
+
+                <div class="section-title">
+                    Test Statistics
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <div class="field">
+
+                        <label>
+                            TESTS
+                        </label>
+
+                        <input
+                            id="tests"
+                            type="number"
+                            min="0"
+                            value="0"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            WINS
+                        </label>
+
+                        <input
+                            id="wins"
+                            type="number"
+                            min="0"
+                            value="0"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            LOSSES
+                        </label>
+
+                        <input
+                            id="losses"
+                            type="number"
+                            min="0"
+                            value="0"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <button
+                id="save"
+                class="save"
+            >
+                Save Changes
+            </button>
+
+
+            <div
+                id="message"
+                class="message"
+            ></div>
+
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script type="module">
+
+import {
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+import {
+    getDatabase,
+    ref,
+    get,
+    update
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+
+import {
+    auth,
+    app
+} from "./firebase.js";
+
+
+const database =
+    getDatabase(app);
+
+
+/*
+ * IMPORTANT
+ *
+ * Put the SAME owner email here
+ * that you placed in Firebase Rules.
+ */
+
+const OWNER_EMAIL =
+    "denizzzezw@gmail.com";
+
+
+/*
+ * ELEMENTS
+ */
+
+const playerList =
+    document.getElementById("playerList");
+
+const search =
+    document.getElementById("search");
+
+const editor =
+    document.getElementById("editor");
+
+const profileSkin =
+    document.getElementById("profileSkin");
+
+const profileName =
+    document.getElementById("profileName");
+
+const badges =
+    document.getElementById("badges");
+
+const gamemode =
+    document.getElementById("gamemode");
+
+const tier =
+    document.getElementById("tier");
+
+const tests =
+    document.getElementById("tests");
+
+const wins =
+    document.getElementById("wins");
+
+const losses =
+    document.getElementById("losses");
+
+const save =
+    document.getElementById("save");
+
+const message =
+    document.getElementById("message");
+
+
+/*
+ * DATA
+ */
+
+let players = {};
+
+let selectedUID = null;
+
+
+/*
+ * AUTH
+ */
+
+onAuthStateChanged(
+    auth,
+    async (user) => {
+
+        if (!user) {
+
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+
+        /*
+         * FRONTEND CHECK
+         *
+         * Firebase Rules are the real protection.
+         */
+
+        if (
+            user.email?.toLowerCase() !==
+            OWNER_EMAIL.toLowerCase()
+        ) {
+
+            document.body.innerHTML = `
+
+                <div style="
+                    min-height:100vh;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    background:#08080d;
+                    color:white;
+                    font-family:Arial;
+                    text-align:center;
+                    padding:30px;
+                ">
+
+                    <div>
+
+                        <div style="
+                            font-size:50px;
+                            margin-bottom:15px;
+                        ">
+                            🚫
+                        </div>
+
+                        <h1>
+                            Access Denied
+                        </h1>
+
+                        <p style="
+                            color:#777783;
+                            margin-top:10px;
+                        ">
+                            You do not have permission
+                            to access the Admin Panel.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        await loadPlayers();
+
+    }
+);
+
+
+/*
+ * LOAD PLAYERS
+ */
+
+async function loadPlayers() {
+
+    try {
+
+        const snapshot =
+            await get(
+                ref(
+                    database,
+                    "players"
+                )
+            );
+
+
+        if (!snapshot.exists()) {
+
+            players = {};
+
+            renderPlayers();
+
+            return;
+
+        }
+
+
+        players =
+            snapshot.val() || {};
+
+
+        renderPlayers();
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        playerList.innerHTML = `
+
+            <div class="empty">
+                Could not load players.
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/*
+ * RENDER PLAYER LIST
+ */
+
+function renderPlayers() {
+
+    const query =
+        search.value
+            .trim()
+            .toLowerCase();
+
+
+    playerList.innerHTML = "";
+
+
+    const entries =
+        Object.entries(players)
+            .filter(
+                ([uid, player]) => {
+
+                    return (
+                        player.minecraftName
+                            ?.toLowerCase()
+                            .includes(query)
+                    );
+
+                }
+            );
+
+
+    if (!entries.length) {
+
+        playerList.innerHTML = `
+
+            <div class="empty">
+                No players found.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    entries.forEach(
+        ([uid, player]) => {
+
+            const element =
+                document.createElement("div");
+
+            element.className =
+                "player" +
+                (
+                    selectedUID === uid
+                        ? " active"
+                        : ""
+                );
+
+
+            const skin =
+                player.uuid
+                    ? `https://mc-heads.net/avatar/${player.uuid}/42`
+                    : `https://mc-heads.net/avatar/${encodeURIComponent(player.minecraftName)}/42`;
+
+
+            element.innerHTML = `
+
+                <img
+                    class="player-skin"
+                    src="${skin}"
+                    alt=""
+                >
+
+                <div>
+
+                    <div class="player-name">
+                        ${escapeHtml(
+                            player.minecraftName || "Unknown"
+                        )}
+                    </div>
+
+                    <div class="player-meta">
+                        ${escapeHtml(
+                            player.region || "EU"
+                        )}
+                        ·
+                        ${escapeHtml(
+                            player.accountType || "unknown"
+                        )}
+                    </div>
+
+                </div>
+
+            `;
+
+
+            element.addEventListener(
+                "click",
+                () => {
+
+                    selectPlayer(uid);
+
+                }
+            );
+
+
+            playerList.appendChild(
+                element
+            );
+
+        }
+    );
+
+}
+
+
+/*
+ * SELECT PLAYER
+ */
+
+function selectPlayer(uid) {
+
+    selectedUID =
+        uid;
+
+
+    const player =
+        players[uid];
+
+
+    if (!player) {
+        return;
+    }
+
+
+    editor.classList.add(
+        "visible"
+    );
+
+
+    profileName.textContent =
+        player.minecraftName ||
+        "Unknown";
+
+
+    profileSkin.src =
+        player.uuid
+            ? `https://mc-heads.net/body/${player.uuid}/120`
+            : `https://mc-heads.net/body/${encodeURIComponent(player.minecraftName)}/120`;
+
+
+    renderBadges(player);
+
+
+    const currentMode =
+        gamemode.value;
+
+
+    tier.value =
+        player.tiers?.[currentMode] ||
+        "Unranked";
+
+
+    tests.value =
+        player.stats?.tests ||
+        0;
+
+
+    wins.value =
+        player.stats?.wins ||
+        0;
+
+
+    losses.value =
+        player.stats?.losses ||
+        0;
+
+
+    renderPlayers();
+
+}
+
+
+/*
+ * BADGES
+ */
+
+function renderBadges(player) {
+
+    badges.innerHTML = "";
+
+
+    const account =
+        document.createElement("div");
+
+    account.className =
+        "badge " +
+        (
+            player.accountType === "premium"
+                ? "premium"
+                : ""
+        );
+
+
+    account.textContent =
+        player.accountType === "premium"
+            ? "✓ Premium"
+            : "⚠ Unverified";
+
+
+    badges.appendChild(account);
+
+
+    const region =
+        document.createElement("div");
+
+    region.className =
+        "badge";
+
+
+    region.textContent =
+        "🌍 " +
+        (player.region || "EU");
+
+
+    badges.appendChild(region);
+
+}
+
+
+/*
+ * CHANGE GAMEMODE
+ */
+
+gamemode.addEventListener(
+    "change",
+    () => {
+
+        if (!selectedUID) {
+            return;
+        }
+
+
+        const player =
+            players[selectedUID];
+
+
+        tier.value =
+            player.tiers?.[
+                gamemode.value
+            ] ||
+            "Unranked";
+
+    }
+);
+
+
+/*
+ * SEARCH
+ */
+
+search.addEventListener(
+    "input",
+    renderPlayers
+);
+
+
+/*
+ * SAVE
+ */
+
+save.addEventListener(
+    "click",
+    async () => {
+
+        if (!selectedUID) {
+
+            showMessage(
+                "Select a player first.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        const player =
+            players[selectedUID];
+
+
+        if (!player) {
+            return;
+        }
+
+
+        save.disabled =
+            true;
+
+        save.textContent =
+            "Saving...";
+
+
+        try {
+
+            /*
+             * Clone existing tiers
+             */
+
+            const newTiers = {
+
+                ...(player.tiers || {})
+
+            };
+
+
+            newTiers[
+                gamemode.value
+            ] =
+                tier.value;
+
+
+            /*
+             * New stats
+             */
+
+            const newStats = {
+
+                ...(player.stats || {}),
+
+                tests:
+                    Math.max(
+                        0,
+                        Number(tests.value) || 0
+                    ),
+
+                wins:
+                    Math.max(
+                        0,
+                        Number(wins.value) || 0
+                    ),
+
+                losses:
+                    Math.max(
+                        0,
+                        Number(losses.value) || 0
+                    )
+
+            };
+
+
+            /*
+             * UPDATE DATABASE
+             */
+
+            await update(
+                ref(
+                    database,
+                    `players/${selectedUID}`
+                ),
+                {
+
+                    tiers:
+                        newTiers,
+
+                    stats:
+                        newStats
+
+                }
+            );
+
+
+            /*
+             * Update local data
+             */
+
+            players[selectedUID].tiers =
+                newTiers;
+
+            players[selectedUID].stats =
+                newStats;
+
+
+            showMessage(
+                "Changes saved successfully.",
+                "success"
+            );
+
+
+            renderPlayers();
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            showMessage(
+                "Could not save changes. Check Firebase Rules.",
+                "error"
+            );
+
+        }
+
+
+        save.disabled =
+            false;
+
+        save.textContent =
+            "Save Changes";
+
+    }
+);
+
+
+/*
+ * MESSAGE
+ */
+
+function showMessage(
+    text,
+    type
+) {
+
+    message.textContent =
+        text;
+
+    message.className =
+        "message " + type;
+
+}
+
+
+/*
+ * ESCAPE
+ */
+
+function escapeHtml(value) {
+
+    return String(value)
+
+        .replaceAll("&", "&amp;")
+
+        .replaceAll("<", "&lt;")
+
+        .replaceAll(">", "&gt;")
+
+        .replaceAll('"', "&quot;")
+
+        .replaceAll("'", "&#039;");
+
+}
+
+</script>
+
+
+<script
+    type="module"
+    src="./auth-ui.js"
+></script>
+
+
+</body>
+
+</html>
