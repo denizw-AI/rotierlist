@@ -155,6 +155,7 @@
             color: #8b5cf6;
             text-decoration: none;
             font-size: 12px;
+            cursor: pointer;
         }
 
         .forgot:hover {
@@ -185,6 +186,18 @@
             transform: none;
         }
 
+        .resend {
+            display: none;
+            margin-top: 10px;
+            background: transparent;
+            border: 1px solid rgba(139,92,246,.35);
+            color: #a78bfa;
+        }
+
+        .resend:hover {
+            background: rgba(139,92,246,.08);
+        }
+
         .message {
             display: none;
             margin-top: 17px;
@@ -192,6 +205,7 @@
             border-radius: 9px;
             font-size: 13px;
             text-align: center;
+            line-height: 1.5;
         }
 
         .message.error {
@@ -275,6 +289,7 @@
 
             <div class="input-group">
                 <label for="email">Email</label>
+
                 <input
                     type="email"
                     id="email"
@@ -286,6 +301,7 @@
 
             <div class="input-group">
                 <label for="password">Password</label>
+
                 <input
                     type="password"
                     id="password"
@@ -303,6 +319,14 @@
                 Login
             </button>
 
+            <button
+                type="button"
+                class="resend"
+                id="resendButton"
+            >
+                Resend verification email
+            </button>
+
             <div id="message" class="message"></div>
 
         </form>
@@ -318,22 +342,18 @@
 
 <script type="module">
 
-    /*
-        FIREBASE AUTH WILL BE CONNECTED HERE.
+    import {
+        signInWithEmailAndPassword,
+        sendEmailVerification,
+        sendPasswordResetEmail,
+        signOut
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-        Dupa ce facem register.html:
-        1. Cream Firebase project
-        2. Activam Email/Password Authentication
-        3. Adaugam Firebase config
-        4. Conectam login-ul
-        5. Adaugam email verification
-        6. Adaugam persistent login
-        7. Redirect dupa login
-        8. Admin Panel pentru owner
-    */
+    import { auth } from "./firebase.js";
 
     const loginForm = document.getElementById("loginForm");
     const loginButton = document.getElementById("loginButton");
+    const resendButton = document.getElementById("resendButton");
     const message = document.getElementById("message");
     const forgotPassword = document.getElementById("forgotPassword");
 
@@ -342,42 +362,230 @@
         message.className = "message " + type;
     }
 
+    function getFirebaseError(error) {
+
+        switch (error.code) {
+
+            case "auth/invalid-credential":
+                return "Emailul sau parola sunt incorecte.";
+
+            case "auth/invalid-email":
+                return "Introdu o adresă de email validă.";
+
+            case "auth/user-disabled":
+                return "Acest cont a fost dezactivat.";
+
+            case "auth/too-many-requests":
+                return "Prea multe încercări. Încearcă din nou mai târziu.";
+
+            default:
+                return "A apărut o eroare. Încearcă din nou.";
+        }
+    }
+
     loginForm.addEventListener("submit", async (event) => {
+
         event.preventDefault();
 
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value;
+        const email =
+            document.getElementById("email").value.trim();
+
+        const password =
+            document.getElementById("password").value;
 
         if (!email || !password) {
-            showMessage("Completeaza toate campurile.", "error");
+            showMessage(
+                "Completează emailul și parola.",
+                "error"
+            );
             return;
         }
-
-        /*
-            Firebase login va fi adaugat aici.
-        */
 
         loginButton.disabled = true;
         loginButton.textContent = "Logging in...";
 
-        setTimeout(() => {
-            loginButton.disabled = false;
-            loginButton.textContent = "Login";
+        resendButton.style.display = "none";
+
+        try {
+
+            const userCredential =
+                await signInWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
+
+            const user = userCredential.user;
+
+            /*
+             * Verificăm dacă emailul a fost confirmat.
+             */
+            if (!user.emailVerified) {
+
+                showMessage(
+                    "Emailul tău nu este verificat încă. Verifică inbox-ul sau trimite din nou emailul.",
+                    "error"
+                );
+
+                resendButton.style.display = "block";
+
+                await signOut(auth);
+
+                loginButton.disabled = false;
+                loginButton.textContent = "Login";
+
+                return;
+            }
+
+            /*
+             * Login successful.
+             */
+            showMessage(
+                "Login successful! Redirecting...",
+                "success"
+            );
+
+            loginButton.textContent = "Logged in";
+
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 800);
+
+        } catch (error) {
+
+            console.error(error);
 
             showMessage(
-                "Firebase Auth nu este conectat inca. Urmatorul pas este configurarea autentificarii.",
+                getFirebaseError(error),
                 "error"
             );
-        }, 600);
+
+            loginButton.disabled = false;
+            loginButton.textContent = "Login";
+        }
     });
 
-    forgotPassword.addEventListener("click", (event) => {
+    /*
+     * Resend verification email
+     */
+    resendButton.addEventListener("click", async () => {
+
+        const email =
+            document.getElementById("email").value.trim();
+
+        const password =
+            document.getElementById("password").value;
+
+        if (!email || !password) {
+            showMessage(
+                "Introdu emailul și parola mai întâi.",
+                "error"
+            );
+            return;
+        }
+
+        resendButton.disabled = true;
+        resendButton.textContent = "Sending...";
+
+        try {
+
+            const userCredential =
+                await signInWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
+
+            const user = userCredential.user;
+
+            if (user.emailVerified) {
+
+                showMessage(
+                    "Emailul este deja verificat. Poți să te loghezi.",
+                    "success"
+                );
+
+                await signOut(auth);
+
+                resendButton.style.display = "none";
+                resendButton.disabled = false;
+                resendButton.textContent =
+                    "Resend verification email";
+
+                return;
+            }
+
+            await sendEmailVerification(user);
+
+            await signOut(auth);
+
+            showMessage(
+                "Emailul de verificare a fost retrimis. Verifică și folderul Spam/Junk.",
+                "success"
+            );
+
+            resendButton.disabled = false;
+            resendButton.textContent =
+                "Resend verification email";
+
+        } catch (error) {
+
+            console.error(error);
+
+            showMessage(
+                getFirebaseError(error),
+                "error"
+            );
+
+            resendButton.disabled = false;
+            resendButton.textContent =
+                "Resend verification email";
+        }
+    });
+
+    /*
+     * Forgot password
+     */
+    forgotPassword.addEventListener("click", async (event) => {
+
         event.preventDefault();
 
-        showMessage(
-            "Resetarea parolei va fi disponibila dupa conectarea Firebase.",
-            "error"
-        );
+        const email =
+            document.getElementById("email").value.trim();
+
+        if (!email) {
+
+            showMessage(
+                "Introdu emailul pentru care vrei să resetezi parola.",
+                "error"
+            );
+
+            document.getElementById("email").focus();
+
+            return;
+        }
+
+        try {
+
+            await sendPasswordResetEmail(
+                auth,
+                email
+            );
+
+            showMessage(
+                "Emailul pentru resetarea parolei a fost trimis. Verifică inbox-ul și Spam/Junk.",
+                "success"
+            );
+
+        } catch (error) {
+
+            console.error(error);
+
+            showMessage(
+                getFirebaseError(error),
+                "error"
+            );
+        }
     });
 
 </script>
