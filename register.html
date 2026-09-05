@@ -126,7 +126,9 @@
             margin-bottom: 8px;
         }
 
-        input {
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
             width: 100%;
             padding: 14px 15px;
             border-radius: 10px;
@@ -169,11 +171,6 @@
             margin-top: 2px;
             accent-color: #8b5cf6;
             cursor: pointer;
-        }
-
-        .terms a {
-            color: #8b5cf6;
-            text-decoration: none;
         }
 
         button {
@@ -298,7 +295,6 @@
                     id="minecraftName"
                     placeholder="Your Minecraft username"
                     maxlength="16"
-                    autocomplete="nickname"
                     required
                 >
             </div>
@@ -310,7 +306,6 @@
                     type="email"
                     id="email"
                     placeholder="you@example.com"
-                    autocomplete="email"
                     required
                 >
             </div>
@@ -322,7 +317,6 @@
                     type="password"
                     id="password"
                     placeholder="Create a password"
-                    autocomplete="new-password"
                     minlength="6"
                     required
                 >
@@ -339,7 +333,6 @@
                     type="password"
                     id="confirmPassword"
                     placeholder="Repeat your password"
-                    autocomplete="new-password"
                     minlength="6"
                     required
                 >
@@ -373,31 +366,33 @@
 
 <script type="module">
 
-    /*
-        FIREBASE AUTH WILL BE CONNECTED HERE.
+    import {
+        createUserWithEmailAndPassword,
+        sendEmailVerification
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-        Account data we will save:
+    import {
+        doc,
+        setDoc,
+        serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-        - Minecraft Name
-        - Email
-        - Firebase UID
-        - Region
-        - Premium / Cracked
-        - Account creation date
-        - Verification status
+    import {
+        auth,
+        db
+    } from "./firebase.js";
 
-        Firebase will handle the password securely.
-        We will NOT store passwords ourselves.
-    */
 
     const registerForm = document.getElementById("registerForm");
     const registerButton = document.getElementById("registerButton");
     const message = document.getElementById("message");
 
+
     function showMessage(text, type) {
         message.textContent = text;
         message.className = "message " + type;
     }
+
 
     registerForm.addEventListener("submit", async (event) => {
 
@@ -418,6 +413,7 @@
         const terms =
             document.getElementById("terms").checked;
 
+
         if (!minecraftName || !email || !password || !confirmPassword) {
             showMessage(
                 "Completeaza toate campurile.",
@@ -426,13 +422,6 @@
             return;
         }
 
-        if (minecraftName.length < 3) {
-            showMessage(
-                "Numele Minecraft trebuie sa aiba cel putin 3 caractere.",
-                "error"
-            );
-            return;
-        }
 
         if (!/^[a-zA-Z0-9_]+$/.test(minecraftName)) {
             showMessage(
@@ -442,6 +431,16 @@
             return;
         }
 
+
+        if (minecraftName.length < 3) {
+            showMessage(
+                "Numele Minecraft trebuie sa aiba cel putin 3 caractere.",
+                "error"
+            );
+            return;
+        }
+
+
         if (password.length < 6) {
             showMessage(
                 "Parola trebuie sa aiba cel putin 6 caractere.",
@@ -449,6 +448,7 @@
             );
             return;
         }
+
 
         if (password !== confirmPassword) {
             showMessage(
@@ -458,6 +458,7 @@
             return;
         }
 
+
         if (!terms) {
             showMessage(
                 "Trebuie sa accepti regulile.",
@@ -466,24 +467,114 @@
             return;
         }
 
-        /*
-            Firebase register va fi adaugat aici.
-        */
 
         registerButton.disabled = true;
         registerButton.textContent = "Creating account...";
 
-        setTimeout(() => {
 
-            registerButton.disabled = false;
-            registerButton.textContent = "Create Account";
+        try {
+
+            const userCredential =
+                await createUserWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
+
+
+            const user = userCredential.user;
+
+
+            /*
+                Salvam datele publice ale contului
+                in Firestore.
+            */
+
+            await setDoc(
+                doc(db, "users", user.uid),
+                {
+                    minecraftName: minecraftName,
+                    email: email,
+
+                    region: "EU",
+
+                    accountType: "Unranked",
+
+                    tiers: {
+                        vanilla: "Unranked",
+                        sword: "Unranked",
+                        axe: "Unranked",
+                        uhc: "Unranked",
+                        pot: "Unranked",
+                        mace: "Unranked",
+                        smp: "Unranked",
+                        crystal: "Unranked"
+                    },
+
+                    tests: 0,
+
+                    createdAt: serverTimestamp()
+                }
+            );
+
+
+            /*
+                Trimitem email-ul de verificare.
+            */
+
+            await sendEmailVerification(user);
+
 
             showMessage(
-                "Firebase Auth nu este conectat inca. Urmatorul pas este configurarea Firebase.",
+                "Cont creat! Verifica-ti email-ul pentru a continua.",
+                "success"
+            );
+
+
+            registerButton.textContent = "Account Created";
+
+
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 2500);
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            let errorMessage =
+                "A aparut o eroare. Incearca din nou.";
+
+            if (error.code === "auth/email-already-in-use") {
+                errorMessage =
+                    "Acest email este deja folosit.";
+            }
+
+            else if (error.code === "auth/invalid-email") {
+                errorMessage =
+                    "Email invalid.";
+            }
+
+            else if (error.code === "auth/weak-password") {
+                errorMessage =
+                    "Parola este prea slaba.";
+            }
+
+            else if (error.code === "auth/network-request-failed") {
+                errorMessage =
+                    "Eroare de conexiune. Verifica internetul.";
+            }
+
+            showMessage(
+                errorMessage,
                 "error"
             );
 
-        }, 600);
+            registerButton.disabled = false;
+            registerButton.textContent = "Create Account";
+        }
+
     });
 
 </script>
