@@ -1,5 +1,4 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-
 import {
     getAuth,
     setPersistence,
@@ -16,15 +15,10 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
 
-setPersistence(auth, browserLocalPersistence)
-    .catch((error) => {
-        console.error("Persistence error:", error);
-    });
+setPersistence(auth, browserLocalPersistence).catch((error) => {
+    console.error("Persistence error:", error);
+});
 
-export {
-    app,
-    auth
-};
+export { app, auth };
