@@ -5,10 +5,7 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Leaderboards | RO TierList</title>
 
@@ -27,9 +24,14 @@
 
             background:
                 radial-gradient(
-                    circle at top left,
+                    circle at 15% 0%,
                     rgba(124,92,255,0.18),
-                    transparent 35%
+                    transparent 32%
+                ),
+                radial-gradient(
+                    circle at 85% 15%,
+                    rgba(80,120,255,0.08),
+                    transparent 28%
                 ),
                 #08080d;
 
@@ -39,67 +41,53 @@
 
         }
 
-
         .container {
 
             width: 100%;
-            max-width: 1150px;
-
+            max-width: 1200px;
             margin: auto;
 
         }
 
-
         .header {
 
             text-align: center;
-
             margin-bottom: 30px;
 
         }
 
-
         .header h1 {
 
-            font-size: 44px;
-
+            font-size: 46px;
             font-weight: 900;
-
+            letter-spacing: -1px;
             margin-bottom: 10px;
 
         }
 
-
         .header p {
 
             color: #777783;
-
             font-size: 14px;
 
         }
 
-
         .tabs {
 
             display: flex;
-
             justify-content: center;
-
             gap: 10px;
-
-            margin-bottom: 25px;
+            margin-bottom: 18px;
 
         }
 
-
         .tab {
 
-            padding: 12px 22px;
+            padding: 12px 25px;
 
-            border-radius: 11px;
+            border-radius: 12px;
 
-            border:
-                1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.08);
 
             background: #111119;
 
@@ -113,27 +101,29 @@
 
         }
 
-
         .tab:hover {
 
+            color: white;
+
             border-color:
-                rgba(124,92,255,0.3);
+                rgba(124,92,255,0.35);
 
         }
-
 
         .tab.active {
 
             background:
-                rgba(124,92,255,0.14);
+                rgba(124,92,255,0.15);
 
             color: #b99cff;
 
             border-color:
-                rgba(124,92,255,0.3);
+                rgba(124,92,255,0.35);
+
+            box-shadow:
+                0 0 25px rgba(124,92,255,0.08);
 
         }
-
 
         .gamemodes {
 
@@ -145,14 +135,13 @@
 
             gap: 8px;
 
-            margin-bottom: 35px;
+            margin-bottom: 18px;
 
         }
 
-
         .mode {
 
-            padding: 9px 15px;
+            padding: 9px 16px;
 
             border-radius: 9px;
 
@@ -173,26 +162,39 @@
 
         }
 
-
         .mode:hover {
 
             color: white;
 
         }
 
-
         .mode.active {
 
             background:
-                rgba(124,92,255,0.12);
+                rgba(124,92,255,0.14);
 
             border-color:
-                rgba(124,92,255,0.25);
+                rgba(124,92,255,0.3);
 
             color: #b99cff;
 
         }
 
+        .database-status {
+
+            text-align: center;
+
+            color: #65e6a0;
+
+            font-size: 10px;
+
+            font-weight: 900;
+
+            letter-spacing: 0.7px;
+
+            margin-bottom: 25px;
+
+        }
 
         .loading {
 
@@ -204,19 +206,25 @@
 
         }
 
-
         .error {
-
-            text-align: center;
-
-            padding: 50px 20px;
-
-            color: #ff6b6b;
 
             display: none;
 
-        }
+            text-align: center;
 
+            padding: 35px 20px;
+
+            color: #ff7777;
+
+            background:
+                rgba(255,70,70,0.05);
+
+            border:
+                1px solid rgba(255,70,70,0.15);
+
+            border-radius: 18px;
+
+        }
 
         .empty {
 
@@ -225,7 +233,7 @@
             padding: 70px 20px;
 
             background:
-                rgba(15,15,23,0.92);
+                rgba(15,15,23,0.94);
 
             border:
                 1px solid rgba(255,255,255,0.07);
@@ -236,6 +244,11 @@
 
         }
 
+        .empty strong {
+
+            color: #b99cff;
+
+        }
 
         /*
             PODIUM
@@ -256,10 +269,11 @@
 
         }
 
-
         .podium-card {
 
             position: relative;
+
+            overflow: hidden;
 
             padding: 25px 20px;
 
@@ -273,44 +287,41 @@
             border:
                 1px solid rgba(255,255,255,0.08);
 
-            border-radius: 20px;
+            border-radius: 22px;
 
             text-align: center;
 
-            overflow: hidden;
-
         }
-
 
         .podium-card.first {
 
-            min-height: 350px;
+            min-height: 370px;
 
             border-color:
-                rgba(255,210,80,0.25);
+                rgba(255,210,80,0.28);
+
+            box-shadow:
+                0 0 35px rgba(255,210,80,0.04);
 
         }
-
 
         .podium-card.second {
 
-            min-height: 300px;
+            min-height: 315px;
 
             border-color:
-                rgba(190,190,210,0.20);
+                rgba(200,200,220,0.2);
 
         }
-
 
         .podium-card.third {
 
-            min-height: 275px;
+            min-height: 290px;
 
             border-color:
-                rgba(190,130,80,0.20);
+                rgba(190,130,80,0.2);
 
         }
-
 
         .position {
 
@@ -320,12 +331,11 @@
 
             font-weight: 900;
 
-            margin-bottom: 10px;
-
             letter-spacing: 1px;
 
-        }
+            margin-bottom: 8px;
 
+        }
 
         .first .position {
 
@@ -333,13 +343,11 @@
 
         }
 
-
         .second .position {
 
-            color: #c8c8d2;
+            color: #d0d0dc;
 
         }
-
 
         .third .position {
 
@@ -347,39 +355,35 @@
 
         }
 
-
         .podium-skin {
 
-            height: 175px;
+            height: 185px;
 
             display: flex;
 
-            align-items: flex-end;
-
             justify-content: center;
+
+            align-items: flex-end;
 
             margin-bottom: 5px;
 
         }
 
-
         .first .podium-skin {
 
-            height: 200px;
+            height: 215px;
 
         }
-
 
         .podium-skin img {
 
             max-height: 100%;
 
-            max-width: 130px;
+            max-width: 135px;
 
             image-rendering: pixelated;
 
         }
-
 
         .podium-name {
 
@@ -389,8 +393,13 @@
 
             margin-top: 10px;
 
-        }
+            overflow: hidden;
 
+            text-overflow: ellipsis;
+
+            white-space: nowrap;
+
+        }
 
         .podium-tier {
 
@@ -398,12 +407,12 @@
 
             margin-top: 8px;
 
-            padding: 6px 10px;
+            padding: 6px 11px;
 
             border-radius: 8px;
 
             background:
-                rgba(124,92,255,0.12);
+                rgba(124,92,255,0.13);
 
             color: #b99cff;
 
@@ -412,7 +421,6 @@
             font-weight: 900;
 
         }
-
 
         .podium-region {
 
@@ -423,7 +431,6 @@
             margin-top: 8px;
 
         }
-
 
         /*
             LIST
@@ -439,13 +446,12 @@
 
         }
 
-
         .player-row {
 
             display: grid;
 
             grid-template-columns:
-                55px 65px 1fr 120px 100px;
+                55px 65px 1fr 130px 90px;
 
             align-items: center;
 
@@ -456,7 +462,7 @@
             padding: 10px 18px;
 
             background:
-                rgba(15,15,23,0.92);
+                rgba(15,15,23,0.94);
 
             border:
                 1px solid rgba(255,255,255,0.06);
@@ -467,18 +473,21 @@
 
         }
 
-
         .player-row:hover {
 
             transform: translateY(-1px);
 
             border-color:
-                rgba(124,92,255,0.25);
+                rgba(124,92,255,0.28);
+
+            background:
+                rgba(18,18,28,0.98);
 
         }
 
-
         .rank {
+
+            text-align: center;
 
             font-size: 15px;
 
@@ -486,10 +495,7 @@
 
             color: #555561;
 
-            text-align: center;
-
         }
-
 
         .row-skin {
 
@@ -505,7 +511,6 @@
 
         }
 
-
         .row-skin img {
 
             height: 58px;
@@ -515,14 +520,6 @@
             image-rendering: pixelated;
 
         }
-
-
-        .player-info {
-
-            min-width: 0;
-
-        }
-
 
         .player-name {
 
@@ -540,7 +537,6 @@
 
         }
 
-
         .player-region {
 
             color: #666672;
@@ -549,6 +545,21 @@
 
         }
 
+        .account {
+
+            font-size: 10px;
+
+            font-weight: 900;
+
+            color: #65e6a0;
+
+        }
+
+        .account.cracked {
+
+            color: #ffc85a;
+
+        }
 
         .tier-box {
 
@@ -560,23 +571,11 @@
 
         }
 
-
-        .tier {
-
-            font-size: 17px;
-
-            font-weight: 900;
-
-            color: white;
-
-        }
-
-
         .tier-icon {
 
-            width: 22px;
+            width: 23px;
 
-            height: 22px;
+            height: 23px;
 
             display: flex;
 
@@ -592,26 +591,15 @@
 
         }
 
+        .tier {
 
-        .account {
+            font-size: 17px;
 
-            color: #65e6a0;
-
-            font-size: 10px;
-
-            font-weight: 800;
+            font-weight: 900;
 
         }
 
-
-        .account.cracked {
-
-            color: #ffc85a;
-
-        }
-
-
-        .count {
+        .tests {
 
             color: #666672;
 
@@ -621,32 +609,13 @@
 
         }
 
-
-        .live {
-
-            text-align: center;
-
-            color: #65e6a0;
-
-            font-size: 10px;
-
-            font-weight: 800;
-
-            margin-bottom: 15px;
-
-        }
-
-
         @media (max-width: 750px) {
 
             .podium {
 
                 grid-template-columns: 1fr;
 
-                align-items: stretch;
-
             }
-
 
             .podium-card.first,
             .podium-card.second,
@@ -656,27 +625,17 @@
 
             }
 
-
             .first {
-
                 order: 1;
-
             }
-
 
             .second {
-
                 order: 2;
-
             }
-
 
             .third {
-
                 order: 3;
-
             }
-
 
             .player-row {
 
@@ -687,8 +646,7 @@
 
             }
 
-
-            .count {
+            .tests {
 
                 display: none;
 
@@ -696,24 +654,20 @@
 
         }
 
-
         @media (max-width: 500px) {
 
             body {
 
                 padding-left: 10px;
-
                 padding-right: 10px;
 
             }
-
 
             .header h1 {
 
                 font-size: 34px;
 
             }
-
 
             .player-row {
 
@@ -724,7 +678,6 @@
 
             }
 
-
             .row-skin,
             .row-skin img {
 
@@ -732,17 +685,9 @@
 
             }
 
-
             .tier {
 
                 font-size: 14px;
-
-            }
-
-
-            .account {
-
-                display: none;
 
             }
 
@@ -754,7 +699,6 @@
 
 
 <body>
-
 
 <div class="container">
 
@@ -776,11 +720,10 @@
 
         <button
             id="premiumTab"
-            class="tab active"
+            class="tab"
         >
             Premium
         </button>
-
 
         <button
             id="crackedTab"
@@ -799,8 +742,7 @@
 
 
     <div
-        id="live"
-        class="live"
+        class="database-status"
     >
         ● LIVE DATABASE
     </div>
@@ -810,7 +752,7 @@
         id="loading"
         class="loading"
     >
-        Loading leaderboard...
+        Loading players...
     </div>
 
 
@@ -844,63 +786,67 @@
 
 <script type="module">
 
+
+/*
+    FIREBASE
+*/
+
 import {
     getDatabase,
     ref,
     onValue
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+}
+from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 
 
 import {
     app
-} from "./firebase.js";
+}
+from "./firebase.js";
 
 
 const database =
     getDatabase(app);
 
 
+/*
+    ELEMENTS
+*/
+
 const premiumTab =
     document.getElementById(
         "premiumTab"
     );
-
 
 const crackedTab =
     document.getElementById(
         "crackedTab"
     );
 
-
 const gamemodes =
     document.getElementById(
         "gamemodes"
     );
-
 
 const loading =
     document.getElementById(
         "loading"
     );
 
-
 const errorBox =
     document.getElementById(
         "error"
     );
-
 
 const content =
     document.getElementById(
         "content"
     );
 
-
 const podium =
     document.getElementById(
         "podium"
     );
-
 
 const leaderboardList =
     document.getElementById(
@@ -908,13 +854,21 @@ const leaderboardList =
     );
 
 
-let allPlayers = {};
+/*
+    STATE
+*/
 
-let accountMode =
-    "premium";
+let allPlayers = {};
 
 let selectedGamemode =
     "sword";
+
+
+let accountMode =
+    window.location.hash.toLowerCase() ===
+    "#cracked"
+        ? "cracked"
+        : "premium";
 
 
 /*
@@ -936,7 +890,28 @@ const modeNames = {
 
 
 /*
+    ICONS
+*/
+
+const modeIcons = {
+
+    vanilla: "⚔",
+    sword: "⚔",
+    axe: "🪓",
+    uhc: "❤",
+    pot: "🧪",
+    mace: "🔨",
+    smp: "🌿",
+    crystal: "💎"
+
+};
+
+
+/*
     TIER ORDER
+
+    HT1 = BEST
+    LT5 = LOWEST RANKED
 */
 
 const tierOrder = {
@@ -972,7 +947,6 @@ Object.entries(
             document.createElement(
                 "button"
             );
-
 
         button.className =
             "mode";
@@ -1038,7 +1012,44 @@ Object.entries(
 
 
 /*
-    ACCOUNT TABS
+    UPDATE ACCOUNT TABS
+*/
+
+function updateTabs() {
+
+    if (
+        accountMode ===
+        "premium"
+    ) {
+
+        premiumTab.classList.add(
+            "active"
+        );
+
+        crackedTab.classList.remove(
+            "active"
+        );
+
+    } else {
+
+        crackedTab.classList.add(
+            "active"
+        );
+
+        premiumTab.classList.remove(
+            "active"
+        );
+
+    }
+
+}
+
+
+updateTabs();
+
+
+/*
+    PREMIUM TAB
 */
 
 premiumTab.addEventListener(
@@ -1048,40 +1059,13 @@ premiumTab.addEventListener(
         accountMode =
             "premium";
 
+        updateTabs();
 
-        premiumTab.classList.add(
-            "active"
+        history.replaceState(
+            null,
+            "",
+            window.location.pathname
         );
-
-
-        crackedTab.classList.remove(
-            "active"
-        );
-
-
-        renderLeaderboard();
-
-    }
-);
-
-
-crackedTab.addEventListener(
-    "click",
-    () => {
-
-        accountMode =
-            "cracked";
-
-
-        crackedTab.classList.add(
-            "active"
-        );
-
-
-        premiumTab.classList.remove(
-            "active"
-        );
-
 
         renderLeaderboard();
 
@@ -1090,7 +1074,33 @@ crackedTab.addEventListener(
 
 
 /*
-    TIER SCORE
+    CRACKED TAB
+*/
+
+crackedTab.addEventListener(
+    "click",
+    () => {
+
+        accountMode =
+            "cracked";
+
+        updateTabs();
+
+        history.replaceState(
+            null,
+            "",
+            window.location.pathname +
+            "#cracked"
+        );
+
+        renderLeaderboard();
+
+    }
+);
+
+
+/*
+    GET SCORE
 */
 
 function getTierScore(tier) {
@@ -1101,12 +1111,12 @@ function getTierScore(tier) {
 
 
 /*
-    GET PLAYERS
+    GET RANKED PLAYERS
 */
 
 function getRankedPlayers() {
 
-    const players = [];
+    const ranked = [];
 
 
     Object.entries(
@@ -1114,13 +1124,15 @@ function getRankedPlayers() {
     ).forEach(
         ([uid, player]) => {
 
-            if (!player) {
+            if (
+                !player
+            ) {
                 return;
             }
 
 
             /*
-                ACCOUNT TYPE
+                PREMIUM / CRACKED
             */
 
             if (
@@ -1137,9 +1149,7 @@ function getRankedPlayers() {
 
                 }
 
-            }
-
-            else {
+            } else {
 
                 if (
                     player.accountType !==
@@ -1153,19 +1163,24 @@ function getRankedPlayers() {
             }
 
 
+            /*
+                READ TIER DIRECTLY
+                FROM FIREBASE
+            */
+
             const tier =
-                player.tiers?.[
+                player.tiers &&
+                player.tiers[
                     selectedGamemode
-                ] ||
-                "Unranked";
+                ];
 
 
             /*
-                UNRANKED PLAYERS
-                DO NOT ENTER LEADERBOARD
+                UNRANKED = DON'T SHOW
             */
 
             if (
+                !tier ||
                 !tierOrder[tier]
             ) {
 
@@ -1174,7 +1189,7 @@ function getRankedPlayers() {
             }
 
 
-            players.push({
+            ranked.push({
 
                 uid: uid,
 
@@ -1194,15 +1209,15 @@ function getRankedPlayers() {
 
 
     /*
-        SORT BEST -> WORST
+        BEST TIER FIRST
     */
 
-    players.sort(
+    ranked.sort(
         (a, b) => {
 
             if (
-                b.score !==
-                a.score
+                a.score !==
+                b.score
             ) {
 
                 return (
@@ -1213,57 +1228,108 @@ function getRankedPlayers() {
             }
 
 
+            /*
+                IF SAME TIER,
+                MORE TESTS FIRST
+            */
+
             const aTests =
-                a.player.stats?.tests ||
-                0;
+                Number(
+                    a.player.stats?.tests || 0
+                );
 
 
             const bTests =
-                b.player.stats?.tests ||
-                0;
+                Number(
+                    b.player.stats?.tests || 0
+                );
 
 
-            return (
-                bTests -
-                aTests
+            if (
+                aTests !==
+                bTests
+            ) {
+
+                return (
+                    bTests -
+                    aTests
+                );
+
+            }
+
+
+            /*
+                FINAL SORT:
+                ALPHABETICAL
+            */
+
+            return String(
+                a.player.minecraftName || ""
+            ).localeCompare(
+                String(
+                    b.player.minecraftName || ""
+                )
             );
 
         }
     );
 
 
-    return players;
+    return ranked;
 
 }
 
 
 /*
-    SKIN
+    SKIN URL
 */
 
 function getSkinURL(player) {
 
-    if (player.uuid) {
+    if (
+        player.uuid
+    ) {
 
-        return `https://mc-heads.net/body/${player.uuid}/180`;
+        return (
+            "https://mc-heads.net/body/" +
+            encodeURIComponent(
+                player.uuid
+            ) +
+            "/180"
+        );
 
     }
 
 
-    return `https://mc-heads.net/body/${encodeURIComponent(
+    if (
         player.minecraftName
-    )}/180`;
+    ) {
+
+        return (
+            "https://mc-heads.net/body/" +
+            encodeURIComponent(
+                player.minecraftName
+            ) +
+            "/180"
+        );
+
+    }
+
+
+    return "";
 
 }
 
 
 /*
-    ESCAPE
+    ESCAPE HTML
 */
 
 function escapeHTML(value) {
 
-    return String(value)
+    return String(
+        value ?? ""
+    )
 
         .replaceAll(
             "&",
@@ -1294,149 +1360,391 @@ function escapeHTML(value) {
 
 
 /*
-    RENDER PODIUM
+    PODIUM EMPTY CARD
 */
 
-function renderPodium(players) {
+function createEmptyPodium(
+    label,
+    className
+) {
+
+    const card =
+        document.createElement(
+            "div"
+        );
+
+
+    card.className =
+        "podium-card " +
+        className;
+
+
+    card.innerHTML = `
+
+        <div class="position">
+            ${label}
+        </div>
+
+        <div class="podium-skin">
+        </div>
+
+        <div class="podium-name">
+            —
+        </div>
+
+        <div class="podium-tier">
+            Unranked
+        </div>
+
+    `;
+
+
+    return card;
+
+}
+
+
+/*
+    PODIUM
+*/
+
+function renderPodium(
+    players
+) {
 
     podium.innerHTML = "";
 
 
-    const topPlayers =
-        players.slice(
-            0,
-            3
+    const second =
+        players[1];
+
+    const first =
+        players[0];
+
+    const third =
+        players[2];
+
+
+    /*
+        TOP 2
+    */
+
+    if (
+        second
+    ) {
+
+        podium.appendChild(
+            createPodiumCard(
+                second,
+                "second",
+                "TOP 2"
+            )
+        );
+
+    } else {
+
+        podium.appendChild(
+            createEmptyPodium(
+                "TOP 2",
+                "second"
+            )
+        );
+
+    }
+
+
+    /*
+        TOP 1
+    */
+
+    if (
+        first
+    ) {
+
+        podium.appendChild(
+            createPodiumCard(
+                first,
+                "first",
+                "TOP 1"
+            )
+        );
+
+    } else {
+
+        podium.appendChild(
+            createEmptyPodium(
+                "TOP 1",
+                "first"
+            )
+        );
+
+    }
+
+
+    /*
+        TOP 3
+    */
+
+    if (
+        third
+    ) {
+
+        podium.appendChild(
+            createPodiumCard(
+                third,
+                "third",
+                "TOP 3"
+            )
+        );
+
+    } else {
+
+        podium.appendChild(
+            createEmptyPodium(
+                "TOP 3",
+                "third"
+            )
+        );
+
+    }
+
+}
+
+
+/*
+    PODIUM PLAYER CARD
+*/
+
+function createPodiumCard(
+    entry,
+    className,
+    label
+) {
+
+    const player =
+        entry.player;
+
+
+    const card =
+        document.createElement(
+            "div"
         );
 
 
-    const positions = [
-
-        {
-            place: 2,
-            className: "second",
-            label: "TOP 2"
-        },
-
-        {
-            place: 1,
-            className: "first",
-            label: "TOP 1"
-        },
-
-        {
-            place: 3,
-            className: "third",
-            label: "TOP 3"
-        }
-
-    ];
+    card.className =
+        "podium-card " +
+        className;
 
 
-    positions.forEach(
-        position => {
+    card.innerHTML = `
 
-            const entry =
-                topPlayers[
-                    position.place - 1
-                ];
+        <div class="position">
+            ${label}
+        </div>
+
+        <div class="podium-skin">
+
+            <img
+                src="${getSkinURL(player)}"
+                alt=""
+                onerror="this.style.display='none'"
+            >
+
+        </div>
+
+        <div class="podium-name">
+
+            ${escapeHTML(
+                player.minecraftName ||
+                "Unknown"
+            )}
+
+        </div>
+
+        <div class="podium-tier">
+
+            ${escapeHTML(
+                entry.tier
+            )}
+
+        </div>
+
+        <div class="podium-region">
+
+            🌍
+            ${escapeHTML(
+                player.region ||
+                "EU"
+            )}
+
+        </div>
+
+    `;
 
 
-            const card =
-                document.createElement(
-                    "div"
-                );
+    return card;
+
+}
 
 
-            card.className =
-                `podium-card ${position.className}`;
+/*
+    PLAYER ROW
+*/
+
+function createPlayerRow(
+    entry,
+    position
+) {
+
+    const player =
+        entry.player;
 
 
-            if (!entry) {
-
-                card.innerHTML = `
-
-                    <div class="position">
-                        ${position.label}
-                    </div>
-
-                    <div class="podium-skin">
-                    </div>
-
-                    <div class="podium-name">
-                        Unranked
-                    </div>
-
-                    <div class="podium-tier">
-                        -
-                    </div>
-
-                `;
+    const row =
+        document.createElement(
+            "div"
+        );
 
 
-                podium.appendChild(
-                    card
-                );
+    row.className =
+        "player-row";
 
 
-                return;
+    const isCracked =
+        player.accountType ===
+        "cracked";
+
+
+    const accountClass =
+        isCracked
+            ? "cracked"
+            : "";
+
+
+    const accountText =
+        isCracked
+            ? "CRACKED"
+            : "PREMIUM";
+
+
+    row.innerHTML = `
+
+        <div class="rank">
+            #${position}
+        </div>
+
+        <div class="row-skin">
+
+            <img
+                src="${getSkinURL(player)}"
+                alt=""
+                onerror="this.style.display='none'"
+            >
+
+        </div>
+
+        <div>
+
+            <div class="player-name">
+
+                ${escapeHTML(
+                    player.minecraftName ||
+                    "Unknown"
+                )}
+
+            </div>
+
+            <div class="player-region">
+
+                🌍
+                ${escapeHTML(
+                    player.region ||
+                    "EU"
+                )}
+
+                &nbsp; • &nbsp;
+
+                <span class="account ${accountClass}">
+
+                    ${accountText}
+
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="tier-box">
+
+            <div class="tier-icon">
+
+                ${
+                    modeIcons[
+                        selectedGamemode
+                    ] || "⚔"
+                }
+
+            </div>
+
+            <div class="tier">
+
+                ${escapeHTML(
+                    entry.tier
+                )}
+
+            </div>
+
+        </div>
+
+        <div class="tests">
+
+            ${
+                Number(
+                    player.stats?.tests ||
+                    0
+                )
+            }
+            tests
+
+        </div>
+
+    `;
+
+
+    /*
+        CLICK PLAYER
+        OPENS PROFILE SEARCH
+    */
+
+    row.style.cursor =
+        "pointer";
+
+
+    row.addEventListener(
+        "click",
+        () => {
+
+            const name =
+                player.minecraftName;
+
+
+            if (
+                name
+            ) {
+
+                window.location.href =
+                    "players.html?player=" +
+                    encodeURIComponent(
+                        name
+                    );
 
             }
 
-
-            const player =
-                entry.player;
-
-
-            card.innerHTML = `
-
-                <div class="position">
-                    ${position.label}
-                </div>
-
-                <div class="podium-skin">
-
-                    <img
-                        src="${getSkinURL(player)}"
-                        alt=""
-                    >
-
-                </div>
-
-                <div class="podium-name">
-
-                    ${escapeHTML(
-                        player.minecraftName ||
-                        "Unknown"
-                    )}
-
-                </div>
-
-                <div class="podium-tier">
-
-                    ${entry.tier}
-
-                </div>
-
-                <div class="podium-region">
-
-                    🌍 ${
-                        escapeHTML(
-                            player.region ||
-                            "EU"
-                        )
-                    }
-
-                </div>
-
-            `;
-
-
-            podium.appendChild(
-                card
-            );
-
         }
     );
+
+
+    return row;
 
 }
 
@@ -1445,140 +1753,40 @@ function renderPodium(players) {
     RENDER LIST
 */
 
-function renderList(players) {
+function renderList(
+    players
+) {
 
     leaderboardList.innerHTML = "";
 
 
-    const remaining =
-        players.slice(
+    /*
+        START FROM #4
+    */
+
+    players
+        .slice(
             3,
             50
-        );
+        )
+        .forEach(
+            (entry, index) => {
 
-
-    remaining.forEach(
-        (entry, index) => {
-
-            const position =
-                index + 4;
-
-
-            const player =
-                entry.player;
-
-
-            const row =
-                document.createElement(
-                    "div"
+                leaderboardList.appendChild(
+                    createPlayerRow(
+                        entry,
+                        index + 4
+                    )
                 );
 
-
-            row.className =
-                "player-row";
-
-
-            const accountClass =
-                player.accountType ===
-                "cracked"
-                    ? "cracked"
-                    : "";
-
-
-            const accountText =
-                player.accountType ===
-                "cracked"
-                    ? "CRACKED"
-                    : "PREMIUM";
-
-
-            row.innerHTML = `
-
-                <div class="rank">
-                    #${position}
-                </div>
-
-
-                <div class="row-skin">
-
-                    <img
-                        src="${getSkinURL(player)}"
-                        alt=""
-                    >
-
-                </div>
-
-
-                <div class="player-info">
-
-                    <div class="player-name">
-
-                        ${escapeHTML(
-                            player.minecraftName ||
-                            "Unknown"
-                        )}
-
-                    </div>
-
-
-                    <div class="player-region">
-
-                        🌍 ${
-                            escapeHTML(
-                                player.region ||
-                                "EU"
-                            )
-                        }
-
-                        &nbsp; • &nbsp;
-
-                        <span class="account ${accountClass}">
-                            ${accountText}
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <div class="tier-box">
-
-                    <div class="tier-icon">
-                        ⚔
-                    </div>
-
-                    <div class="tier">
-                        ${entry.tier}
-                    </div>
-
-                </div>
-
-
-                <div class="count">
-
-                    ${
-                        player.stats?.tests ||
-                        0
-                    }
-                    tests
-
-                </div>
-
-            `;
-
-
-            leaderboardList.appendChild(
-                row
-            );
-
-        }
-    );
+            }
+        );
 
 }
 
 
 /*
-    RENDER EVERYTHING
+    MAIN RENDER
 */
 
 function renderLeaderboard() {
@@ -1587,52 +1795,70 @@ function renderLeaderboard() {
         getRankedPlayers();
 
 
-    if (!players.length) {
+    content.style.display =
+        "block";
+
+
+    /*
+        NOTHING RANKED
+    */
+
+    if (
+        players.length === 0
+    ) {
 
         podium.innerHTML = "";
-
 
         leaderboardList.innerHTML = `
 
             <div class="empty">
 
                 No ranked players found for
+
                 <strong>
-                    ${modeNames[selectedGamemode]}
+                    ${escapeHTML(
+                        modeNames[
+                            selectedGamemode
+                        ]
+                    )}
                 </strong>.
+
+                <br><br>
+
+                Players with a tier will
+                automatically appear here.
 
             </div>
 
         `;
-
-
-        content.style.display =
-            "block";
-
 
         return;
 
     }
 
 
+    /*
+        PODIUM
+    */
+
     renderPodium(
         players
     );
 
 
+    /*
+        #4 - #50
+    */
+
     renderList(
         players
     );
-
-
-    content.style.display =
-        "block";
 
 }
 
 
 /*
-    FIREBASE LIVE DATABASE
+    FIREBASE LIVE LISTENER
 */
 
 onValue(
@@ -1642,7 +1868,7 @@ onValue(
         "players"
     ),
 
-    (snapshot) => {
+    snapshot => {
 
         loading.style.display =
             "none";
@@ -1652,21 +1878,29 @@ onValue(
             "none";
 
 
-        allPlayers =
+        if (
             snapshot.exists()
-                ? snapshot.val()
-                : {};
+        ) {
+
+            allPlayers =
+                snapshot.val();
+
+        } else {
+
+            allPlayers = {};
+
+        }
 
 
         renderLeaderboard();
 
     },
 
-    (error) => {
+    firebaseError => {
 
         console.error(
-            "Leaderboard Firebase error:",
-            error
+            "RO TierList Leaderboard Firebase Error:",
+            firebaseError
         );
 
 
@@ -1683,39 +1917,12 @@ onValue(
 
 
         errorBox.textContent =
-            "Could not load leaderboard: " +
-            error.message;
+            "Firebase error: " +
+            firebaseError.message;
 
     }
 
 );
-
-
-/*
-    OPEN CRACKED TAB
-    IF URL HAS #cracked
-*/
-
-if (
-    window.location.hash
-        .toLowerCase() ===
-    "#cracked"
-) {
-
-    accountMode =
-        "cracked";
-
-
-    premiumTab.classList.remove(
-        "active"
-    );
-
-
-    crackedTab.classList.add(
-        "active"
-    );
-
-}
 
 </script>
 
