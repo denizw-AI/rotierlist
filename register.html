@@ -14,163 +14,82 @@
         }
 
         body {
-            font-family: Inter, Arial, sans-serif;
+            font-family: Arial, sans-serif;
             background:
-                radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.14), transparent 35%),
-                #07070b;
-            color: #fff;
+                radial-gradient(circle at top, #172033 0%, #080b12 45%, #05070b 100%);
+            color: white;
             min-height: 100vh;
-        }
-
-        nav {
-            height: 72px;
-            padding: 0 7%;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid rgba(255,255,255,.07);
-            background: rgba(7,7,11,.78);
-            backdrop-filter: blur(15px);
+            justify-content: center;
+        }
+
+        .register-box {
+            width: 420px;
+            max-width: 92%;
+            padding: 34px;
+            background: rgba(15, 20, 32, 0.94);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 18px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.45);
         }
 
         .logo {
-            color: #fff;
-            text-decoration: none;
-            font-size: 21px;
-            font-weight: 800;
+            text-align: center;
+            font-size: 26px;
+            font-weight: 900;
+            margin-bottom: 8px;
         }
 
         .logo span {
             color: #8b5cf6;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 26px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: #999;
-            text-decoration: none;
-            font-size: 14px;
-            transition: .2s;
-        }
-
-        .nav-links a:hover {
-            color: #fff;
-        }
-
-        .nav-register {
-            color: #fff !important;
-            padding: 10px 17px;
-            border-radius: 9px;
-            background: rgba(139,92,246,.15);
-            border: 1px solid rgba(139,92,246,.3);
-        }
-
-        main {
-            min-height: calc(100vh - 72px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 45px 20px;
-        }
-
-        .register-box {
-            width: 100%;
-            max-width: 450px;
-            padding: 38px;
-            border-radius: 18px;
-            background: rgba(15,15,22,.9);
-            border: 1px solid rgba(255,255,255,.08);
-            box-shadow:
-                0 25px 80px rgba(0,0,0,.45),
-                0 0 50px rgba(139,92,246,.08);
-        }
-
-        .icon {
-            width: 52px;
-            height: 52px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 18px;
-            border-radius: 14px;
-            background: rgba(139,92,246,.13);
-            border: 1px solid rgba(139,92,246,.25);
-            font-size: 24px;
-        }
-
-        h1 {
-            text-align: center;
-            font-size: 28px;
-            margin-bottom: 8px;
-        }
-
         .subtitle {
             text-align: center;
-            color: #888;
+            color: #8e98aa;
             font-size: 14px;
             margin-bottom: 28px;
         }
 
-        .input-group {
-            margin-bottom: 16px;
-        }
-
         label {
             display: block;
-            color: #bbb;
+            margin-bottom: 7px;
             font-size: 13px;
-            margin-bottom: 8px;
+            font-weight: 700;
+            color: #d7dbe4;
         }
 
-        input[type="text"],
-        input[type="email"],
-        input[type="password"] {
+        input {
             width: 100%;
-            padding: 14px 15px;
+            padding: 13px 14px;
+            margin-bottom: 17px;
             border-radius: 10px;
-            border: 1px solid rgba(255,255,255,.09);
+            border: 1px solid #252c3b;
+            background: #0b0f18;
+            color: white;
             outline: none;
-            background: #0b0b10;
-            color: #fff;
             font-size: 14px;
-            transition: .2s;
         }
 
         input:focus {
-            border-color: rgba(139,92,246,.65);
-            box-shadow: 0 0 0 3px rgba(139,92,246,.08);
-        }
-
-        input::placeholder {
-            color: #555;
-        }
-
-        .password-info {
-            color: #666;
-            font-size: 11px;
-            margin-top: 7px;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139,92,246,0.12);
         }
 
         .terms {
             display: flex;
-            gap: 9px;
             align-items: flex-start;
-            margin: 20px 0;
-            color: #777;
+            gap: 9px;
+            margin: 3px 0 20px;
+            color: #8992a3;
             font-size: 12px;
             line-height: 1.5;
         }
 
         .terms input {
-            width: 15px;
-            height: 15px;
-            margin-top: 2px;
-            accent-color: #8b5cf6;
-            cursor: pointer;
+            width: auto;
+            margin: 3px 0 0;
         }
 
         button {
@@ -178,223 +97,175 @@
             padding: 14px;
             border: none;
             border-radius: 10px;
-            background: #8b5cf6;
-            color: #fff;
+            background: linear-gradient(135deg, #8b5cf6, #6d3ee8);
+            color: white;
+            font-weight: 800;
             font-size: 14px;
-            font-weight: 700;
             cursor: pointer;
-            transition: .2s;
+            transition: 0.2s;
         }
 
         button:hover {
-            background: #7c3aed;
             transform: translateY(-1px);
+            box-shadow: 0 10px 30px rgba(139,92,246,0.25);
         }
 
         button:disabled {
-            opacity: .6;
+            opacity: 0.6;
             cursor: not-allowed;
             transform: none;
         }
 
         .message {
             display: none;
-            margin-top: 17px;
+            margin-top: 16px;
             padding: 12px;
             border-radius: 9px;
             font-size: 13px;
-            text-align: center;
-            line-height: 1.4;
+            line-height: 1.5;
         }
 
-        .message.error {
+        .error {
             display: block;
-            color: #ff8d8d;
-            background: rgba(239,68,68,.08);
-            border: 1px solid rgba(239,68,68,.2);
+            background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239,68,68,0.25);
+            color: #ff8b8b;
         }
 
-        .message.success {
+        .success {
             display: block;
-            color: #9df5bb;
-            background: rgba(34,197,94,.08);
-            border: 1px solid rgba(34,197,94,.2);
+            background: rgba(34,197,94,0.1);
+            border: 1px solid rgba(34,197,94,0.25);
+            color: #75e69b;
         }
 
         .login {
-            margin-top: 25px;
-            padding-top: 22px;
-            border-top: 1px solid rgba(255,255,255,.07);
             text-align: center;
-            color: #777;
+            margin-top: 22px;
+            color: #8992a3;
             font-size: 13px;
         }
 
         .login a {
-            color: #8b5cf6;
+            color: #a78bfa;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
         }
 
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #697386;
+            font-size: 12px;
+            text-decoration: none;
+        }
+
+        .back:hover,
         .login a:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 850px) {
-            .nav-links {
-                display: none;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .register-box {
-                padding: 28px 22px;
-            }
+            color: #c4b5fd;
         }
     </style>
 </head>
 
 <body>
 
-<nav>
-    <a href="index.html" class="logo">
-        RO<span>TierList</span>
+<div class="register-box">
+
+    <div class="logo">
+        RO <span>TierList</span>
+    </div>
+
+    <div class="subtitle">
+        Create your Minecraft PvP account
+    </div>
+
+    <form id="registerForm">
+
+        <label for="minecraftName">Minecraft Name</label>
+        <input
+            id="minecraftName"
+            type="text"
+            placeholder="e.g. Steve"
+            maxlength="16"
+            autocomplete="off"
+            required
+        >
+
+        <label for="email">Email</label>
+        <input
+            id="email"
+            type="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+        >
+
+        <label for="password">Password</label>
+        <input
+            id="password"
+            type="password"
+            placeholder="Minimum 6 characters"
+            autocomplete="new-password"
+            required
+        >
+
+        <label for="confirmPassword">Confirm Password</label>
+        <input
+            id="confirmPassword"
+            type="password"
+            placeholder="Repeat your password"
+            autocomplete="new-password"
+            required
+        >
+
+        <label class="terms">
+            <input id="terms" type="checkbox" required>
+            <span>
+                I agree to the RO TierList rules and understand that
+                fake information or cheating in tests can result in a blacklist.
+            </span>
+        </label>
+
+        <button id="registerButton" type="submit">
+            CREATE ACCOUNT
+        </button>
+
+    </form>
+
+    <div id="message" class="message"></div>
+
+    <div class="login">
+        Already have an account?
+        <a href="login.html">Login</a>
+    </div>
+
+    <a class="back" href="index.html">
+        ← Back to website
     </a>
 
-    <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="players.html">Players</a>
-        <a href="leaderboards.html">Leaderboards</a>
-        <a href="results.html">Results</a>
-        <a href="tiers.html">Tiers</a>
-        <a href="https://discord.gg/bms3jPBD9p" target="_blank">Discord</a>
-        <a href="login.html">Login</a>
-        <a href="register.html" class="nav-register">Register</a>
-    </div>
-</nav>
-
-<main>
-
-    <div class="register-box">
-
-        <div class="icon">✦</div>
-
-        <h1>Create account</h1>
-
-        <p class="subtitle">
-            Join the RO TierList community
-        </p>
-
-        <form id="registerForm">
-
-            <div class="input-group">
-                <label for="minecraftName">Minecraft Name</label>
-
-                <input
-                    type="text"
-                    id="minecraftName"
-                    placeholder="Your Minecraft username"
-                    maxlength="16"
-                    required
-                >
-            </div>
-
-            <div class="input-group">
-                <label for="email">Email</label>
-
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="you@example.com"
-                    required
-                >
-            </div>
-
-            <div class="input-group">
-                <label for="password">Password</label>
-
-                <input
-                    type="password"
-                    id="password"
-                    placeholder="Create a password"
-                    minlength="6"
-                    required
-                >
-
-                <div class="password-info">
-                    Minimum 6 characters
-                </div>
-            </div>
-
-            <div class="input-group">
-                <label for="confirmPassword">Confirm Password</label>
-
-                <input
-                    type="password"
-                    id="confirmPassword"
-                    placeholder="Repeat your password"
-                    minlength="6"
-                    required
-                >
-            </div>
-
-            <label class="terms">
-                <input type="checkbox" id="terms" required>
-
-                <span>
-                    I agree to the RO TierList rules and understand that
-                    tier results are based on official testing.
-                </span>
-            </label>
-
-            <button type="submit" id="registerButton">
-                Create Account
-            </button>
-
-            <div id="message" class="message"></div>
-
-        </form>
-
-        <div class="login">
-            Already have an account?
-            <a href="login.html">Login</a>
-        </div>
-
-    </div>
-
-</main>
+</div>
 
 <script type="module">
 
     import {
         createUserWithEmailAndPassword,
-        sendEmailVerification
+        sendEmailVerification,
+        updateProfile
     } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-    import {
-        doc,
-        setDoc,
-        serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+    import { auth } from "./firebase.js";
 
-    import {
-        auth,
-        db
-    } from "./firebase.js";
-
-
-    const registerForm = document.getElementById("registerForm");
-    const registerButton = document.getElementById("registerButton");
+    const form = document.getElementById("registerForm");
+    const button = document.getElementById("registerButton");
     const message = document.getElementById("message");
-
 
     function showMessage(text, type) {
         message.textContent = text;
         message.className = "message " + type;
     }
 
-
-    registerForm.addEventListener("submit", async (event) => {
+    form.addEventListener("submit", async (event) => {
 
         event.preventDefault();
 
@@ -413,64 +284,53 @@
         const terms =
             document.getElementById("terms").checked;
 
-
-        if (!minecraftName || !email || !password || !confirmPassword) {
-            showMessage(
-                "Completeaza toate campurile.",
-                "error"
-            );
-            return;
-        }
-
-
-        if (!/^[a-zA-Z0-9_]+$/.test(minecraftName)) {
-            showMessage(
-                "Numele Minecraft poate contine doar litere, cifre si _. ",
-                "error"
-            );
-            return;
-        }
-
+        message.className = "message";
+        message.textContent = "";
 
         if (minecraftName.length < 3) {
+            showMessage("Minecraft Name must have at least 3 characters.", "error");
+            return;
+        }
+
+        if (minecraftName.length > 16) {
+            showMessage("Minecraft Name is too long.", "error");
+            return;
+        }
+
+        if (!/^[A-Za-z0-9_]+$/.test(minecraftName)) {
             showMessage(
-                "Numele Minecraft trebuie sa aiba cel putin 3 caractere.",
+                "Minecraft Name can only contain letters, numbers and underscores.",
                 "error"
             );
             return;
         }
-
 
         if (password.length < 6) {
             showMessage(
-                "Parola trebuie sa aiba cel putin 6 caractere.",
+                "Password must contain at least 6 characters.",
                 "error"
             );
             return;
         }
-
 
         if (password !== confirmPassword) {
             showMessage(
-                "Parolele nu coincid.",
+                "Passwords do not match.",
                 "error"
             );
             return;
         }
-
 
         if (!terms) {
             showMessage(
-                "Trebuie sa accepti regulile.",
+                "You must accept the rules.",
                 "error"
             );
             return;
         }
 
-
-        registerButton.disabled = true;
-        registerButton.textContent = "Creating account...";
-
+        button.disabled = true;
+        button.textContent = "CREATING ACCOUNT...";
 
         try {
 
@@ -481,100 +341,64 @@
                     password
                 );
 
-
             const user = userCredential.user;
 
+            /*
+             * We store the Minecraft name inside
+             * Firebase Authentication as displayName.
+             */
+            await updateProfile(user, {
+                displayName: minecraftName
+            });
 
             /*
-                Salvam datele publice ale contului
-                in Firestore.
-            */
-
-            await setDoc(
-                doc(db, "users", user.uid),
-                {
-                    minecraftName: minecraftName,
-                    email: email,
-
-                    region: "EU",
-
-                    accountType: "Unranked",
-
-                    tiers: {
-                        vanilla: "Unranked",
-                        sword: "Unranked",
-                        axe: "Unranked",
-                        uhc: "Unranked",
-                        pot: "Unranked",
-                        mace: "Unranked",
-                        smp: "Unranked",
-                        crystal: "Unranked"
-                    },
-
-                    tests: 0,
-
-                    createdAt: serverTimestamp()
-                }
-            );
-
-
-            /*
-                Trimitem email-ul de verificare.
-            */
-
+             * Send verification email.
+             */
             await sendEmailVerification(user);
 
-
             showMessage(
-                "Cont creat! Verifica-ti email-ul pentru a continua.",
+                "Account created! Check your email and verify your account before logging in.",
                 "success"
             );
 
-
-            registerButton.textContent = "Account Created";
-
+            button.textContent = "ACCOUNT CREATED";
 
             setTimeout(() => {
                 window.location.href = "login.html";
-            }, 2500);
-
+            }, 3000);
 
         } catch (error) {
 
             console.error(error);
 
             let errorMessage =
-                "A aparut o eroare. Incearca din nou.";
+                "Something went wrong. Please try again.";
 
             if (error.code === "auth/email-already-in-use") {
                 errorMessage =
-                    "Acest email este deja folosit.";
+                    "This email is already registered.";
             }
 
             else if (error.code === "auth/invalid-email") {
                 errorMessage =
-                    "Email invalid.";
+                    "Please enter a valid email address.";
             }
 
             else if (error.code === "auth/weak-password") {
                 errorMessage =
-                    "Parola este prea slaba.";
+                    "Password is too weak.";
             }
 
-            else if (error.code === "auth/network-request-failed") {
+            else if (error.code === "auth/operation-not-allowed") {
                 errorMessage =
-                    "Eroare de conexiune. Verifica internetul.";
+                    "Email/Password authentication is not enabled in Firebase.";
             }
 
-            showMessage(
-                errorMessage,
-                "error"
-            );
+            showMessage(errorMessage, "error");
 
-            registerButton.disabled = false;
-            registerButton.textContent = "Create Account";
+            button.disabled = false;
+            button.textContent = "CREATE ACCOUNT";
         }
-
     });
 
 </script>
