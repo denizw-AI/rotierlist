@@ -7,76 +7,87 @@
 <title>RO/EU Tiers</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-html {
-    scroll-behavior: smooth;
+:root {
+    --bg: #070912;
+    --card: #0b0e19;
+    --border: rgba(255,255,255,.08);
+    --purple: #9277ff;
+    --gold: #ffc400;
+    --silver: #d8dbe2;
+    --bronze: #c87835;
+    --muted: #858b9e;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background: #07080c;
-    color: white;
     min-height: 100vh;
+    color: #fff;
+    font-family: Inter, Arial, sans-serif;
+    background:
+        radial-gradient(circle at 50% -10%, rgba(120,90,255,.15), transparent 38%),
+        radial-gradient(circle at 10% 50%, rgba(70,80,150,.08), transparent 30%),
+        var(--bg);
+    overflow-x: hidden;
 }
 
 body::before {
     content: "";
     position: fixed;
-    width: 600px;
-    height: 600px;
-    top: -300px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(110, 80, 255, 0.14);
-    filter: blur(150px);
-    border-radius: 50%;
+    inset: 0;
+    background-image:
+        radial-gradient(circle, rgba(255,255,255,.7) 1px, transparent 1px);
+    background-size: 170px 170px;
+    opacity: .06;
     pointer-events: none;
 }
 
+/* NAV */
+
 nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    height: 74px;
-    padding: 0 7%;
+    height: 72px;
+    width: 100%;
+    padding: 0 6%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    background: rgba(7, 8, 12, 0.82);
-    backdrop-filter: blur(20px);
-
-    border-bottom: 1px solid rgba(255,255,255,0.07);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(5,7,14,.82);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
 }
 
 .logo {
     color: white;
     text-decoration: none;
     font-size: 20px;
-    font-weight: 900;
+    font-weight: 800;
 }
 
 .logo span {
-    color: #9277ff;
+    color: var(--purple);
 }
 
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 26px;
+    gap: 25px;
 }
 
 .nav-links a {
-    color: #9295a2;
+    color: #8f95a8;
     text-decoration: none;
-    font-size: 13px;
-    font-weight: 600;
-    transition: 0.2s;
+    font-size: 12px;
+    font-weight: 700;
+    transition: .2s;
 }
 
 .nav-links a:hover {
@@ -84,69 +95,65 @@ nav {
 }
 
 .login {
-    background: white;
-    color: #08090d !important;
     padding: 10px 17px;
-    border-radius: 10px;
-    font-weight: 800 !important;
+    color: #bcaeff !important;
+    border-radius: 9px;
+    background: rgba(145,117,255,.1);
+    border: 1px solid rgba(145,117,255,.25);
 }
 
+/* HERO */
+
 .hero {
-    max-width: 1100px;
-    margin: auto;
     text-align: center;
-    padding: 125px 25px 90px;
+    max-width: 950px;
+    margin: auto;
+    padding: 110px 20px 90px;
 }
 
 .badge {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-
-    padding: 8px 14px;
-
-    border-radius: 50px;
-
-    background: rgba(146,119,255,0.08);
-    border: 1px solid rgba(146,119,255,0.25);
-
-    color: #bdb0ff;
-
-    font-size: 11px;
+    padding: 7px 13px;
+    border-radius: 999px;
+    background: rgba(145,117,255,.08);
+    border: 1px solid rgba(145,117,255,.2);
+    color: #a997ff;
+    font-size: 10px;
     font-weight: 800;
-
+    letter-spacing: .8px;
     margin-bottom: 25px;
 }
 
 .dot {
-    width: 7px;
-    height: 7px;
-
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
-
-    background: #9277ff;
-
-    box-shadow: 0 0 14px #9277ff;
+    background: #65e58a;
+    box-shadow: 0 0 12px #65e58a;
 }
 
-h1 {
-    font-size: clamp(50px, 8vw, 88px);
-    line-height: 0.94;
-    letter-spacing: -5px;
-    font-weight: 900;
-}
-
-h1 span {
-    color: #9277ff;
+.hero h1 {
+    font-size: clamp(46px, 7vw, 80px);
+    line-height: .98;
+    letter-spacing: -4px;
+    font-weight: 800;
+    background: linear-gradient(
+        180deg,
+        #fff,
+        #d2ceff 48%,
+        #806cff
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .hero p {
-    max-width: 600px;
-    margin: 25px auto 0;
-
-    color: #858894;
-
-    font-size: 16px;
+    max-width: 630px;
+    margin: 23px auto 0;
+    color: var(--muted);
+    font-size: 14px;
     line-height: 1.7;
 }
 
@@ -154,311 +161,584 @@ h1 span {
     display: flex;
     justify-content: center;
     gap: 12px;
-
-    margin-top: 35px;
+    margin-top: 32px;
 }
 
 .button {
-    padding: 14px 22px;
-
-    border-radius: 11px;
-
+    padding: 13px 21px;
+    border-radius: 10px;
     text-decoration: none;
-
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 800;
-
-    transition: 0.2s;
+    transition: .25s;
 }
 
 .primary {
-    background: white;
-    color: #08090d;
-}
-
-.secondary {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.1);
     color: white;
+    background: linear-gradient(135deg, #9277ff, #6345e8);
+    box-shadow: 0 12px 35px rgba(100,70,230,.22);
 }
 
-.button:hover {
+.primary:hover {
     transform: translateY(-2px);
 }
 
+.secondary {
+    color: #d7d9e3;
+    background: rgba(255,255,255,.025);
+    border: 1px solid var(--border);
+}
+
+.secondary:hover {
+    background: rgba(255,255,255,.06);
+}
+
+/* STATS */
+
 .stats {
-    max-width: 950px;
-    margin: auto;
-
-    padding: 0 25px;
-
+    width: min(1000px, 92%);
+    margin: 0 auto 100px;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 13px;
+    grid-template-columns: repeat(4,1fr);
+    background: rgba(10,12,22,.7);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    overflow: hidden;
 }
 
 .stat {
-    padding: 25px;
-
-    background: rgba(255,255,255,0.025);
-
-    border: 1px solid rgba(255,255,255,0.07);
-
-    border-radius: 16px;
-
     text-align: center;
+    padding: 25px 15px;
+    border-right: 1px solid var(--border);
+}
+
+.stat:last-child {
+    border-right: none;
 }
 
 .stat-number {
-    font-size: 26px;
-    font-weight: 900;
+    font-size: 24px;
+    font-weight: 800;
 }
 
 .stat-label {
-    margin-top: 7px;
-
-    color: #70737f;
-
-    font-size: 11px;
+    margin-top: 5px;
+    color: #747b90;
+    font-size: 10px;
+    font-weight: 700;
 }
+
+/* SECTION */
 
 .section {
-    max-width: 1100px;
+    width: min(1200px, 92%);
     margin: auto;
-
-    padding: 100px 25px;
 }
 
-.section-header {
+.heading {
     margin-bottom: 25px;
 }
 
-.section-header h2 {
+.heading h2 {
     font-size: 28px;
-}
-
-.section-header p {
-    margin-top: 6px;
-
-    color: #70737f;
-
-    font-size: 12px;
-}
-
-.leaderboard {
-    overflow: hidden;
-
-    background: rgba(255,255,255,0.025);
-
-    border: 1px solid rgba(255,255,255,0.07);
-
-    border-radius: 18px;
-}
-
-.player {
-    min-height: 90px;
-
-    display: grid;
-
-    grid-template-columns: 65px 1fr 130px 120px;
-
-    align-items: center;
-
-    padding: 10px 25px;
-
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-
-    transition: 0.2s;
-}
-
-.player:last-child {
-    border-bottom: none;
-}
-
-.player:hover {
-    background: rgba(255,255,255,0.035);
-}
-
-.position {
-    color: #70737f;
     font-weight: 800;
 }
 
-.player-info {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+.heading p {
+    margin-top: 6px;
+    color: var(--muted);
+    font-size: 12px;
 }
 
-.skin {
-    width: 48px;
-    height: 60px;
+/* PREMIUM */
 
-    object-fit: contain;
+.premium-box {
+    position: relative;
+    padding: 28px;
+    border-radius: 18px;
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(145,117,255,.13),
+            transparent 50%
+        ),
+        rgba(10,12,22,.8);
+    border: 1px solid rgba(145,117,255,.18);
+}
 
-    image-rendering: pixelated;
+.premium-small {
+    color: #a896ff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.7px;
+}
+
+.premium-box h2 {
+    margin-top: 7px;
+    font-size: 27px;
+}
+
+.premium-box p {
+    margin-top: 6px;
+    color: #777d91;
+    font-size: 12px;
+}
+
+.server {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: rgba(255,255,255,.035);
+    border: 1px solid var(--border);
+    color: #9ca2b5;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+/* PODIUM */
+
+.podium {
+    min-height: 540px;
+    margin-top: 30px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 17px;
+}
+
+.podium-card {
+    width: 255px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    border-radius: 17px;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(7,8,14,.98),
+            rgba(15,17,27,.98)
+        );
+    border: 1px solid var(--border);
+    transition: .3s;
+}
+
+.podium-card:hover {
+    transform: translateY(-7px);
+}
+
+.first {
+    width: 285px;
+    min-height: 470px;
+    border-color: rgba(255,196,0,.25);
+    box-shadow: 0 0 55px rgba(255,196,0,.07);
+}
+
+.first::before {
+    content: "";
+    position: absolute;
+    width: 350px;
+    height: 220px;
+    left: 50%;
+    top: -40px;
+    transform: translateX(-50%);
+    background: radial-gradient(
+        circle,
+        rgba(255,196,0,.17),
+        transparent 70%
+    );
+}
+
+.second {
+    min-height: 405px;
+    border-color: rgba(210,216,225,.16);
+}
+
+.third {
+    min-height: 380px;
+    border-color: rgba(198,121,53,.2);
 }
 
 .player-name {
-    font-size: 14px;
+    position: relative;
+    z-index: 2;
+    padding-top: 22px;
+    font-size: 16px;
     font-weight: 800;
 }
 
-.region {
-    margin-top: 5px;
-
-    color: #70737f;
-
-    font-size: 10px;
+.first .player-name {
+    color: var(--gold);
+    font-size: 19px;
 }
 
-.mode {
+.second .player-name {
+    color: var(--silver);
+}
+
+.third .player-name {
+    color: var(--bronze);
+}
+
+.skin-area {
+    height: 255px;
     display: flex;
     align-items: center;
-    gap: 8px;
-
-    color: #9295a2;
-
-    font-size: 12px;
+    justify-content: center;
+    overflow: hidden;
 }
 
-.mode-icon {
-    width: 22px;
-    height: 22px;
+.first .skin-area {
+    height: 285px;
+}
 
+.skin {
+    width: 165px;
     image-rendering: pixelated;
+    filter: drop-shadow(0 18px 25px rgba(0,0,0,.65));
+    transition: .3s;
+}
+
+.first .skin {
+    width: 190px;
+    filter:
+        drop-shadow(0 0 20px rgba(255,196,0,.2))
+        drop-shadow(0 18px 27px rgba(0,0,0,.7));
+}
+
+.podium-card:hover .skin {
+    transform: translateY(-5px) scale(1.02);
+}
+
+.position {
+    height: 92px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 54px;
+    font-weight: 900;
+    text-shadow: 0 5px 13px rgba(0,0,0,.8);
+    background: rgba(255,255,255,.025);
+}
+
+.first .position {
+    color: var(--gold);
+    background: linear-gradient(
+        180deg,
+        rgba(255,196,0,.18),
+        rgba(255,196,0,.035)
+    );
+}
+
+.second .position {
+    color: var(--silver);
+    background: linear-gradient(
+        180deg,
+        rgba(210,216,225,.12),
+        rgba(210,216,225,.025)
+    );
+}
+
+.third .position {
+    color: var(--bronze);
+    background: linear-gradient(
+        180deg,
+        rgba(198,121,53,.14),
+        rgba(198,121,53,.025)
+    );
+}
+
+.player-details {
+    min-height: 53px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .tier {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     gap: 7px;
-
-    padding: 7px 11px;
-
-    border-radius: 8px;
-
-    background: rgba(146,119,255,0.1);
-
-    border: 1px solid rgba(146,119,255,0.2);
-
-    color: #bdb0ff;
-
     font-size: 11px;
-    font-weight: 900;
+    font-weight: 800;
 }
 
-.search-section {
-    max-width: 700px;
-    margin: auto;
+.mode-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
 
-    padding: 20px 25px 100px;
+.points {
+    color: #8d94a8;
+    font-size: 10px;
+    font-weight: 700;
+}
 
+/* CRACKED */
+
+.cracked {
+    margin-top: 65px;
+    margin-bottom: 100px;
+}
+
+.cracked-box {
+    padding: 25px;
+    border-radius: 16px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(77,52,34,.16),
+            rgba(10,12,20,.8)
+        );
+    border: 1px solid rgba(175,111,54,.16);
+}
+
+.cracked-label {
+    color: #c88a52;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.6px;
+}
+
+.cracked-box h2 {
+    margin-top: 7px;
+    font-size: 25px;
+}
+
+.cracked-box p {
+    margin-top: 6px;
+    color: #777d91;
+    font-size: 12px;
+}
+
+.cracked-list {
+    margin-top: 17px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.cracked-player {
+    min-height: 70px;
+    display: grid;
+    grid-template-columns: 50px 1fr 150px 120px;
+    align-items: center;
+    padding: 9px 17px;
+    border-radius: 11px;
+    background: rgba(9,11,19,.78);
+    border: 1px solid rgba(255,255,255,.05);
+    transition: .2s;
+}
+
+.cracked-player:hover {
+    transform: translateX(3px);
+    background: rgba(255,255,255,.035);
+}
+
+.cracked-rank {
+    color: #6e7589;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.cracked-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cracked-skin {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+.cracked-name {
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.cracked-server {
+    margin-top: 3px;
+    color: #9b7a5d;
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.cracked-mode {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: #7f8699;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.cracked-tier {
+    color: #9298a9;
+    font-size: 11px;
+    font-weight: 800;
+    text-align: right;
+}
+
+/* SEARCH */
+
+.search {
+    width: min(800px,92%);
+    margin: 0 auto 110px;
     text-align: center;
 }
 
-.search-section h2 {
-    font-size: 28px;
+.search h2 {
+    font-size: 27px;
+    font-weight: 800;
 }
 
-.search-section p {
+.search p {
     margin-top: 7px;
-    margin-bottom: 22px;
-
-    color: #70737f;
-
+    color: #777d91;
     font-size: 12px;
 }
 
 .search-box {
+    margin-top: 22px;
     display: flex;
-    gap: 10px;
-
     padding: 6px;
-
-    background: rgba(255,255,255,0.035);
-
-    border: 1px solid rgba(255,255,255,0.09);
-
-    border-radius: 13px;
+    border-radius: 12px;
+    background: rgba(10,12,22,.85);
+    border: 1px solid var(--border);
 }
 
 .search-box input {
     flex: 1;
-
-    padding: 12px;
-
+    min-width: 0;
+    padding: 12px 13px;
     border: none;
     outline: none;
-
     background: transparent;
-
     color: white;
-
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .search-box input::placeholder {
-    color: #656874;
+    color: #606679;
 }
 
 .search-box button {
+    padding: 0 20px;
     border: none;
-
-    padding: 0 18px;
-
-    border-radius: 9px;
-
-    background: white;
-
-    color: #08090d;
-
+    border-radius: 8px;
+    color: white;
+    background: linear-gradient(
+        135deg,
+        #9277ff,
+        #6345e8
+    );
+    font-size: 11px;
     font-weight: 800;
-
     cursor: pointer;
 }
 
+/* FOOTER */
+
 footer {
-    padding: 30px;
-
-    border-top: 1px solid rgba(255,255,255,0.07);
-
+    padding: 35px 20px;
     text-align: center;
-
-    color: #5f626d;
-
-    font-size: 11px;
+    border-top: 1px solid var(--border);
+    color: #5f6578;
+    font-size: 10px;
 }
 
-@media(max-width:750px) {
+/* MOBILE */
 
-    nav {
-        padding: 0 20px;
-    }
+@media(max-width:850px) {
 
     .nav-links {
-        gap: 10px;
-    }
-
-    .nav-links a:not(.login) {
         display: none;
     }
 
     .stats {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2,1fr);
     }
 
-    .player {
+    .stat:nth-child(2) {
+        border-right: none;
+    }
+
+    .stat:nth-child(-n+2) {
+        border-bottom: 1px solid var(--border);
+    }
+
+    .podium {
+        flex-direction: column;
+        align-items: center;
+        min-height: auto;
+    }
+
+    .first,
+    .second,
+    .third {
+        width: min(300px,100%);
+        min-height: 400px;
+    }
+
+    .first {
+        order: 1;
+    }
+
+    .second {
+        order: 2;
+    }
+
+    .third {
+        order: 3;
+    }
+
+    .server {
+        position: static;
+        display: inline-block;
+        margin-top: 15px;
+    }
+
+    .cracked-player {
         grid-template-columns: 35px 1fr 80px;
-        padding: 10px 15px;
     }
 
-    .mode {
+    .cracked-mode {
         display: none;
     }
 
-    h1 {
-        letter-spacing: -3px;
+    .cracked-tier {
+        text-align: right;
+    }
+}
+
+@media(max-width:500px) {
+
+    .hero {
+        padding-top: 75px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+    }
+
+    .button {
+        width: 100%;
+    }
+
+    .search-box {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .search-box button {
+        height: 42px;
     }
 }
 </style>
@@ -468,207 +748,444 @@ footer {
 
 <nav>
 
-<a href="index.html" class="logo">
-RO/EU <span>TIERS</span>
-</a>
+    <a href="index.html" class="logo">
+        RO/EU <span>TIERS</span>
+    </a>
 
-<div class="nav-links">
+    <div class="nav-links">
 
-<a href="#leaderboards">
-Leaderboards
-</a>
+        <a href="index.html">Home</a>
 
-<a href="players.html">
-Players
-</a>
+        <a href="leaderboards.html">
+            Leaderboards
+        </a>
 
-<a href="results.html">
-Results
-</a>
+        <a href="players.html">
+            Players
+        </a>
 
-<a href="tiers.html">
-Tiers
-</a>
+        <a href="results.html">
+            Results
+        </a>
 
-<a href="https://discord.gg/bms3jPBD9p" target="_blank">
-Discord
-</a>
+        <a href="tiers.html">
+            Tiers
+        </a>
 
-<a href="login.html" class="login">
-Login
-</a>
+        <a
+            href="https://discord.gg/bms3jPBD9p"
+            target="_blank"
+        >
+            Discord
+        </a>
 
-</div>
+        <a
+            href="login.html"
+            class="login"
+        >
+            Login
+        </a>
+
+    </div>
 
 </nav>
 
 
 <section class="hero">
 
-<div class="badge">
-<div class="dot"></div>
-RO/EU PvP Rankings
-</div>
+    <div class="badge">
+        <span class="dot"></span>
+        RO / EU MINECRAFT PVP TIER LIST
+    </div>
 
-<h1>
-Minecraft PvP<br>
-<span>Tier List.</span>
-</h1>
+    <h1>
+        Minecraft PvP.<br>
+        Ranked.
+    </h1>
 
-<p>
-The competitive ranking system for Minecraft PvP players
-across Romania and Europe.
-</p>
+    <p>
+        Compete, get tested and prove your skill.
+        Track your Minecraft PvP tier across
+        multiple gamemodes.
+    </p>
 
-<div class="buttons">
+    <div class="buttons">
 
-<a href="#leaderboards" class="button primary">
-View Leaderboards
-</a>
+        <a
+            href="#leaderboards"
+            class="button primary"
+        >
+            View Leaderboards
+        </a>
 
-<a
-href="https://discord.gg/bms3jPBD9p"
-target="_blank"
-class="button secondary">
-Join Discord
-</a>
+        <a
+            href="https://discord.gg/bms3jPBD9p"
+            target="_blank"
+            class="button secondary"
+        >
+            Join Discord
+        </a>
 
-</div>
+    </div>
 
 </section>
 
 
 <section class="stats">
 
-<div class="stat">
-<div class="stat-number">0</div>
-<div class="stat-label">Ranked Players</div>
-</div>
+    <div class="stat">
 
-<div class="stat">
-<div class="stat-number">0</div>
-<div class="stat-label">Testers</div>
-</div>
+        <div
+            class="stat-number"
+            id="rankedPlayers"
+        >
+            0
+        </div>
 
-<div class="stat">
-<div class="stat-number">0</div>
-<div class="stat-label">Tests Completed</div>
-</div>
+        <div class="stat-label">
+            RANKED PLAYERS
+        </div>
 
-<div class="stat">
-<div class="stat-number">8</div>
-<div class="stat-label">Game Modes</div>
-</div>
+    </div>
 
-</section>
+    <div class="stat">
 
+        <div
+            class="stat-number"
+            id="testers"
+        >
+            0
+        </div>
 
-<section class="section" id="leaderboards">
+        <div class="stat-label">
+            TESTERS
+        </div>
 
-<div class="section-header">
+    </div>
 
-<h2>
-Top Players
-</h2>
+    <div class="stat">
 
-<p>
-Best ranked players across RO/EU
-</p>
+        <div
+            class="stat-number"
+            id="tests"
+        >
+            0
+        </div>
 
-</div>
+        <div class="stat-label">
+            TESTS COMPLETED
+        </div>
 
+    </div>
 
-<div class="leaderboard">
+    <div class="stat">
 
+        <div class="stat-number">
+            8
+        </div>
 
-<div class="player">
+        <div class="stat-label">
+            GAME MODES
+        </div>
 
-<div class="position">
-#1
-</div>
-
-<div class="player-info">
-
-<img
-class="skin"
-src="https://mc-heads.net/body/Steve/100"
-alt="Minecraft Skin"
->
-
-<div>
-
-<div class="player-name">
-Player
-</div>
-
-<div class="region">
-🇪🇺 Europe
-</div>
-
-</div>
-
-</div>
-
-<div class="mode">
-
-<img
-class="mode-icon"
-src="https://minecraft.wiki/images/Diamond_Sword_JE3_BE3.png"
-alt="Sword"
->
-
-Sword
-
-</div>
-
-<div>
-
-<span class="tier">
-Unranked
-</span>
-
-</div>
-
-</div>
-
-
-</div>
+    </div>
 
 </section>
 
 
-<section class="search-section">
-
-<h2>
-Find a Player
-</h2>
-
-<p>
-Search for a Minecraft username and view their profile.
-</p>
-
-
-<div class="search-box">
-
-<input
-id="playerSearch"
-type="text"
-placeholder="Enter Minecraft username..."
-autocomplete="off"
+<section
+    class="section"
+    id="leaderboards"
 >
 
-<button onclick="searchPlayer()">
-Search
-</button>
+    <div class="heading">
 
-</div>
+        <h2>
+            Leaderboards
+        </h2>
+
+        <p>
+            Premium and Cracked rankings.
+        </p>
+
+    </div>
+
+
+    <!-- PREMIUM -->
+
+    <div class="premium-box">
+
+        <div class="premium-small">
+            PREMIUM TIERS
+        </div>
+
+        <h2>
+            Premium Leaderboard
+        </h2>
+
+        <p>
+            Players tested on verified Minecraft accounts.
+        </p>
+
+        <div class="server">
+            MCPVP.CLUB
+        </div>
+
+    </div>
+
+
+    <div class="podium">
+
+        <!-- SECOND -->
+
+        <div class="podium-card second">
+
+            <div class="player-name">
+                Crozzor
+            </div>
+
+            <div class="skin-area">
+
+                <img
+                    class="skin"
+                    src="https://mc-heads.net/body/Crozzor/180"
+                    alt="Crozzor"
+                >
+
+            </div>
+
+            <div class="position">
+                2
+            </div>
+
+            <div class="player-details">
+
+                <div class="tier">
+
+                    <img
+                        class="mode-icon"
+                        src="https://minecraft.wiki/images/Diamond_Sword_JE3_BE3.png"
+                        alt="Sword"
+                    >
+
+                    HT4
+
+                </div>
+
+                <div class="points">
+                    0 Points
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- FIRST -->
+
+        <div class="podium-card first">
+
+            <div class="player-name">
+                Opminer17
+            </div>
+
+            <div class="skin-area">
+
+                <img
+                    class="skin"
+                    src="https://mc-heads.net/body/Opminer17/200"
+                    alt="Opminer17"
+                >
+
+            </div>
+
+            <div class="position">
+                1
+            </div>
+
+            <div class="player-details">
+
+                <div class="tier">
+
+                    <img
+                        class="mode-icon"
+                        src="https://minecraft.wiki/images/Diamond_Sword_JE3_BE3.png"
+                        alt="Sword"
+                    >
+
+                    HT3
+
+                </div>
+
+                <div class="points">
+                    0 Points
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- THIRD -->
+
+        <div class="podium-card third">
+
+            <div class="player-name">
+                Aximity
+            </div>
+
+            <div class="skin-area">
+
+                <img
+                    class="skin"
+                    src="https://mc-heads.net/body/Aximity/180"
+                    alt="Aximity"
+                >
+
+            </div>
+
+            <div class="position">
+                3
+            </div>
+
+            <div class="player-details">
+
+                <div class="tier">
+
+                    <img
+                        class="mode-icon"
+                        src="https://minecraft.wiki/images/Diamond_Sword_JE3_BE3.png"
+                        alt="Sword"
+                    >
+
+                    HT4
+
+                </div>
+
+                <div class="points">
+                    0 Points
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CRACKED -->
+
+    <div class="cracked">
+
+        <div class="cracked-box">
+
+            <div class="cracked-label">
+                CRACKED TIERS
+            </div>
+
+            <h2>
+                Cracked Leaderboard
+            </h2>
+
+            <p>
+                Players tested without a Premium Minecraft
+                account through Craftify.
+            </p>
+
+        </div>
+
+
+        <div class="cracked-list">
+
+            <div class="cracked-player">
+
+                <div class="cracked-rank">
+                    #1
+                </div>
+
+                <div class="cracked-user">
+
+                    <img
+                        class="cracked-skin"
+                        src="https://mc-heads.net/avatar/Steve/64"
+                        alt="Player"
+                    >
+
+                    <div>
+
+                        <div class="cracked-name">
+                            Player
+                        </div>
+
+                        <div class="cracked-server">
+                            craftify.lol
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="cracked-mode">
+
+                    <img
+                        class="mode-icon"
+                        src="https://minecraft.wiki/images/Diamond_Sword_JE3_BE3.png"
+                        alt="Sword"
+                    >
+
+                    Sword
+
+                </div>
+
+                <div class="cracked-tier">
+                    Unranked
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section class="search">
+
+    <h2>
+        Find a Player
+    </h2>
+
+    <p>
+        Search any Minecraft username.
+    </p>
+
+    <div class="search-box">
+
+        <input
+            id="playerSearch"
+            type="text"
+            placeholder="Enter Minecraft username..."
+            autocomplete="off"
+        >
+
+        <button onclick="searchPlayer()">
+            Search
+        </button>
+
+    </div>
 
 </section>
 
 
 <footer>
 
-RO/EU Tiers · Minecraft PvP Ranking System
+    RO/EU Tiers © 2026
+
+    <br><br>
+
+    Minecraft is a trademark of Microsoft.
+    RO/EU Tiers is not affiliated with Mojang or Microsoft.
 
 </footer>
 
@@ -684,7 +1201,11 @@ function searchPlayer() {
         input.value.trim();
 
     if (username === "") {
+
+        input.focus();
+
         return;
+
     }
 
     window.location.href =
@@ -693,15 +1214,21 @@ function searchPlayer() {
 
 }
 
+
 document
-.getElementById("playerSearch")
-.addEventListener("keydown", function(event) {
+    .getElementById("playerSearch")
+    .addEventListener(
+        "keydown",
+        function(event) {
 
-    if (event.key === "Enter") {
-        searchPlayer();
-    }
+            if (event.key === "Enter") {
 
-});
+                searchPlayer();
+
+            }
+
+        }
+    );
 
 </script>
 
