@@ -11,135 +11,966 @@
         content="Romania's Minecraft PvP Tier List. View players, rankings, results and tiers."
     >
 
-    <link rel="stylesheet" href="./style.css">
-
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at 50% -10%, rgba(100, 70, 255, .12), transparent 35%),
+                #07070b;
+            color: #f5f5f7;
+            font-family: Inter, Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 72px;
+            border-bottom: 1px solid rgba(255,255,255,.06);
+            background: rgba(7,7,11,.86);
+            backdrop-filter: blur(18px);
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            height: 100%;
+            margin: auto;
+            padding: 0 28px;
+            display: flex;
+            align-items: center;
+            gap: 38px;
+        }
+
+        .logo {
+            font-size: 21px;
+            font-weight: 900;
+            letter-spacing: -.7px;
+            white-space: nowrap;
+        }
+
+        .logo span {
+            color: #806cff;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            flex: 1;
+        }
+
+        .nav-links a {
+            color: #858594;
+            font-size: 14px;
+            font-weight: 650;
+            transition: .2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #fff;
+        }
+
+        .nav-links a.active {
+            color: #806cff;
+        }
+
+        .nav-auth {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .login-btn,
+        .register-btn {
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 750;
+        }
+
+        .login-btn {
+            color: #a9a0ff;
+        }
+
+        .register-btn {
+            color: white;
+            background: linear-gradient(135deg, #765cff, #5944d9);
+            box-shadow: 0 8px 25px rgba(111, 83, 255, .2);
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            max-width: 1280px;
+            margin: auto;
+            padding: 115px 28px 90px;
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            padding: 8px 14px;
+            border: 1px solid rgba(128,108,255,.25);
+            border-radius: 999px;
+            background: rgba(128,108,255,.07);
+            color: #9183ff;
+            font-size: 11px;
+            font-weight: 850;
+            letter-spacing: 1.2px;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 {
+            max-width: 900px;
+            margin: auto;
+            font-size: clamp(42px, 6vw, 76px);
+            line-height: 1.02;
+            letter-spacing: -3px;
+            font-weight: 900;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(90deg, #8b78ff, #b09cff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            max-width: 680px;
+            margin: 26px auto 0;
+            color: #858593;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .hero-buttons {
+            margin-top: 35px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .primary-btn,
+        .secondary-btn {
+            padding: 13px 20px;
+            border-radius: 11px;
+            font-size: 14px;
+            font-weight: 800;
+            transition: .2s;
+        }
+
+        .primary-btn {
+            background: linear-gradient(135deg, #7b65ff, #5b45d7);
+            box-shadow: 0 12px 35px rgba(103,78,255,.25);
+        }
+
+        .secondary-btn {
+            border: 1px solid #262638;
+            background: #101016;
+            color: #c4c4d0;
+        }
+
+        .primary-btn:hover,
+        .secondary-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* =========================
+           STATS
+        ========================= */
+
+        .stats-section {
+            max-width: 1280px;
+            margin: auto;
+            padding: 0 28px 90px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .stat-card {
+            border: 1px solid #1d1d27;
+            background: linear-gradient(145deg, #101016, #0c0c11);
+            border-radius: 15px;
+            padding: 23px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .stat-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: rgba(128,108,255,.09);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 24px;
+            font-weight: 900;
+        }
+
+        .stat-label {
+            display: block;
+            margin-top: 3px;
+            color: #777785;
+            font-size: 12px;
+            font-weight: 650;
+        }
+
+        /* =========================
+           SECTIONS
+        ========================= */
+
+        .leaderboard-section,
+        .how-section,
+        .search-section {
+            max-width: 1280px;
+            margin: auto;
+            padding: 0 28px 100px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 25px;
+            margin-bottom: 28px;
+        }
+
+        .section-eyebrow {
+            color: #7967ff;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+        }
+
+        .section-header h2,
+        .search-content h2 {
+            font-size: 31px;
+            letter-spacing: -1.2px;
+            font-weight: 900;
+        }
+
+        .section-header p,
+        .search-content > p {
+            margin-top: 8px;
+            color: #747482;
+            font-size: 13px;
+        }
+
+        .view-all-btn {
+            padding: 11px 16px;
+            border: 1px solid #29263e;
+            border-radius: 10px;
+            background: #0e0d15;
+            color: #a99fff;
+            font-size: 13px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        /* =========================
+           PODIUM
+        ========================= */
+
+        .podium {
+            min-height: 385px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 18px;
+            padding: 40px 0 0;
+        }
+
+        .podium-card {
+            position: relative;
+            width: 245px;
+            min-height: 270px;
+            border: 1px solid #252532;
+            border-radius: 18px 18px 12px 12px;
+            background:
+                radial-gradient(circle at 50% 0%, rgba(128,108,255,.13), transparent 55%),
+                #0e0e14;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            padding: 35px 18px 20px;
+            cursor: pointer;
+            transition: .25s;
+        }
+
+        .podium-card:hover {
+            transform: translateY(-7px);
+            border-color: #40396a;
+        }
+
+        .podium-card.place-1 {
+            min-height: 315px;
+            border-color: rgba(255,196,72,.28);
+        }
+
+        .podium-card.place-2 {
+            min-height: 285px;
+        }
+
+        .podium-rank {
+            position: absolute;
+            top: 13px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #777687;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .podium-card.place-1 .podium-rank {
+            color: #ffd25a;
+        }
+
+        .podium-player {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .podium-skin {
+            width: 135px;
+            height: 175px;
+            object-fit: contain;
+            image-rendering: pixelated;
+            filter: drop-shadow(0 12px 18px rgba(0,0,0,.45));
+        }
+
+        .podium-name {
+            margin-top: 8px;
+            font-size: 17px;
+            font-weight: 900;
+        }
+
+        .podium-tier {
+            margin-top: 8px;
+            font-size: 14px;
+            font-weight: 900;
+        }
+
+        .podium-mode {
+            margin-top: 3px;
+            color: #777785;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .8px;
+        }
+
+        .podium-score {
+            margin-top: 8px;
+            color: #8580a8;
+            font-size: 11px;
+            font-weight: 750;
+        }
+
+        /* =========================
+           EMPTY
+        ========================= */
+
         .empty-leaderboard {
             width: 100%;
-            min-height: 180px;
+            min-height: 340px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 30px;
-            box-sizing: border-box;
         }
 
-        .empty-leaderboard .empty-icon {
-            font-size: 40px;
-            margin-bottom: 12px;
+        .empty-icon {
+            font-size: 43px;
+            margin-bottom: 15px;
         }
 
         .empty-leaderboard h3 {
-            margin: 0 0 6px;
+            font-size: 17px;
         }
 
         .empty-leaderboard p {
-            margin: 0;
-            opacity: .65;
-        }
-
-        .empty-row {
-            width: 100%;
-            padding: 30px;
-            text-align: center;
-            opacity: .65;
-            box-sizing: border-box;
+            margin-top: 7px;
+            color: #696978;
+            font-size: 13px;
         }
 
         .leaderboard-loading {
             width: 100%;
-            padding: 45px;
-            text-align: center;
-            opacity: .7;
-            box-sizing: border-box;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #676775;
+            font-size: 13px;
         }
 
-        .podium-skin {
-            object-fit: contain;
-            image-rendering: auto;
+        /* =========================
+           TABLE
+        ========================= */
+
+        .leaderboard-container {
+            overflow: hidden;
+            border: 1px solid #20202a;
+            border-radius: 17px;
+            background: #0a0a0f;
+        }
+
+        .leaderboard-head,
+        .leaderboard-row {
+            display: grid;
+            grid-template-columns: 90px minmax(260px, 1fr) 130px 110px 100px 130px;
+            align-items: center;
+        }
+
+        .leaderboard-head {
+            min-height: 54px;
+            padding: 0 22px;
+            background: #111116;
+            border-bottom: 1px solid #20202a;
+            color: #676777;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .leaderboard-row {
+            min-height: 72px;
+            padding: 0 22px;
+            border-bottom: 1px solid #17171f;
+            cursor: pointer;
+            transition: .18s;
+        }
+
+        .leaderboard-row:last-child {
+            border-bottom: 0;
+        }
+
+        .leaderboard-row:hover {
+            background: #101017;
+        }
+
+        .rank-number {
+            color: #777787;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .player-cell {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            min-width: 0;
         }
 
         .player-skin {
             width: 42px;
             height: 42px;
+            border-radius: 9px;
             object-fit: cover;
-            border-radius: 8px;
+            background: #15151c;
+            image-rendering: pixelated;
         }
 
-        .tier-badge,
-        .podium-tier {
+        .player-info {
+            min-width: 0;
+        }
+
+        .player-name {
+            overflow: hidden;
+            text-overflow: ellipsis;
             white-space: nowrap;
+            font-size: 14px;
+            font-weight: 850;
         }
 
-        .leaderboard-row,
-        .podium-card {
-            cursor: pointer;
+        .player-region {
+            margin-top: 4px;
+            color: #686875;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
         }
 
-        .tier-badge.ht1,
-        .podium-tier.ht1 {
+        .tier-badge {
+            display: inline-flex;
+            padding: 5px 9px;
+            border: 1px solid currentColor;
+            border-radius: 7px;
+            background: rgba(255,255,255,.025);
+            font-size: 11px;
+            font-weight: 900;
+        }
+
+        .tier-mode {
+            margin-left: 6px;
+            color: #646471;
+            font-size: 9px;
+            text-transform: uppercase;
+        }
+
+        .score-cell {
+            color: #aaa5c8;
+            font-size: 13px;
+            font-weight: 850;
+        }
+
+        .tests-cell,
+        .record-cell {
+            color: #777783;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .empty-row {
+            padding: 45px;
+            text-align: center;
+            color: #686875;
+            font-size: 13px;
+        }
+
+        /* =========================
+           TIER COLORS
+        ========================= */
+
+        .ht1 {
             color: #ff5555;
         }
 
-        .tier-badge.lt1,
-        .podium-tier.lt1 {
+        .lt1 {
             color: #ff7777;
         }
 
-        .tier-badge.ht2,
-        .podium-tier.ht2 {
+        .ht2 {
             color: #ffaa00;
         }
 
-        .tier-badge.lt2,
-        .podium-tier.lt2 {
+        .lt2 {
             color: #ffbb33;
         }
 
-        .tier-badge.ht3,
-        .podium-tier.ht3 {
+        .ht3 {
             color: #ffff55;
         }
 
-        .tier-badge.lt3,
-        .podium-tier.lt3 {
+        .lt3 {
             color: #eeee55;
         }
 
-        .tier-badge.ht4,
-        .podium-tier.ht4 {
+        .ht4 {
             color: #55ff55;
         }
 
-        .tier-badge.lt4,
-        .podium-tier.lt4 {
+        .lt4 {
             color: #77dd77;
         }
 
-        .tier-badge.ht5,
-        .podium-tier.ht5 {
+        .ht5 {
             color: #55ffff;
         }
 
-        .tier-badge.lt5,
-        .podium-tier.lt5 {
+        .lt5 {
             color: #77dddd;
         }
 
-        .tier-badge.unranked,
-        .podium-tier.unranked {
+        .unranked {
+            color: #777;
+        }
+
+        /* =========================
+           CRACKED
+        ========================= */
+
+        .cracked-leaderboard {
+            margin-top: 20px;
+            padding: 22px 24px;
+            border: 1px solid #22222c;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #0f0f15, #0b0b10);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .cracked-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .cracked-icon {
+            width: 43px;
+            height: 43px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 11px;
+            background: rgba(128,108,255,.08);
+            font-size: 20px;
+        }
+
+        .cracked-info h3 {
+            font-size: 14px;
+        }
+
+        .cracked-info p {
+            margin-top: 4px;
+            color: #686875;
+            font-size: 11px;
+        }
+
+        .cracked-btn {
+            padding: 10px 14px;
+            border: 1px solid #29283b;
+            border-radius: 9px;
+            color: #9388ff;
+            font-size: 11px;
+            font-weight: 850;
+            white-space: nowrap;
+        }
+
+        /* =========================
+           HOW IT WORKS
+        ========================= */
+
+        .centered {
+            justify-content: center;
+            text-align: center;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .step-card {
+            position: relative;
+            overflow: hidden;
+            padding: 28px;
+            border: 1px solid #1f1f29;
+            border-radius: 16px;
+            background: #0d0d13;
+        }
+
+        .step-number {
+            position: absolute;
+            top: 20px;
+            right: 22px;
+            color: #292936;
+            font-size: 27px;
+            font-weight: 900;
+        }
+
+        .step-icon {
+            font-size: 28px;
+            margin-bottom: 22px;
+        }
+
+        .step-card h3 {
+            font-size: 15px;
+        }
+
+        .step-card p {
+            margin-top: 8px;
+            color: #696975;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           SEARCH
+        ========================= */
+
+        .search-section {
+            padding-bottom: 110px;
+        }
+
+        .search-content {
+            max-width: 700px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .search-box {
+            margin-top: 27px;
+            padding: 6px;
+            display: flex;
+            align-items: center;
+            border: 1px solid #252532;
+            border-radius: 13px;
+            background: #0e0e14;
+        }
+
+        .search-icon {
+            margin: 0 10px;
             opacity: .55;
         }
 
-        @media (max-width: 700px) {
+        .search-box input {
+            flex: 1;
+            min-width: 0;
+            border: 0;
+            outline: 0;
+            background: transparent;
+            color: white;
+            font-size: 13px;
+        }
+
+        .search-box input::placeholder {
+            color: #555562;
+        }
+
+        .search-box button {
+            padding: 11px 17px;
+            border: 0;
+            border-radius: 9px;
+            background: #7560ef;
+            color: white;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 850;
+        }
+
+        .search-message {
+            min-height: 20px;
+            margin-top: 10px;
+            color: #ff7777;
+            font-size: 12px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+            border-top: 1px solid #181820;
+            background: #050507;
+        }
+
+        .footer-container {
+            max-width: 1280px;
+            margin: auto;
+            padding: 45px 28px;
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .footer-brand p {
+            margin-top: 8px;
+            color: #60606b;
+            font-size: 12px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 23px;
+            align-items: center;
+        }
+
+        .footer-links a {
+            color: #686875;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            padding: 17px;
+            border-top: 1px solid #14141b;
+            text-align: center;
+            color: #4e4e59;
+            font-size: 10px;
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .nav-container {
+                justify-content: space-between;
+            }
+
+            .stats-section {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .leaderboard-head,
+            .leaderboard-row {
+                grid-template-columns: 65px minmax(180px, 1fr) 90px 75px;
+            }
+
+            .leaderboard-head div:nth-child(5),
+            .leaderboard-head div:nth-child(6),
+            .tests-cell,
             .record-cell {
                 display: none;
             }
 
-            .tests-cell {
+            .podium-card {
+                width: 30%;
+            }
+
+            .podium-skin {
+                width: 105px;
+                height: 145px;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .navbar {
+                height: 62px;
+            }
+
+            .nav-auth .login-btn {
                 display: none;
+            }
+
+            .hero {
+                padding: 75px 20px 65px;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+                letter-spacing: -2px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .stats-section,
+            .leaderboard-section,
+            .how-section,
+            .search-section {
+                padding-left: 18px;
+                padding-right: 18px;
+            }
+
+            .stats-section {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .stat-card {
+                padding: 16px;
+            }
+
+            .section-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .podium {
+                gap: 8px;
+                min-height: 310px;
+            }
+
+            .podium-card {
+                width: 33%;
+                min-height: 225px !important;
+                padding: 30px 5px 15px;
+            }
+
+            .podium-skin {
+                width: 75px;
+                height: 105px;
+            }
+
+            .podium-name {
+                font-size: 12px;
+                max-width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .podium-tier {
+                font-size: 11px;
+            }
+
+            .podium-mode {
+                font-size: 8px;
+            }
+
+            .podium-score {
+                font-size: 9px;
+            }
+
+            .leaderboard-container {
+                overflow-x: auto;
+            }
+
+            .leaderboard-head,
+            .leaderboard-row {
+                min-width: 650px;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cracked-leaderboard {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
             }
         }
     </style>
@@ -160,7 +991,7 @@
             <a href="./leaderboards.html">Leaderboards</a>
             <a href="./results.html">Results</a>
             <a href="./tiers.html">Tiers</a>
-            <a href="https://discord.gg/bms3jPBD9p" target="_blank" rel="noopener noreferrer">
+            <a href="https://discord.gg/bms3jPBD9p" target="_blank">
                 Discord
             </a>
         </nav>
@@ -219,64 +1050,45 @@
     <section class="stats-section">
 
         <div class="stat-card">
+            <div class="stat-icon">👥</div>
 
-            <div class="stat-icon">
-                👥
-            </div>
-
-            <div class="stat-info">
+            <div>
                 <span class="stat-value" id="playersCount">0</span>
                 <span class="stat-label">Players</span>
             </div>
-
         </div>
 
-
         <div class="stat-card">
+            <div class="stat-icon">🏆</div>
 
-            <div class="stat-icon">
-                🏆
-            </div>
-
-            <div class="stat-info">
+            <div>
                 <span class="stat-value" id="rankedCount">0</span>
                 <span class="stat-label">Ranked Players</span>
             </div>
-
         </div>
 
-
         <div class="stat-card">
+            <div class="stat-icon">⚔️</div>
 
-            <div class="stat-icon">
-                ⚔️
-            </div>
-
-            <div class="stat-info">
+            <div>
                 <span class="stat-value" id="testsCount">0</span>
                 <span class="stat-label">Tests</span>
             </div>
-
         </div>
 
-
         <div class="stat-card">
+            <div class="stat-icon">🛡️</div>
 
-            <div class="stat-icon">
-                🛡️
-            </div>
-
-            <div class="stat-info">
+            <div>
                 <span class="stat-value" id="testersCount">0</span>
                 <span class="stat-label">Testers</span>
             </div>
-
         </div>
 
     </section>
 
 
-    <!-- MAIN LEADERBOARD -->
+    <!-- LEADERBOARD -->
 
     <section class="leaderboard-section">
 
@@ -293,7 +1105,7 @@
                 </h2>
 
                 <p>
-                    Overall leaderboard • Live rankings
+                    Overall leaderboard • Best tier across all gamemodes
                 </p>
 
             </div>
@@ -352,7 +1164,7 @@
             <div class="cracked-info">
 
                 <div class="cracked-icon">
-                    ⛏
+                    ⛏️
                 </div>
 
                 <div>
@@ -545,24 +1357,12 @@
 
         </div>
 
-
         <div class="footer-links">
 
-            <a href="./players.html">
-                Players
-            </a>
-
-            <a href="./leaderboards.html">
-                Leaderboards
-            </a>
-
-            <a href="./results.html">
-                Results
-            </a>
-
-            <a href="./tiers.html">
-                Tiers
-            </a>
+            <a href="./players.html">Players</a>
+            <a href="./leaderboards.html">Leaderboards</a>
+            <a href="./results.html">Results</a>
+            <a href="./tiers.html">Tiers</a>
 
             <a
                 href="https://discord.gg/bms3jPBD9p"
@@ -576,7 +1376,6 @@
 
     </div>
 
-
     <div class="footer-bottom">
         © 2026 ROTierList. All rights reserved.
     </div>
@@ -584,7 +1383,9 @@
 </footer>
 
 
-<!-- FIREBASE -->
+<!-- =========================================
+     FIREBASE
+========================================= -->
 
 <script type="module">
 
@@ -597,19 +1398,34 @@
     } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 
 
-    /* =========================================
+    /* =========================
        DATABASE
-    ========================================= */
+    ========================= */
 
     const database = getDatabase(app);
 
 
-    /* =========================================
-       CONFIG
-    ========================================= */
+    /* =========================
+       GAMEMODES
+    ========================= */
+
+    const GAMEMODES = [
+        "vanilla",
+        "sword",
+        "axe",
+        "uhc",
+        "pot",
+        "mace",
+        "smp",
+        "crystal"
+    ];
+
+
+    /* =========================
+       TIER SCORE
+    ========================= */
 
     const TIER_SCORE = {
-
         HT1: 100,
         LT1: 90,
 
@@ -626,43 +1442,12 @@
         LT5: 10,
 
         Unranked: 0
-
     };
 
 
-    /*
-     * IMPORTANT:
-     *
-     * The homepage is an OVERALL leaderboard.
-     *
-     * It checks every gamemode and chooses
-     * the player's BEST tier.
-     *
-     * Example:
-     *
-     * LT4 Axe
-     * LT3 Vanilla
-     *
-     * Result = LT3
-     *
-     */
-
-
-    const GAMEMODES = [
-        "vanilla",
-        "sword",
-        "axe",
-        "uhc",
-        "pot",
-        "mace",
-        "smp",
-        "crystal"
-    ];
-
-
-    /* =========================================
+    /* =========================
        ELEMENTS
-    ========================================= */
+    ========================= */
 
     const podium =
         document.getElementById("podium");
@@ -695,9 +1480,9 @@
     let allPlayers = [];
 
 
-    /* =========================================
+    /* =========================
        HELPERS
-    ========================================= */
+    ========================= */
 
     function escapeHTML(value) {
 
@@ -756,7 +1541,7 @@
             return "unranked";
         }
 
-        return String(tier)
+        return tier
             .toLowerCase()
             .replace(/\s+/g, "");
 
@@ -770,108 +1555,80 @@
     }
 
 
-    /*
-     * Handles both:
-     *
-     * tiers.sword
-     *
-     * and:
-     *
-     * tiers.Sword
-     *
-     */
-
-    function getGamemodeTier(player, gamemode) {
-
-        const tiers = player?.tiers || {};
-
-        const wanted = gamemode.toLowerCase();
-
-        for (const key of Object.keys(tiers)) {
-
-            if (
-                String(key).toLowerCase() === wanted
-            ) {
-
-                const tier = tiers[key];
-
-                if (
-                    tier &&
-                    Object.prototype.hasOwnProperty.call(
-                        TIER_SCORE,
-                        tier
-                    )
-                ) {
-
-                    return tier;
-
-                }
-
-            }
-
-        }
-
-        return "Unranked";
-
-    }
-
-
-    /* =========================================
+    /* =========================
        BEST TIER
-    ========================================= */
+    ========================= */
 
     function getBestTier(player) {
 
-        let bestTier = "Unranked";
-        let bestScore = 0;
-        let bestGamemode = "";
+        let best = {
+            tier: "Unranked",
+            gamemode: null,
+            score: 0
+        };
+
+
+        if (!player || !player.tiers) {
+            return best;
+        }
+
 
         for (const gamemode of GAMEMODES) {
 
             const tier =
-                getGamemodeTier(
-                    player,
-                    gamemode
-                );
+                player.tiers[gamemode] || "Unranked";
 
             const score =
                 getTierScore(tier);
 
-            if (score > bestScore) {
 
-                bestScore = score;
-                bestTier = tier;
-                bestGamemode = gamemode;
+            if (score > best.score) {
+
+                best = {
+                    tier,
+                    gamemode,
+                    score
+                };
 
             }
 
         }
 
-        return {
-            tier: bestTier,
-            score: bestScore,
-            gamemode: bestGamemode
+
+        return best;
+
+    }
+
+
+    /* =========================
+       GAMEMODE NAME
+    ========================= */
+
+    function formatGamemode(gamemode) {
+
+        if (!gamemode) {
+            return "";
+        }
+
+        const names = {
+            vanilla: "Vanilla",
+            sword: "Sword",
+            axe: "Axe",
+            uhc: "UHC",
+            pot: "Pot",
+            mace: "Mace",
+            smp: "SMP",
+            crystal: "Crystal"
         };
 
-    }
-
-
-    /* =========================================
-       ACCOUNT TYPE
-    ========================================= */
-
-    function isPremium(player) {
-
-        return String(
-            player?.accountType || ""
-        ).toLowerCase() === "premium";
+        return names[gamemode] || gamemode;
 
     }
 
 
-    /* =========================================
-       RANKED PLAYERS
-    ========================================= */
+    /* =========================
+       GET RANKED PLAYERS
+    ========================= */
 
     function getRankedPlayers() {
 
@@ -883,22 +1640,23 @@
                     return false;
                 }
 
+
                 /*
-                 * Homepage = Premium only
+                 * Homepage = PREMIUM ONLY
                  */
 
-                if (!isPremium(player)) {
+                if (player.accountType !== "premium") {
                     return false;
                 }
 
 
                 /*
-                 * Get player's best tier
+                 * Player must have at least
+                 * one ranked gamemode.
                  */
 
                 const best =
                     getBestTier(player);
-
 
                 return best.score > 0;
 
@@ -916,17 +1674,13 @@
 
                 /*
                  * 1. BEST TIER
+                 *
+                 * LT3 Vanilla > LT4 Axe
                  */
 
-                if (
-                    bestA.score !==
-                    bestB.score
-                ) {
+                if (bestA.score !== bestB.score) {
 
-                    return (
-                        bestB.score -
-                        bestA.score
-                    );
+                    return bestB.score - bestA.score;
 
                 }
 
@@ -936,14 +1690,10 @@
                  */
 
                 const testsA =
-                    Number(
-                        a?.stats?.tests || 0
-                    );
+                    Number(a?.stats?.tests || 0);
 
                 const testsB =
-                    Number(
-                        b?.stats?.tests || 0
-                    );
+                    Number(b?.stats?.tests || 0);
 
                 if (testsA !== testsB) {
 
@@ -957,14 +1707,10 @@
                  */
 
                 const winsA =
-                    Number(
-                        a?.stats?.wins || 0
-                    );
+                    Number(a?.stats?.wins || 0);
 
                 const winsB =
-                    Number(
-                        b?.stats?.wins || 0
-                    );
+                    Number(b?.stats?.wins || 0);
 
                 if (winsA !== winsB) {
 
@@ -975,29 +1721,40 @@
 
                 /*
                  * 4. LOSSES
-                 * Fewer losses = better
+                 * Lower losses wins the tie.
                  */
 
                 const lossesA =
-                    Number(
-                        a?.stats?.losses || 0
-                    );
+                    Number(a?.stats?.losses || 0);
 
                 const lossesB =
-                    Number(
-                        b?.stats?.losses || 0
-                    );
+                    Number(b?.stats?.losses || 0);
 
-                return lossesA - lossesB;
+                if (lossesA !== lossesB) {
+
+                    return lossesA - lossesB;
+
+                }
+
+
+                /*
+                 * 5. Alphabetical
+                 */
+
+                return String(
+                    a.minecraftName || ""
+                ).localeCompare(
+                    String(b.minecraftName || "")
+                );
 
             });
 
     }
 
 
-    /* =========================================
+    /* =========================
        PODIUM
-    ========================================= */
+    ========================= */
 
     function renderPodium(players) {
 
@@ -1049,20 +1806,27 @@
                         "Unknown"
                     );
 
-                const uuid =
-                    player.uuid || "";
 
                 const best =
                     getBestTier(player);
 
+
                 const tier =
                     best.tier;
+
 
                 const score =
                     best.score;
 
-                const gamemode =
-                    best.gamemode;
+
+                const mode =
+                    formatGamemode(
+                        best.gamemode
+                    );
+
+
+                const uuid =
+                    player.uuid || "";
 
 
                 return `
@@ -1097,34 +1861,19 @@
                             </div>
 
 
-                            <div
-                                class="podium-tier ${getTierClass(tier)}"
-                            >
+                            <div class="podium-tier ${getTierClass(tier)}">
                                 ${escapeHTML(tier)}
+                            </div>
+
+
+                            <div class="podium-mode">
+                                ${escapeHTML(mode)}
                             </div>
 
 
                             <div class="podium-score">
                                 ${score} pts
                             </div>
-
-
-                            ${
-                                gamemode
-                                    ? `
-                                        <div
-                                            style="
-                                                font-size:11px;
-                                                opacity:.55;
-                                                margin-top:4px;
-                                                text-transform:uppercase;
-                                            "
-                                        >
-                                            ${escapeHTML(gamemode)}
-                                        </div>
-                                    `
-                                    : ""
-                            }
 
                         </div>
 
@@ -1152,9 +1901,7 @@
                         }
 
                         window.location.href =
-                            `./players.html?player=${encodeURIComponent(
-                                username
-                            )}`;
+                            `./players.html?player=${encodeURIComponent(username)}`;
 
                     }
                 );
@@ -1164,9 +1911,9 @@
     }
 
 
-    /* =========================================
+    /* =========================
        TABLE ROWS
-    ========================================= */
+    ========================= */
 
     function renderRows(players) {
 
@@ -1201,41 +1948,53 @@
                     const position =
                         index + 4;
 
+
                     const name =
                         escapeHTML(
                             player.minecraftName ||
                             "Unknown"
                         );
 
-                    const uuid =
-                        player.uuid || "";
 
                     const best =
                         getBestTier(player);
 
+
                     const tier =
                         best.tier;
+
 
                     const score =
                         best.score;
 
-                    const gamemode =
-                        best.gamemode;
+
+                    const mode =
+                        formatGamemode(
+                            best.gamemode
+                        );
+
+
+                    const uuid =
+                        player.uuid || "";
+
 
                     const tests =
                         Number(
                             player?.stats?.tests || 0
                         );
 
+
                     const wins =
                         Number(
                             player?.stats?.wins || 0
                         );
 
+
                     const losses =
                         Number(
                             player?.stats?.losses || 0
                         );
+
 
                     const region =
                         escapeHTML(
@@ -1293,22 +2052,9 @@
                                     ${escapeHTML(tier)}
                                 </span>
 
-                                ${
-                                    gamemode
-                                        ? `
-                                            <div
-                                                style="
-                                                    font-size:10px;
-                                                    opacity:.45;
-                                                    margin-top:3px;
-                                                    text-transform:uppercase;
-                                                "
-                                            >
-                                                ${escapeHTML(gamemode)}
-                                            </div>
-                                        `
-                                        : ""
-                                }
+                                <span class="tier-mode">
+                                    ${escapeHTML(mode)}
+                                </span>
 
                             </div>
 
@@ -1351,9 +2097,7 @@
                         }
 
                         window.location.href =
-                            `./players.html?player=${encodeURIComponent(
-                                username
-                            )}`;
+                            `./players.html?player=${encodeURIComponent(username)}`;
 
                     }
                 );
@@ -1363,9 +2107,9 @@
     }
 
 
-    /* =========================================
+    /* =========================
        STATS
-    ========================================= */
+    ========================= */
 
     function renderStats(players) {
 
@@ -1380,14 +2124,15 @@
         const ranked =
             players.filter(player => {
 
-                if (!isPremium(player)) {
+                if (
+                    !player ||
+                    player.accountType !== "premium"
+                ) {
                     return false;
                 }
 
-                const best =
-                    getBestTier(player);
 
-                return best.score > 0;
+                return getBestTier(player).score > 0;
 
             });
 
@@ -1404,12 +2149,10 @@
             players.reduce(
                 (total, player) => {
 
-                    return (
-                        total +
+                    return total +
                         Number(
                             player?.stats?.tests || 0
-                        )
-                    );
+                        );
 
                 },
                 0
@@ -1425,10 +2168,7 @@
 
 
         /*
-         * Tester count.
-         *
-         * If you don't have a testers
-         * collection yet, keep 0.
+         * No testers collection yet.
          */
 
         if (testersCount) {
@@ -1441,9 +2181,9 @@
     }
 
 
-    /* =========================================
+    /* =========================
        RENDER
-    ========================================= */
+    ========================= */
 
     function renderLeaderboard(players) {
 
@@ -1453,9 +2193,9 @@
     }
 
 
-    /* =========================================
+    /* =========================
        SEARCH
-    ========================================= */
+    ========================= */
 
     function searchPlayer() {
 
@@ -1470,11 +2210,12 @@
                 .toLowerCase();
 
 
-        if (!query) {
+        if (searchMessage) {
+            searchMessage.textContent = "";
+        }
 
-            if (searchMessage) {
-                searchMessage.textContent = "";
-            }
+
+        if (!query) {
 
             renderLeaderboard(
                 getRankedPlayers()
@@ -1488,9 +2229,12 @@
         const player =
             allPlayers.find(item => {
 
-                return String(
-                    item?.minecraftName || ""
-                ).toLowerCase() === query;
+                const name =
+                    String(
+                        item?.minecraftName || ""
+                    ).toLowerCase();
+
+                return name === query;
 
             });
 
@@ -1506,11 +2250,6 @@
 
             return;
 
-        }
-
-
-        if (searchMessage) {
-            searchMessage.textContent = "";
         }
 
 
@@ -1539,7 +2278,9 @@
             event => {
 
                 if (event.key === "Enter") {
+
                     searchPlayer();
+
                 }
 
             }
@@ -1548,9 +2289,9 @@
     }
 
 
-    /* =========================================
+    /* =========================
        FIREBASE REALTIME DATABASE
-    ========================================= */
+    ========================= */
 
     const playersRef =
         ref(database, "players");
@@ -1569,17 +2310,13 @@
             allPlayers =
                 Object.entries(data)
 
-                    .map(([uid, player]) => {
+                    .map(([uid, player]) => ({
 
-                        return {
+                        uid,
 
-                            uid,
+                        ...(player || {})
 
-                            ...(player || {})
-
-                        };
-
-                    })
+                    }))
 
                     .filter(player => {
 
@@ -1606,13 +2343,13 @@
 
             console.log(
                 "[ROTierList] Players loaded:",
-                allPlayers
+                allPlayers.length
             );
 
 
             console.log(
-                "[ROTierList] Premium ranked players:",
-                rankedPlayers
+                "[ROTierList] Ranked players:",
+                rankedPlayers.length
             );
 
         },
