@@ -1,397 +1,533 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Login | ROTierList</title>
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Login | RO TierList</title>
 
     <style>
+
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #0b0b0d;
-            color: white;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
 
-        nav {
-            height: 64px;
+            min-height: 100vh;
+
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 0 32px;
-            border-bottom: 1px solid #24242a;
-            background: #0d0d0f;
+            justify-content: center;
+
+            font-family: Arial, sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at top,
+                    #172033 0%,
+                    #080b12 45%,
+                    #05070b 100%
+                );
+
+            color: white;
+
         }
 
-        .logo {
-            font-size: 21px;
-            font-weight: 800;
-            color: white;
-            text-decoration: none;
+
+        .login-box {
+
+            width: 420px;
+            max-width: 92%;
+
+            padding: 34px;
+
+            background:
+                rgba(15,20,32,0.94);
+
+            border:
+                1px solid rgba(255,255,255,0.08);
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 25px 80px rgba(0,0,0,0.45);
+
         }
+
+
+        .logo {
+
+            text-align: center;
+
+            font-size: 27px;
+
+            font-weight: 900;
+
+            margin-bottom: 8px;
+
+        }
+
 
         .logo span {
             color: #8b5cf6;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 24px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: #a1a1aa;
-            text-decoration: none;
-            font-size: 14px;
-            transition: 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: white;
-        }
-
-        .discord {
-            background: #5865f2;
-            color: white !important;
-            padding: 9px 15px;
-            border-radius: 8px;
-            font-weight: 700;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 450px;
-            margin: auto;
-            padding: 40px 20px;
-        }
-
-        .card {
-            background: #111114;
-            border: 1px solid #28282f;
-            border-radius: 16px;
-            padding: 32px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
-        }
-
-        .title {
-            text-align: center;
-            margin-bottom: 8px;
-            font-size: 30px;
-            font-weight: 800;
-        }
 
         .subtitle {
+
             text-align: center;
-            color: #8f8f99;
+
+            color: #8e98aa;
+
             font-size: 14px;
+
             margin-bottom: 28px;
+
         }
 
-        .field {
-            margin-bottom: 17px;
-        }
 
         label {
+
             display: block;
-            font-size: 13px;
-            font-weight: 700;
+
             margin-bottom: 7px;
-            color: #d4d4d8;
+
+            color: #d7dbe4;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
         }
+
 
         input {
+
             width: 100%;
+
             padding: 13px 14px;
-            border-radius: 9px;
-            border: 1px solid #303038;
-            background: #0b0b0e;
+
+            margin-bottom: 17px;
+
+            border-radius: 10px;
+
+            border:
+                1px solid #252c3b;
+
+            background: #0b0f18;
+
             color: white;
+
             outline: none;
+
             font-size: 14px;
-            transition: 0.2s;
+
         }
+
 
         input:focus {
+
             border-color: #8b5cf6;
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.12);
+
+            box-shadow:
+                0 0 0 3px rgba(139,92,246,0.12);
+
         }
 
-        .forgot {
-            display: block;
-            text-align: right;
-            margin-top: -7px;
-            margin-bottom: 20px;
-            color: #9b7cff;
-            font-size: 13px;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .forgot:hover {
-            color: #b5a0ff;
-        }
 
         button {
+
             width: 100%;
-            padding: 13px;
+
+            padding: 14px;
+
             border: none;
-            border-radius: 9px;
-            background: #8b5cf6;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #8b5cf6,
+                    #6d3ee8
+                );
+
             color: white;
-            font-size: 15px;
+
             font-weight: 800;
+
+            font-size: 14px;
+
             cursor: pointer;
+
             transition: 0.2s;
+
         }
+
 
         button:hover {
-            background: #7c4ee8;
+
             transform: translateY(-1px);
+
+            box-shadow:
+                0 10px 30px rgba(139,92,246,0.25);
+
         }
+
 
         button:disabled {
+
             opacity: 0.6;
+
             cursor: not-allowed;
+
             transform: none;
+
         }
 
-        .message {
-            display: none;
-            margin-bottom: 17px;
-            padding: 12px 13px;
-            border-radius: 9px;
-            font-size: 13px;
-            line-height: 1.4;
-        }
 
-        .message.error {
+        .forgot {
+
             display: block;
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #fca5a5;
-        }
 
-        .message.success {
-            display: block;
-            background: rgba(34, 197, 94, 0.1);
-            border: 1px solid rgba(34, 197, 94, 0.3);
-            color: #86efac;
-        }
+            text-align: right;
 
-        .resend {
-            display: none;
-            margin-top: 10px;
-            background: #202027;
-            border: 1px solid #35353e;
-        }
+            margin-top: -7px;
 
-        .resend:hover {
-            background: #292932;
-        }
+            margin-bottom: 20px;
 
-        .register {
-            text-align: center;
-            margin-top: 22px;
-            color: #8f8f99;
-            font-size: 14px;
-        }
-
-        .register a {
             color: #a78bfa;
-            text-decoration: none;
-            font-weight: 700;
+
+            font-size: 12px;
+
+            cursor: pointer;
+
         }
 
-        .register a:hover {
+
+        .forgot:hover {
             color: #c4b5fd;
         }
 
-        @media (max-width: 800px) {
-            .nav-links a:not(.discord) {
-                display: none;
-            }
 
-            nav {
-                padding: 0 18px;
-            }
+        .message {
+
+            display: none;
+
+            margin-top: 16px;
+
+            padding: 12px;
+
+            border-radius: 9px;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+
         }
+
+
+        .error {
+
+            display: block;
+
+            background:
+                rgba(239,68,68,0.1);
+
+            border:
+                1px solid rgba(239,68,68,0.25);
+
+            color: #ff8b8b;
+
+        }
+
+
+        .success {
+
+            display: block;
+
+            background:
+                rgba(34,197,94,0.1);
+
+            border:
+                1px solid rgba(34,197,94,0.25);
+
+            color: #75e69b;
+
+        }
+
+
+        .resend {
+
+            display: none;
+
+            margin-top: 10px;
+
+            background: #151925;
+
+            border:
+                1px solid rgba(255,255,255,0.08);
+
+        }
+
+
+        .register {
+
+            text-align: center;
+
+            margin-top: 22px;
+
+            color: #8992a3;
+
+            font-size: 13px;
+
+        }
+
+
+        .register a {
+
+            color: #a78bfa;
+
+            text-decoration: none;
+
+            font-weight: 700;
+
+        }
+
+
+        .back {
+
+            display: block;
+
+            text-align: center;
+
+            margin-top: 15px;
+
+            color: #697386;
+
+            font-size: 12px;
+
+            text-decoration: none;
+
+        }
+
     </style>
+
 </head>
+
 
 <body>
 
-<nav>
-    <a href="index.html" class="logo">
-        RO<span>Tier</span>List
-    </a>
 
-    <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="players.html">Players</a>
-        <a href="leaderboards.html">Leaderboards</a>
-        <a href="results.html">Results</a>
-        <a href="tiers.html">Tiers</a>
-        <a href="https://discord.gg/bms3jPBD9p" target="_blank" class="discord">
-            Discord
-        </a>
+<div class="login-box">
+
+
+    <div class="logo">
+        RO <span>TierList</span>
     </div>
-</nav>
 
-<div class="container">
 
-    <div class="card">
+    <div class="subtitle">
+        Login to your Minecraft PvP account
+    </div>
 
-        <h1 class="title">Welcome back</h1>
 
-        <p class="subtitle">
-            Login to your ROTierList account
-        </p>
+    <form id="loginForm">
 
-        <div id="message" class="message"></div>
 
-        <form id="loginForm">
+        <label for="email">
+            Email
+        </label>
 
-            <div class="field">
-                <label for="email">Email</label>
+        <input
+            id="email"
+            type="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            required
+        >
 
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="you@example.com"
-                    autocomplete="email"
-                    required
-                >
-            </div>
 
-            <div class="field">
-                <label for="password">Password</label>
+        <label for="password">
+            Password
+        </label>
 
-                <input
-                    type="password"
-                    id="password"
-                    placeholder="Your password"
-                    autocomplete="current-password"
-                    required
-                >
-            </div>
+        <input
+            id="password"
+            type="password"
+            placeholder="Your password"
+            autocomplete="current-password"
+            required
+        >
 
-            <a class="forgot" id="forgotPassword">
-                Forgot password?
-            </a>
 
-            <button type="submit" id="loginBtn">
-                Login
-            </button>
-
-            <button
-                type="button"
-                id="resendBtn"
-                class="resend"
-            >
-                Resend verification email
-            </button>
-
-        </form>
-
-        <div class="register">
-            Don't have an account?
-            <a href="register.html">Create one</a>
+        <div
+            id="forgot"
+            class="forgot"
+        >
+            Forgot password?
         </div>
 
+
+        <button
+            id="loginButton"
+            type="submit"
+        >
+            LOGIN
+        </button>
+
+
+    </form>
+
+
+    <button
+        id="resendButton"
+        class="resend"
+        type="button"
+    >
+        RESEND VERIFICATION EMAIL
+    </button>
+
+
+    <div
+        id="message"
+        class="message"
+    ></div>
+
+
+    <div class="register">
+
+        Don't have an account?
+
+        <a href="register.html">
+            Register
+        </a>
+
     </div>
+
+
+    <a
+        class="back"
+        href="index.html"
+    >
+        ← Back to website
+    </a>
+
 
 </div>
 
+
 <script type="module">
 
-    import {
-        signInWithEmailAndPassword,
-        sendPasswordResetEmail,
-        sendEmailVerification,
-        signOut
-    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import {
+    signInWithEmailAndPassword,
+    sendEmailVerification,
+    sendPasswordResetEmail,
+    signOut
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-    import { auth } from "./firebase.js";
-
-
-    const loginForm = document.getElementById("loginForm");
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
-
-    const loginBtn = document.getElementById("loginBtn");
-    const resendBtn = document.getElementById("resendBtn");
-
-    const forgotPassword = document.getElementById("forgotPassword");
-    const message = document.getElementById("message");
+import { auth } from "./firebase.js";
 
 
-    function showMessage(text, type = "error") {
+const form =
+    document.getElementById("loginForm");
 
-        message.textContent = text;
+const button =
+    document.getElementById("loginButton");
 
-        message.className = "message " + type;
-    }
+const resendButton =
+    document.getElementById("resendButton");
+
+const forgot =
+    document.getElementById("forgot");
+
+const message =
+    document.getElementById("message");
 
 
-    function clearMessage() {
-
-        message.textContent = "";
-
-        message.className = "message";
-    }
+let currentUser = null;
 
 
-    /*
-     * LOGIN
-     */
+function showMessage(text, type) {
 
-    loginForm.addEventListener("submit", async (event) => {
+    message.textContent = text;
+
+    message.className =
+        "message " + type;
+
+}
+
+
+/*
+ * LOGIN
+ */
+
+form.addEventListener(
+    "submit",
+    async (event) => {
 
         event.preventDefault();
 
-        clearMessage();
 
-        const email = emailInput.value.trim();
-        const password = passwordInput.value;
+        const email =
+            document
+                .getElementById("email")
+                .value
+                .trim();
+
+        const password =
+            document
+                .getElementById("password")
+                .value;
 
 
         if (!email || !password) {
 
-            showMessage("Completeaza toate campurile.");
+            showMessage(
+                "Enter your email and password.",
+                "error"
+            );
 
             return;
+
         }
 
 
-        loginBtn.disabled = true;
-        loginBtn.textContent = "Logging in...";
+        button.disabled = true;
+
+        button.textContent =
+            "LOGGING IN...";
+
+        resendButton.style.display =
+            "none";
 
 
         try {
 
-            const result = await signInWithEmailAndPassword(
-                auth,
-                email,
-                password
-            );
+            const result =
+                await signInWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
 
-            const user = result.user;
+
+            currentUser =
+                result.user;
 
 
             /*
-             * TEMPORAR:
-             * Nu mai blocam login-ul daca emailul
-             * nu este verificat.
+             * We currently allow login even
+             * if the email is not verified.
              */
 
             showMessage(
@@ -400,82 +536,236 @@
             );
 
 
-            setTimeout(() => {
-
-                window.location.href = "index.html";
-
-            }, 500);
+            button.textContent =
+                "SUCCESS";
 
 
-        } catch (error) {
+            setTimeout(
+                () => {
 
-            console.error(error);
+                    window.location.href =
+                        "index.html";
+
+                },
+                700
+            );
+
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "FIREBASE LOGIN ERROR:",
+                error
+            );
+
+
+            let errorMessage =
+                "A aparut o eroare. Incearca din nou.";
+
 
             if (
-                error.code === "auth/invalid-credential" ||
-                error.code === "auth/wrong-password" ||
-                error.code === "auth/user-not-found"
+                error.code ===
+                "auth/invalid-credential"
             ) {
 
-                showMessage(
-                    "Emailul sau parola sunt gresite."
-                );
+                errorMessage =
+                    "Emailul sau parola sunt gresite.";
 
             }
 
-            else if (error.code === "auth/invalid-email") {
 
-                showMessage(
-                    "Adresa de email nu este valida."
-                );
+            else if (
+                error.code ===
+                "auth/invalid-login-credentials"
+            ) {
+
+                errorMessage =
+                    "Emailul sau parola sunt gresite.";
+
+            }
+
+
+            else if (
+                error.code ===
+                "auth/wrong-password"
+            ) {
+
+                errorMessage =
+                    "Parola este gresita.";
 
             }
 
-            else if (error.code === "auth/too-many-requests") {
 
-                showMessage(
-                    "Prea multe incercari. Incearca din nou mai tarziu."
-                );
+            else if (
+                error.code ===
+                "auth/user-not-found"
+            ) {
+
+                errorMessage =
+                    "Nu exista un cont cu acest email.";
 
             }
+
+
+            else if (
+                error.code ===
+                "auth/too-many-requests"
+            ) {
+
+                errorMessage =
+                    "Prea multe incercari. Asteapta putin si incearca din nou.";
+
+            }
+
+
+            else if (
+                error.code ===
+                "auth/network-request-failed"
+            ) {
+
+                errorMessage =
+                    "Problema de conexiune. Verifica internetul.";
+
+            }
+
+
+            else if (
+                error.code ===
+                "auth/operation-not-allowed"
+            ) {
+
+                errorMessage =
+                    "Login-ul cu Email/Password nu este activat in Firebase.";
+
+            }
+
 
             else {
 
-                showMessage(
-                    "A aparut o eroare. Incearca din nou."
-                );
+                /*
+                 * IMPORTANT:
+                 * Show the real Firebase error code
+                 * so we can diagnose it.
+                 */
+
+                errorMessage =
+                    "Firebase: " +
+                    (
+                        error.code ||
+                        "unknown-error"
+                    );
+
+            }
+
+
+            showMessage(
+                errorMessage,
+                "error"
+            );
+
+
+            button.disabled =
+                false;
+
+            button.textContent =
+                "LOGIN";
+
+
+            if (
+                error.code ===
+                "auth/email-not-verified"
+            ) {
+
+                resendButton.style.display =
+                    "block";
 
             }
 
         }
 
-
-        loginBtn.disabled = false;
-        loginBtn.textContent = "Login";
-
-    });
+    }
+);
 
 
-    /*
-     * FORGOT PASSWORD
-     */
+/*
+ * RESEND VERIFICATION
+ */
 
-    forgotPassword.addEventListener("click", async () => {
+resendButton.addEventListener(
+    "click",
+    async () => {
 
-        clearMessage();
+        if (!currentUser) {
 
-        const email = emailInput.value.trim();
+            showMessage(
+                "Logheaza-te mai intai.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            await sendEmailVerification(
+                currentUser
+            );
+
+
+            showMessage(
+                "Verification email sent.",
+                "success"
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            showMessage(
+                "Firebase: " +
+                (
+                    error.code ||
+                    "unknown-error"
+                ),
+                "error"
+            );
+
+        }
+
+    }
+);
+
+
+/*
+ * PASSWORD RESET
+ */
+
+forgot.addEventListener(
+    "click",
+    async () => {
+
+        const email =
+            document
+                .getElementById("email")
+                .value
+                .trim();
 
 
         if (!email) {
 
             showMessage(
-                "Introdu emailul tau mai intai."
+                "Enter your email first.",
+                "error"
             );
 
-            emailInput.focus();
-
             return;
+
         }
 
 
@@ -488,123 +778,54 @@
 
 
             showMessage(
-                "Am trimis un email pentru resetarea parolei. Verifica Inbox si Spam.",
+                "Password reset email sent. Check your inbox.",
                 "success"
             );
 
+        }
 
-        } catch (error) {
+        catch (error) {
 
             console.error(error);
 
-
-            if (error.code === "auth/user-not-found") {
-
-                showMessage(
-                    "Nu exista niciun cont cu acest email."
+            let text =
+                "Firebase: " +
+                (
+                    error.code ||
+                    "unknown-error"
                 );
+
+
+            if (
+                error.code ===
+                "auth/user-not-found"
+            ) {
+
+                text =
+                    "Nu exista un cont cu acest email.";
 
             }
 
-            else if (error.code === "auth/invalid-email") {
-
-                showMessage(
-                    "Emailul introdus nu este valid."
-                );
-
-            }
-
-            else {
-
-                showMessage(
-                    "Nu am putut trimite emailul de resetare."
-                );
-
-            }
-
-        }
-
-    });
-
-
-    /*
-     * RESEND VERIFICATION
-     *
-     * Pastreaza butonul pentru mai tarziu.
-     */
-
-    resendBtn.addEventListener("click", async () => {
-
-        clearMessage();
-
-        const email = emailInput.value.trim();
-        const password = passwordInput.value;
-
-
-        if (!email || !password) {
 
             showMessage(
-                "Introdu emailul si parola pentru a retrimite verificarea."
-            );
-
-            return;
-        }
-
-
-        resendBtn.disabled = true;
-        resendBtn.textContent = "Sending...";
-
-
-        try {
-
-            const result = await signInWithEmailAndPassword(
-                auth,
-                email,
-                password
-            );
-
-            const user = result.user;
-
-
-            if (user.emailVerified) {
-
-                showMessage(
-                    "Emailul tau este deja verificat.",
-                    "success"
-                );
-
-            } else {
-
-                await sendEmailVerification(user);
-
-                showMessage(
-                    "Emailul de verificare a fost retrimis. Verifica Inbox, Spam si Promotions.",
-                    "success"
-                );
-
-            }
-
-
-            await signOut(auth);
-
-
-        } catch (error) {
-
-            console.error(error);
-
-            showMessage(
-                "Nu am putut retrimite emailul de verificare."
+                text,
+                "error"
             );
 
         }
 
-
-        resendBtn.disabled = false;
-        resendBtn.textContent = "Resend verification email";
-
-    });
+    }
+);
 
 </script>
-<script type="module" src="./auth-ui.js"></script>
+
+
+<script
+    type="module"
+    src="./auth-ui.js"
+></script>
+
+
 </body>
+
 </html>
