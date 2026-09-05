@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>RO TierList | Leaderboards</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #07080c;
+      --bg2: #0b0d13;
+      --card: #0d1017;
+      --card2: #11141c;
+      --border: rgba(255,255,255,.07);
+      --text: #f4f5f7;
+      --muted: #858a98;
+      --accent: #7c5cff;
+      --accent2: #a78bfa;
+      --gold: #f5c451;
+      --silver: #bfc5d2;
+      --bronze: #cd8b5b;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 50% -10%, rgba(124,92,255,.14), transparent 35%),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* NAVBAR */
+
+    nav {
+      height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6%;
+      border-bottom: 1px solid var(--border);
+      background: rgba(7,8,12,.82);
+      backdrop-filter: blur(18px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: -.5px;
+    }
+
+    .logo span {
+      color: var(--accent2);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 27px;
+    }
+
+    .nav-links a {
+      color: #9ca1ae;
+      font-size: 14px;
+      font-weight: 700;
+      transition: .2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: white;
+    }
+
+    .login-btn {
+      padding: 10px 17px;
+      border-radius: 9px;
+      background: #fff;
+      color: #090a0e !important;
+    }
+
+    /* PAGE */
+
+    .container {
+      width: min(1200px, 92%);
+      margin: auto;
+    }
+
+    .page-header {
+      text-align: center;
+      padding: 75px 0 35px;
+    }
+
+    .page-header .small {
+      color: var(--accent2);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-size: 11px;
+      font-weight: 900;
+      margin-bottom: 13px;
+    }
+
+    .page-header h1 {
+      font-size: clamp(38px, 6vw, 65px);
+      letter-spacing: -3px;
+      line-height: 1;
+      font-weight: 950;
+    }
+
+    .page-header p {
+      color: var(--muted);
+      margin-top: 17px;
+      font-size: 14px;
+    }
+
+    /* SWITCH */
+
+    .switch {
+      width: fit-content;
+      margin: 0 auto 25px;
+      padding: 5px;
+      background: #0d1016;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: flex;
+      gap: 5px;
+    }
+
+    .switch button {
+      border: 0;
+      background: transparent;
+      color: #777d8b;
+      padding: 12px 27px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 13px;
+      transition: .2s;
+    }
+
+    .switch button.active {
+      color: white;
+      background: linear-gradient(135deg, #7455f5, #9276ff);
+      box-shadow: 0 6px 22px rgba(124,92,255,.22);
+    }
+
+    /* FILTERS */
+
+    .filters {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 15px;
+      border: 1px solid var(--border);
+      background: rgba(13,16,23,.8);
+      border-radius: 14px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+
+    .modes {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .mode {
+      border: 1px solid transparent;
+      background: #11141b;
+      color: #858b99;
+      padding: 9px 13px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .mode:hover {
+      color: white;
+      border-color: rgba(124,92,255,.25);
+    }
+
+    .mode.active {
+      color: white;
+      background: rgba(124,92,255,.16);
+      border-color: rgba(124,92,255,.45);
+    }
+
+    .search {
+      width: 220px;
+      background: #090b10;
+      border: 1px solid var(--border);
+      color: white;
+      outline: none;
+      padding: 10px 13px;
+      border-radius: 8px;
+      font-size: 12px;
+    }
+
+    .search:focus {
+      border-color: rgba(124,92,255,.55);
+    }
+
+    /* BOARD */
+
+    .board-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 25px 2px 13px;
+    }
+
+    .board-title h2 {
+      font-size: 18px;
+    }
+
+    .board-title span {
+      color: #656b78;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    /* PODIUM */
+
+    .podium {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr 1fr;
+      align-items: end;
+      gap: 15px;
+      margin: 15px 0 28px;
+    }
+
+    .podium-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 270px;
+      border: 1px solid var(--border);
+      background:
+        radial-gradient(circle at 50% 0%, rgba(124,92,255,.12), transparent 55%),
+        var(--card);
+      border-radius: 17px;
+      text-align: center;
+      padding: 25px 15px 22px;
+    }
+
+    .podium-card.first {
+      min-height: 325px;
+      border-color: rgba(245,196,81,.25);
+      background:
+        radial-gradient(circle at 50% 0%, rgba(245,196,81,.12), transparent 55%),
+        var(--card);
+    }
+
+    .position {
+      font-size: 12px;
+      font-weight: 950;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .first .position {
+      color: var(--gold);
+    }
+
+    .second .position {
+      color: var(--silver);
+    }
+
+    .third .position {
+      color: var(--bronze);
+    }
+
+    .skin {
+      width: 95px;
+      height: 120px;
+      object-fit: contain;
+      image-rendering: pixelated;
+      margin: 0 auto 10px;
+      filter: drop-shadow(0 12px 20px rgba(0,0,0,.45));
+    }
+
+    .first .skin {
+      width: 115px;
+      height: 145px;
+    }
+
+    .player {
+      font-size: 18px;
+      font-weight: 950;
+    }
+
+    .unranked {
+      display: inline-flex;
+      margin-top: 9px;
+      padding: 5px 9px;
+      border-radius: 6px;
+      background: rgba(255,255,255,.05);
+      color: #8c92a0;
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .server-label {
+      margin-top: 8px;
+      color: #5f6572;
+      font-size: 10px;
+    }
+
+    /* TABLE */
+
+    .table {
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      overflow: hidden;
+      background: var(--card);
+      margin-bottom: 60px;
+    }
+
+    .table-head,
+    .player-row {
+      display: grid;
+      grid-template-columns: 70px 1fr 130px 150px;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .table-head {
+      min-height: 45px;
+      padding: 0 18px;
+      background: #0b0e14;
+      color: #626876;
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .player-row {
+      min-height: 76px;
+      padding: 8px 18px;
+      border-top: 1px solid var(--border);
+      transition: .2s;
+    }
+
+    .player-row:hover {
+      background: rgba(255,255,255,.025);
+    }
+
+    .rank-number {
+      color: #6c7280;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .player-info {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      min-width: 0;
+    }
+
+    .row-skin {
+      width: 43px;
+      height: 52px;
+      object-fit: contain;
+      image-rendering: pixelated;
+    }
+
+    .player-name {
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .player-status {
+      color: #5f6572;
+      font-size: 10px;
+      margin-top: 3px;
+    }
+
+    .region {
+      color: #858b98;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .tier {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #8a909d;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .tier-icon {
+      width: 23px;
+      height: 23px;
+      object-fit: contain;
+      image-rendering: pixelated;
+    }
+
+    /* CRACKED */
+
+    .cracked-notice {
+      display: none;
+      padding: 17px 20px;
+      margin-bottom: 22px;
+      border: 1px solid rgba(124,92,255,.18);
+      border-radius: 13px;
+      background: rgba(124,92,255,.06);
+    }
+
+    .cracked-notice strong {
+      font-size: 13px;
+    }
+
+    .cracked-notice p {
+      color: #777e8d;
+      font-size: 11px;
+      margin-top: 5px;
+    }
+
+    body.cracked .cracked-notice {
+      display: block;
+    }
+
+    body.cracked .premium-only {
+      display: none;
+    }
+
+    /* FOOTER */
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 35px 6%;
+      color: #565c69;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 800px) {
+      nav {
+        padding: 0 4%;
+      }
+
+      .nav-links {
+        gap: 12px;
+      }
+
+      .nav-links a:nth-child(2),
+      .nav-links a:nth-child(3),
+      .nav-links a:nth-child(4),
+      .nav-links a:nth-child(5) {
+        display: none;
+      }
+
+      .podium {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+      }
+
+      .podium-card,
+      .podium-card.first {
+        min-height: 250px;
+      }
+
+      .table-head {
+        display: none;
+      }
+
+      .player-row {
+        grid-template-columns: 45px 1fr;
+        padding: 10px 14px;
+      }
+
+      .region,
+      .tier {
+        grid-column: 2;
+      }
+
+      .search {
+        width: 100%;
+      }
+
+      .filters {
+        align-items: stretch;
+      }
+
+      .modes {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .page-header {
+        padding-top: 50px;
+      }
+
+      .page-header h1 {
+        font-size: 43px;
+      }
+
+      .switch button {
+        padding: 10px 18px;
+      }
+
+      .mode {
+        flex: 1;
+        min-width: 75px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">RO<span>TierList</span></a>
+
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="players.html">Players</a>
+      <a href="leaderboards.html" class="active">Leaderboards</a>
+      <a href="results.html">Results</a>
+      <a href="tiers.html">Tiers</a>
+      <a href="https://discord.gg/bms3jPBD9p" target="_blank">Discord</a>
+      <a href="login.html" class="login-btn">Login</a>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <section class="page-header">
+      <div class="small">RO / EU Minecraft PvP</div>
+      <h1>Leaderboards</h1>
+      <p>Vezi jucatorii clasati pe fiecare gamemode.</p>
+    </section>
+
+    <!-- PREMIUM / CRACKED -->
+
+    <div class="switch">
+      <button id="premiumBtn" class="active">Premium</button>
+      <button id="crackedBtn">Cracked</button>
+    </div>
+
+    <!-- FILTERS -->
+
+    <div class="filters">
+
+      <div class="modes">
+
+        <button class="mode active" data-mode="Vanilla">
+          ⚔ Vanilla
+        </button>
+
+        <button class="mode" data-mode="Sword">
+          ⚔ Sword
+        </button>
+
+        <button class="mode" data-mode="Axe">
+          🪓 Axe
+        </button>
+
+        <button class="mode" data-mode="UHC">
+          ❤ UHC
+        </button>
+
+        <button class="mode" data-mode="Pot">
+          🧪 Pot
+        </button>
+
+        <button class="mode" data-mode="Mace">
+          ◆ Mace
+        </button>
+
+        <button class="mode" data-mode="SMP">
+          ◈ SMP
+        </button>
+
+        <button class="mode" data-mode="Crystal">
+          ✦ Crystal
+        </button>
+
+      </div>
+
+      <input
+        id="searchInput"
+        class="search"
+        type="text"
+        placeholder="Search player..."
+      >
+
+    </div>
+
+    <!-- CRACKED NOTICE -->
+
+    <div class="cracked-notice">
+      <strong>Cracked Leaderboard</strong>
+      <p>
+        Cracked players are tested on CRAFTIFY.LOL.
+        All demo players are currently Unranked.
+      </p>
+    </div>
+
+    <!-- PREMIUM PODIUM -->
+
+    <section class="premium-only">
+
+      <div class="board-title">
+        <h2 id="boardTitle">Vanilla Leaderboard</h2>
+        <span>TOP 50</span>
+      </div>
+
+      <div class="podium">
+
+        <!-- #2 -->
+
+        <div class="podium-card second">
+
+          <div class="position">#2</div>
+
+          <img
+            class="skin"
+            src="https://mc-heads.net/body/Steve/100"
+            alt="Steve"
+          >
+
+          <div class="player">Steve</div>
+
+          <div class="unranked">
+            UNRANKED
+          </div>
+
+          <div class="server-label">
+            PREMIUM
+          </div>
+
+        </div>
+
+        <!-- #1 -->
+
+        <div class="podium-card first">
+
+          <div class="position">#1</div>
+
+          <img
+            class="skin"
+            src="https://mc-heads.net/body/Alex/100"
+            alt="Alex"
+          >
+
+          <div class="player">Alex</div>
+
+          <div class="unranked">
+            UNRANKED
+          </div>
+
+          <div class="server-label">
+            PREMIUM
+          </div>
+
+        </div>
+
+        <!-- #3 -->
+
+        <div class="podium-card third">
+
+          <div class="position">#3</div>
+
+          <img
+            class="skin"
+            src="https://mc-heads.net/body/Steve/100"
+            alt="Steve"
+          >
+
+          <div class="player">Steve</div>
+
+          <div class="unranked">
+            UNRANKED
+          </div>
+
+          <div class="server-label">
+            PREMIUM
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- TABLE -->
+
+      <div class="table">
+
+        <div class="table-head">
+          <div>Rank</div>
+          <div>Player</div>
+          <div>Region</div>
+          <div>Tier</div>
+        </div>
+
+        <div id="premiumPlayers"></div>
+
+      </div>
+
+    </section>
+
+    <!-- CRACKED TABLE -->
+
+    <section id="crackedSection">
+
+      <div class="board-title">
+        <h2 id="crackedBoardTitle">Cracked Leaderboard</h2>
+        <span>TOP 50</span>
+      </div>
+
+      <div class="table">
+
+        <div class="table-head">
+          <div>Rank</div>
+          <div>Player</div>
+          <div>Region</div>
+          <div>Tier</div>
+        </div>
+
+        <div id="crackedPlayers"></div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer>
+    © 2026 RO TierList · Minecraft PvP Tier Rankings
+  </footer>
+
+
+  <script>
+
+    const premiumPlayers = document.getElementById("premiumPlayers");
+    const crackedPlayers = document.getElementById("crackedPlayers");
+
+    const premiumBtn = document.getElementById("premiumBtn");
+    const crackedBtn = document.getElementById("crackedBtn");
+
+    const boardTitle = document.getElementById("boardTitle");
+    const crackedBoardTitle = document.getElementById("crackedBoardTitle");
+
+    const searchInput = document.getElementById("searchInput");
+
+    const crackedSection = document.getElementById("crackedSection");
+
+    let currentMode = "Vanilla";
+    let currentType = "premium";
+
+
+    /*
+      DEMO PLAYERS
+
+      Mai tarziu putem inlocui acest array
+      cu Firebase / Supabase.
+    */
+
+    function createPlayers(amount) {
+
+      const players = [];
+
+      for (let i = 1; i <= amount; i++) {
+
+        players.push({
+          rank: i,
+          name: i % 2 === 0 ? "Alex" : "Steve",
+          region: "EU",
+          tier: "Unranked"
+        });
+
+      }
+
+      return players;
+    }
+
+
+    const premiumData = createPlayers(50);
+    const crackedData = createPlayers(50);
+
+
+    function renderPlayers(container, players) {
+
+      container.innerHTML = "";
+
+      players.forEach(player => {
+
+        const row = document.createElement("div");
+
+        row.className = "player-row";
+
+        const skin =
+          player.name.toLowerCase() === "alex"
+            ? "https://mc-heads.net/body/Alex/70"
+            : "https://mc-heads.net/body/Steve/70";
+
+        row.innerHTML = `
+
+          <div class="rank-number">
+            #${player.rank}
+          </div>
+
+          <div class="player-info">
+
+            <img
+              class="row-skin"
+              src="${skin}"
+              alt="${player.name}"
+            >
+
+            <div>
+
+              <div class="player-name">
+                ${player.name}
+              </div>
+
+              <div class="player-status">
+                ${currentType === "premium"
+                  ? "Premium account"
+                  : "Cracked account"}
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="region">
+            🇪🇺 ${player.region}
+          </div>
+
+          <div class="tier">
+
+            <img
+              class="tier-icon"
+              src="https://minecraft.wiki/images/Diamond_Sword_JE2_BE2.png"
+              alt="Sword"
+            >
+
+            ${currentMode} · ${player.tier}
+
+          </div>
+
+        `;
+
+        row.addEventListener("click", () => {
+
+          window.location.href =
+            "players.html?player=" +
+            encodeURIComponent(player.name);
+
+        });
+
+        container.appendChild(row);
+
+      });
+
+    }
+
+
+    function updateBoard() {
+
+      boardTitle.textContent =
+        currentMode + " Leaderboard";
+
+      crackedBoardTitle.textContent =
+        currentMode + " · Cracked Leaderboard";
+
+      renderPlayers(
+        premiumPlayers,
+        premiumData
+      );
+
+      renderPlayers(
+        crackedPlayers,
+        crackedData
+      );
+
+    }
+
+
+    /* MODE BUTTONS */
+
+    document.querySelectorAll(".mode").forEach(button => {
+
+      button.addEventListener("click", () => {
+
+        document
+          .querySelectorAll(".mode")
+          .forEach(btn => btn.classList.remove("active"));
+
+        button.classList.add("active");
+
+        currentMode =
+          button.dataset.mode;
+
+        updateBoard();
+
+      });
+
+    });
+
+
+    /* PREMIUM */
+
+    premiumBtn.addEventListener("click", () => {
+
+      currentType = "premium";
+
+      premiumBtn.classList.add("active");
+      crackedBtn.classList.remove("active");
+
+      document.body.classList.remove("cracked");
+
+      document.querySelector(".premium-only").style.display = "block";
+      crackedSection.style.display = "none";
+
+      updateBoard();
+
+    });
+
+
+    /* CRACKED */
+
+    crackedBtn.addEventListener("click", () => {
+
+      currentType = "cracked";
+
+      crackedBtn.classList.add("active");
+      premiumBtn.classList.remove("active");
+
+      document.body.classList.add("cracked");
+
+      document.querySelector(".premium-only").style.display = "none";
+      crackedSection.style.display = "block";
+
+      updateBoard();
+
+    });
+
+
+    /* SEARCH */
+
+    searchInput.addEventListener("keydown", event => {
+
+      if (event.key !== "Enter") return;
+
+      const username =
+        searchInput.value.trim();
+
+      if (!username) return;
+
+      window.location.href =
+        "players.html?player=" +
+        encodeURIComponent(username);
+
+    });
+
+
+    /* HASH */
+
+    if (window.location.hash === "#cracked") {
+
+      crackedBtn.click();
+
+    } else {
+
+      crackedSection.style.display = "none";
+
+    }
+
+
+    /* INITIAL */
+
+    updateBoard();
+
+  </script>
+
+</body>
+</html>
