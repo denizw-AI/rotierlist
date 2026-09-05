@@ -11,159 +11,1412 @@
         content="Romania's Minecraft PvP Tier List. View players, rankings, results and tiers."
     >
 
-    <link rel="stylesheet" href="./style.css">
-
     <style>
-        /* =========================================
-           HOMEPAGE LEADERBOARD
-        ========================================= */
+        /* =========================================================
+           RESET
+        ========================================================= */
 
-        .empty-leaderboard {
-            width: 100%;
-            min-height: 180px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 30px;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
-        .empty-leaderboard .empty-icon {
-            font-size: 40px;
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(
+                    circle at 50% -10%,
+                    rgba(109, 92, 255, 0.16),
+                    transparent 35%
+                ),
+                #07070b;
+
+            color: #f5f5f7;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        /* =========================================================
+           NAVBAR
+        ========================================================= */
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            width: 100%;
+
+            background: rgba(7, 7, 11, 0.82);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        .nav-container {
+            max-width: 1240px;
+            min-height: 72px;
+
+            margin: 0 auto;
+            padding: 0 24px;
+
+            display: flex;
+            align-items: center;
+            gap: 35px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.7px;
+
+            white-space: nowrap;
+
+            color: #ffffff;
+        }
+
+        .logo span {
+            color: #7c6cff;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+
+            flex: 1;
+        }
+
+        .nav-links a {
+            color: #9696a5;
+            font-size: 14px;
+            font-weight: 600;
+
+            transition:
+                color .2s ease,
+                transform .2s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #ffffff;
+        }
+
+        .nav-links a:hover {
+            transform: translateY(-1px);
+        }
+
+        .nav-auth {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .login-btn,
+        .register-btn {
+            padding: 9px 16px;
+            border-radius: 9px;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            transition: .2s ease;
+        }
+
+        .login-btn {
+            color: #c7c7d2;
+            border: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        .login-btn:hover {
+            background: rgba(255,255,255,.06);
+            color: white;
+        }
+
+        .register-btn {
+            color: white;
+            background: #6d5dfc;
+
+            box-shadow:
+                0 8px 30px rgba(109, 93, 252, .22);
+        }
+
+        .register-btn:hover {
+            transform: translateY(-1px);
+            background: #796bff;
+        }
+
+        /* =========================================================
+           HERO
+        ========================================================= */
+
+        .hero {
+            position: relative;
+            min-height: 610px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 100px 24px 80px;
+
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+
+            position: absolute;
+            width: 650px;
+            height: 650px;
+
+            top: -280px;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            background: rgba(100, 82, 255, .14);
+
+            filter: blur(100px);
+            border-radius: 50%;
+
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: "";
+
+            position: absolute;
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    rgba(255,255,255,.025) 1px,
+                    transparent 1px
+                ),
+                linear-gradient(
+                    90deg,
+                    rgba(255,255,255,.025) 1px,
+                    transparent 1px
+                );
+
+            background-size: 55px 55px;
+
+            mask-image:
+                linear-gradient(
+                    to bottom,
+                    black,
+                    transparent 75%
+                );
+
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+
+            max-width: 850px;
+
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+
+            padding: 8px 13px;
+
+            border: 1px solid rgba(124,108,255,.25);
+            border-radius: 999px;
+
+            background: rgba(124,108,255,.08);
+
+            color: #a99fff;
+
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: clamp(42px, 6vw, 76px);
+            line-height: 1.03;
+
+            letter-spacing: -3px;
+            font-weight: 900;
+
+            color: white;
+
+            margin-bottom: 25px;
+        }
+
+        .hero h1 span {
+            display: block;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #8e7dff,
+                    #b8adff
+                );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            color: transparent;
+        }
+
+        .hero p {
+            max-width: 650px;
+
+            margin: 0 auto;
+
+            color: #9b9ba9;
+
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+
+            margin-top: 34px;
+        }
+
+        .primary-btn,
+        .secondary-btn {
+            padding: 13px 22px;
+
+            border-radius: 10px;
+
+            font-size: 14px;
+            font-weight: 800;
+
+            transition: .2s ease;
+        }
+
+        .primary-btn {
+            background: #6d5dfc;
+            color: white;
+
+            box-shadow:
+                0 12px 35px rgba(109,93,252,.22);
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            background: #7b6cff;
+        }
+
+        .secondary-btn {
+            border: 1px solid rgba(255,255,255,.09);
+            background: rgba(255,255,255,.035);
+            color: #e4e4eb;
+        }
+
+        .secondary-btn:hover {
+            background: rgba(255,255,255,.07);
+            transform: translateY(-2px);
+        }
+
+        /* =========================================================
+           STATS
+        ========================================================= */
+
+        .stats-section {
+            max-width: 1100px;
+
+            margin: -35px auto 90px;
+
+            padding: 0 24px;
+
+            position: relative;
+            z-index: 5;
+
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .stat-card {
+            min-height: 105px;
+
+            padding: 20px;
+
+            display: flex;
+            align-items: center;
+            gap: 15px;
+
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.045),
+                    rgba(255,255,255,.018)
+                );
+
+            box-shadow:
+                0 15px 50px rgba(0,0,0,.2);
+        }
+
+        .stat-icon {
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: rgba(124,108,255,.1);
+
+            font-size: 20px;
+        }
+
+        .stat-info {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .stat-value {
+            font-size: 22px;
+            font-weight: 900;
+            color: white;
+        }
+
+        .stat-label {
+            color: #777786;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* =========================================================
+           SECTIONS
+        ========================================================= */
+
+        .leaderboard-section,
+        .how-section,
+        .search-section {
+            max-width: 1180px;
+
+            margin: 0 auto;
+
+            padding: 0 24px 110px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+
+            gap: 30px;
+
+            margin-bottom: 30px;
+        }
+
+        .section-header.centered {
+            justify-content: center;
+            text-align: center;
+        }
+
+        .section-eyebrow {
+            color: #7e70ff;
+
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 1.8px;
+
+            margin-bottom: 9px;
+        }
+
+        .section-header h2,
+        .search-content h2 {
+            font-size: 30px;
+            line-height: 1.2;
+
+            letter-spacing: -1px;
+
+            color: white;
+        }
+
+        .section-header p,
+        .search-content > p {
+            color: #777786;
+            font-size: 13px;
+
+            margin-top: 9px;
+        }
+
+        .view-all-btn {
+            padding: 10px 15px;
+
+            border-radius: 9px;
+
+            color: #a9a2ff;
+            border: 1px solid rgba(124,108,255,.18);
+
+            background: rgba(124,108,255,.06);
+
+            font-size: 12px;
+            font-weight: 800;
+
+            white-space: nowrap;
+
+            transition: .2s ease;
+        }
+
+        .view-all-btn:hover {
+            background: rgba(124,108,255,.12);
+            transform: translateY(-1px);
+        }
+
+        /* =========================================================
+           PODIUM
+        ========================================================= */
+
+        .podium {
+            min-height: 275px;
+
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+
+            gap: 18px;
+
+            margin-bottom: 22px;
+        }
+
+        .podium-card {
+            position: relative;
+
+            width: 230px;
+            min-height: 245px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 24px 18px;
+
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    160deg,
+                    rgba(255,255,255,.055),
+                    rgba(255,255,255,.018)
+                );
+
+            box-shadow:
+                0 20px 60px rgba(0,0,0,.22);
+
+            cursor: pointer;
+
+            transition:
+                transform .25s ease,
+                border-color .25s ease;
+        }
+
+        .podium-card:hover {
+            transform: translateY(-7px);
+            border-color: rgba(124,108,255,.28);
+        }
+
+        .podium-card.place-1 {
+            min-height: 280px;
+
+            border-color: rgba(255,190,60,.18);
+
+            background:
+                linear-gradient(
+                    160deg,
+                    rgba(255,190,60,.07),
+                    rgba(255,255,255,.018)
+                );
+        }
+
+        .podium-card.place-2 {
+            order: -1;
+        }
+
+        .podium-card.place-1 {
+            order: 0;
+        }
+
+        .podium-card.place-3 {
+            order: 1;
+        }
+
+        .podium-rank {
+            position: absolute;
+            top: 14px;
+            left: 16px;
+
+            color: #777786;
+
+            font-size: 11px;
+            font-weight: 900;
+        }
+
+        .place-1 .podium-rank {
+            color: #ffca55;
+        }
+
+        .podium-player {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            text-align: center;
+        }
+
+        .podium-skin {
+            width: 90px;
+            height: 90px;
+
+            object-fit: contain;
+
+            margin-bottom: 10px;
+
+            filter:
+                drop-shadow(
+                    0 10px 18px rgba(0,0,0,.35)
+                );
+        }
+
+        .podium-name {
+            color: white;
+
+            font-size: 16px;
+            font-weight: 900;
+
+            max-width: 190px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .podium-tier {
+            margin-top: 8px;
+
+            font-size: 13px;
+            font-weight: 900;
+        }
+
+        .podium-score {
+            margin-top: 7px;
+
+            color: #777786;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* =========================================================
+           LEADERBOARD TABLE
+        ========================================================= */
+
+        .leaderboard-container {
+            overflow: hidden;
+
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: 16px;
+
+            background:
+                rgba(255,255,255,.018);
+        }
+
+        .leaderboard-head,
+        .leaderboard-row {
+            display: grid;
+
+            grid-template-columns:
+                70px
+                minmax(250px, 1fr)
+                110px
+                90px
+                90px
+                120px;
+
+            align-items: center;
+        }
+
+        .leaderboard-head {
+            min-height: 48px;
+
+            padding: 0 20px;
+
+            background: rgba(255,255,255,.025);
+
+            border-bottom: 1px solid rgba(255,255,255,.06);
+
+            color: #666674;
+
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .leaderboard-row {
+            min-height: 70px;
+
+            padding: 0 20px;
+
+            border-bottom: 1px solid rgba(255,255,255,.045);
+
+            transition: background .2s ease;
+        }
+
+        .leaderboard-row:last-child {
+            border-bottom: 0;
+        }
+
+        .leaderboard-row:hover {
+            background: rgba(124,108,255,.045);
+        }
+
+        .rank-number {
+            color: #686875;
+
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .player-cell {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            min-width: 0;
+        }
+
+        .player-skin {
+            width: 40px;
+            height: 40px;
+
+            flex-shrink: 0;
+
+            object-fit: cover;
+
+            border-radius: 8px;
+
+            background: rgba(255,255,255,.04);
+        }
+
+        .player-info {
+            min-width: 0;
+        }
+
+        .player-name {
+            color: #eeeeF3;
+
+            font-size: 13px;
+            font-weight: 800;
+
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .player-region {
+            color: #666674;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            margin-top: 3px;
+        }
+
+        .tier-badge {
+            display: inline-flex;
+
+            padding: 5px 8px;
+
+            border-radius: 6px;
+
+            background: rgba(255,255,255,.045);
+
+            font-size: 11px;
+            font-weight: 900;
+        }
+
+        .score-cell {
+            color: #d6d3ff;
+
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .tests-cell {
+            color: #888895;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .record-cell {
+            color: #888895;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* =========================================================
+           TIER COLORS
+        ========================================================= */
+
+        .ht1 {
+            color: #ff5252 !important;
+        }
+
+        .lt1 {
+            color: #ff7777 !important;
+        }
+
+        .ht2 {
+            color: #ff9f43 !important;
+        }
+
+        .lt2 {
+            color: #ffb15c !important;
+        }
+
+        .ht3 {
+            color: #ffe066 !important;
+        }
+
+        .lt3 {
+            color: #f3df74 !important;
+        }
+
+        .ht4 {
+            color: #63e66d !important;
+        }
+
+        .lt4 {
+            color: #82dc86 !important;
+        }
+
+        .ht5 {
+            color: #56d9ff !important;
+        }
+
+        .lt5 {
+            color: #78d9ef !important;
+        }
+
+        .unranked {
+            color: #777786 !important;
+        }
+
+        /* =========================================================
+           CRACKED
+        ========================================================= */
+
+        .cracked-leaderboard {
+            margin-top: 18px;
+
+            padding: 18px 20px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 20px;
+
+            border: 1px solid rgba(255,255,255,.06);
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(255,255,255,.025),
+                    rgba(255,255,255,.012)
+                );
+        }
+
+        .cracked-info {
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+        }
+
+        .cracked-icon {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: rgba(255,255,255,.045);
+
+            font-size: 19px;
+        }
+
+        .cracked-info h3 {
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .cracked-info p {
+            margin-top: 3px;
+
+            color: #6f6f7c;
+
+            font-size: 11px;
+        }
+
+        .cracked-btn {
+            padding: 9px 13px;
+
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 8px;
+
+            color: #aaaab6;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            white-space: nowrap;
+
+            transition: .2s ease;
+        }
+
+        .cracked-btn:hover {
+            color: white;
+            background: rgba(255,255,255,.05);
+        }
+
+        /* =========================================================
+           HOW IT WORKS
+        ========================================================= */
+
+        .how-section {
+            max-width: 1180px;
+
+            border-top: 1px solid rgba(255,255,255,.05);
+
+            padding-top: 90px;
+        }
+
+        .steps-grid {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 16px;
+
+            margin-top: 35px;
+        }
+
+        .step-card {
+            position: relative;
+
+            padding: 30px 25px;
+
+            min-height: 235px;
+
+            border: 1px solid rgba(255,255,255,.065);
+            border-radius: 16px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.035),
+                    rgba(255,255,255,.015)
+                );
+
+            transition: .25s ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-4px);
+
+            border-color: rgba(124,108,255,.2);
+        }
+
+        .step-number {
+            position: absolute;
+
+            top: 20px;
+            right: 22px;
+
+            color: #343440;
+
+            font-size: 13px;
+            font-weight: 900;
+        }
+
+        .step-icon {
+            width: 48px;
+            height: 48px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 22px;
+
+            border-radius: 12px;
+
+            background: rgba(124,108,255,.08);
+
+            font-size: 21px;
+        }
+
+        .step-card h3 {
+            color: white;
+
+            font-size: 16px;
+            font-weight: 850;
+
+            margin-bottom: 8px;
+        }
+
+        .step-card p {
+            color: #777786;
+
+            font-size: 12px;
+            line-height: 1.65;
+        }
+
+        /* =========================================================
+           SEARCH
+        ========================================================= */
+
+        .search-section {
+            max-width: 1180px;
+
+            padding-top: 30px;
+        }
+
+        .search-content {
+            padding: 60px 30px;
+
+            text-align: center;
+
+            border: 1px solid rgba(255,255,255,.06);
+            border-radius: 20px;
+
+            background:
+                radial-gradient(
+                    circle at 50% 0%,
+                    rgba(124,108,255,.08),
+                    transparent 45%
+                ),
+                rgba(255,255,255,.015);
+        }
+
+        .search-content > p {
+            margin-bottom: 25px;
+        }
+
+        .search-box {
+            max-width: 650px;
+
+            height: 52px;
+
+            margin: 0 auto;
+
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 5px 6px 5px 16px;
+
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 11px;
+
+            background: rgba(0,0,0,.25);
+        }
+
+        .search-icon {
+            color: #666674;
+            font-size: 15px;
+        }
+
+        .search-box input {
+            flex: 1;
+
+            min-width: 0;
+
+            border: 0;
+            outline: 0;
+
+            background: transparent;
+
+            color: white;
+
+            font-size: 13px;
+        }
+
+        .search-box input::placeholder {
+            color: #5e5e6a;
+        }
+
+        .search-box button {
+            border: 0;
+
+            padding: 10px 17px;
+
+            border-radius: 8px;
+
+            background: #6d5dfc;
+
+            color: white;
+
+            font-size: 12px;
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition: .2s ease;
+        }
+
+        .search-box button:hover {
+            background: #7c6cff;
+        }
+
+        .search-message {
+            min-height: 20px;
+
+            margin-top: 12px;
+
+            color: #ff7777;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* =========================================================
+           EMPTY / LOADING
+        ========================================================= */
+
+        .leaderboard-loading,
+        .empty-leaderboard {
+            width: 100%;
+
+            min-height: 220px;
+
+            display: flex;
+            flex-direction: column;
+
+            justify-content: center;
+            align-items: center;
+
+            text-align: center;
+
+            color: #777786;
+        }
+
+        .leaderboard-loading {
+            font-size: 12px;
+        }
+
+        .empty-leaderboard {
+            grid-column: 1 / -1;
+        }
+
+        .empty-icon {
+            font-size: 38px;
             margin-bottom: 12px;
         }
 
         .empty-leaderboard h3 {
-            margin: 0 0 6px;
+            color: #dddde5;
+
+            font-size: 15px;
+
+            margin-bottom: 6px;
         }
 
         .empty-leaderboard p {
-            margin: 0;
-            opacity: .65;
+            font-size: 11px;
         }
 
         .empty-row {
-            width: 100%;
-            padding: 30px;
+            padding: 35px;
+
             text-align: center;
-            opacity: .65;
+
+            color: #777786;
+
+            font-size: 12px;
         }
 
-        .podium-skin {
-            object-fit: contain;
-            image-rendering: auto;
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        .footer {
+            border-top: 1px solid rgba(255,255,255,.06);
+
+            background: #050509;
         }
 
-        .player-skin {
-            width: 42px;
-            height: 42px;
-            object-fit: cover;
-            border-radius: 8px;
+        .footer-container {
+            max-width: 1180px;
+
+            margin: 0 auto;
+
+            padding: 45px 24px;
+
+            display: flex;
+            justify-content: space-between;
+
+            gap: 40px;
         }
 
-        .tier-badge,
-        .podium-tier {
-            white-space: nowrap;
+        .footer-brand p {
+            color: #666674;
+
+            font-size: 11px;
+
+            margin-top: 8px;
         }
 
-        .leaderboard-row {
-            cursor: pointer;
+        .footer-links {
+            display: flex;
+            align-items: center;
+
+            gap: 20px;
         }
 
-        /* =========================================
-           TIER COLORS
-        ========================================= */
+        .footer-links a {
+            color: #6e6e7b;
 
-        .tier-badge.ht1,
-        .podium-tier.ht1 {
-            color: #ff5555;
+            font-size: 11px;
+            font-weight: 700;
+
+            transition: color .2s ease;
         }
 
-        .tier-badge.lt1,
-        .podium-tier.lt1 {
-            color: #ff7777;
+        .footer-links a:hover {
+            color: white;
         }
 
-        .tier-badge.ht2,
-        .podium-tier.ht2 {
-            color: #ffaa00;
-        }
+        .footer-bottom {
+            padding: 18px 24px;
 
-        .tier-badge.lt2,
-        .podium-tier.lt2 {
-            color: #ffbb33;
-        }
-
-        .tier-badge.ht3,
-        .podium-tier.ht3 {
-            color: #ffff55;
-        }
-
-        .tier-badge.lt3,
-        .podium-tier.lt3 {
-            color: #eeee55;
-        }
-
-        .tier-badge.ht4,
-        .podium-tier.ht4 {
-            color: #55ff55;
-        }
-
-        .tier-badge.lt4,
-        .podium-tier.lt4 {
-            color: #77dd77;
-        }
-
-        .tier-badge.ht5,
-        .podium-tier.ht5 {
-            color: #55ffff;
-        }
-
-        .tier-badge.lt5,
-        .podium-tier.lt5 {
-            color: #77dddd;
-        }
-
-        .tier-badge.unranked,
-        .podium-tier.unranked {
-            opacity: .55;
-        }
-
-        /* =========================================
-           LOADING
-        ========================================= */
-
-        .leaderboard-loading {
-            width: 100%;
-            padding: 45px;
             text-align: center;
-            opacity: .7;
+
+            border-top: 1px solid rgba(255,255,255,.04);
+
+            color: #4d4d58;
+
+            font-size: 10px;
         }
 
-        /* =========================================
+        /* =========================================================
            MOBILE
-        ========================================= */
+        ========================================================= */
+
+        @media (max-width: 900px) {
+
+            .nav-links {
+                gap: 13px;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+            }
+
+            .stats-section {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .leaderboard-head,
+            .leaderboard-row {
+                grid-template-columns:
+                    55px
+                    minmax(180px, 1fr)
+                    85px
+                    65px
+                    65px
+                    90px;
+            }
+
+        }
 
         @media (max-width: 700px) {
-            .record-cell {
-                display: none;
+
+            .nav-container {
+                min-height: auto;
+
+                padding: 15px 18px;
+
+                flex-wrap: wrap;
+
+                gap: 15px;
             }
 
-            .tests-cell {
-                display: none;
+            .nav-links {
+                width: 100%;
+
+                order: 3;
+
+                overflow-x: auto;
+
+                padding-bottom: 3px;
             }
+
+            .nav-auth {
+                margin-left: auto;
+            }
+
+            .hero {
+                min-height: 530px;
+
+                padding-top: 70px;
+            }
+
+            .hero h1 {
+                letter-spacing: -2px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+
+                max-width: 250px;
+
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .stats-section {
+                margin-top: -20px;
+            }
+
+            .section-header {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .view-all-btn {
+                align-self: flex-start;
+            }
+
+            .podium {
+                align-items: stretch;
+
+                flex-direction: column;
+            }
+
+            .podium-card,
+            .podium-card.place-1 {
+                order: initial;
+
+                width: 100%;
+                min-height: 190px;
+            }
+
+            .podium-skin {
+                width: 65px;
+                height: 65px;
+            }
+
+            .leaderboard-container {
+                overflow-x: auto;
+            }
+
+            .leaderboard-head,
+            .leaderboard-row {
+                min-width: 720px;
+            }
+
+            .steps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cracked-leaderboard {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+            }
+
+        }
+
+        @media (max-width: 450px) {
+
+            .stats-section {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .search-content {
+                padding: 40px 16px;
+            }
+
+            .search-box button {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
         }
     </style>
 </head>
 
 <body>
 
-    <!-- =========================================
+    <!-- =========================================================
          NAVBAR
-    ========================================= -->
+    ========================================================= -->
 
     <header class="navbar">
+
         <div class="nav-container">
 
             <a href="./index.html" class="logo">
@@ -171,28 +1424,67 @@
             </a>
 
             <nav class="nav-links">
-                <a href="./index.html" class="active">Home</a>
-                <a href="./players.html">Players</a>
-                <a href="./leaderboards.html">Leaderboards</a>
-                <a href="./results.html">Results</a>
-                <a href="./tiers.html">Tiers</a>
-                <a href="https://discord.gg/bms3jPBD9p" target="_blank">Discord</a>
+
+                <a href="./index.html" class="active">
+                    Home
+                </a>
+
+                <a href="./players.html">
+                    Players
+                </a>
+
+                <a href="./leaderboards.html">
+                    Leaderboards
+                </a>
+
+                <a href="./results.html">
+                    Results
+                </a>
+
+                <a href="./tiers.html">
+                    Tiers
+                </a>
+
+                <a
+                    href="https://discord.gg/bms3jPBD9p"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Discord
+                </a>
+
             </nav>
 
             <div class="nav-auth">
-                <a href="./login.html" class="login-btn">Login</a>
-                <a href="./register.html" class="register-btn">Register</a>
+
+                <a
+                    href="./login.html"
+                    class="login-btn"
+                >
+                    Login
+                </a>
+
+                <a
+                    href="./register.html"
+                    class="register-btn"
+                >
+                    Register
+                </a>
+
             </div>
 
         </div>
+
     </header>
 
 
-    <!-- =========================================
-         HERO
-    ========================================= -->
+    <!-- =========================================================
+         MAIN
+    ========================================================= -->
 
     <main>
+
+        <!-- HERO -->
 
         <section class="hero">
 
@@ -214,13 +1506,21 @@
                 </p>
 
                 <div class="hero-buttons">
-                    <a href="./register.html" class="primary-btn">
+
+                    <a
+                        href="./register.html"
+                        class="primary-btn"
+                    >
                         Get Tested
                     </a>
 
-                    <a href="./leaderboards.html" class="secondary-btn">
+                    <a
+                        href="./leaderboards.html"
+                        class="secondary-btn"
+                    >
                         View Leaderboards
                     </a>
+
                 </div>
 
             </div>
@@ -228,60 +1528,116 @@
         </section>
 
 
-        <!-- =========================================
-             STATS
-        ========================================= -->
+        <!-- STATS -->
 
         <section class="stats-section">
 
             <div class="stat-card">
-                <div class="stat-icon">👥</div>
+
+                <div class="stat-icon">
+                    👥
+                </div>
 
                 <div class="stat-info">
-                    <span class="stat-value" id="playersCount">0</span>
-                    <span class="stat-label">Players</span>
+
+                    <span
+                        class="stat-value"
+                        id="playersCount"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        Players
+                    </span>
+
                 </div>
+
             </div>
 
+
             <div class="stat-card">
-                <div class="stat-icon">🏆</div>
+
+                <div class="stat-icon">
+                    🏆
+                </div>
 
                 <div class="stat-info">
-                    <span class="stat-value" id="rankedCount">0</span>
-                    <span class="stat-label">Ranked Players</span>
+
+                    <span
+                        class="stat-value"
+                        id="rankedCount"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        Ranked Players
+                    </span>
+
                 </div>
+
             </div>
 
+
             <div class="stat-card">
-                <div class="stat-icon">⚔️</div>
+
+                <div class="stat-icon">
+                    ⚔️
+                </div>
 
                 <div class="stat-info">
-                    <span class="stat-value" id="testsCount">0</span>
-                    <span class="stat-label">Tests</span>
+
+                    <span
+                        class="stat-value"
+                        id="testsCount"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        Tests
+                    </span>
+
                 </div>
+
             </div>
 
+
             <div class="stat-card">
-                <div class="stat-icon">🛡️</div>
+
+                <div class="stat-icon">
+                    🛡️
+                </div>
 
                 <div class="stat-info">
-                    <span class="stat-value" id="testersCount">0</span>
-                    <span class="stat-label">Testers</span>
+
+                    <span
+                        class="stat-value"
+                        id="testersCount"
+                    >
+                        0
+                    </span>
+
+                    <span class="stat-label">
+                        Testers
+                    </span>
+
                 </div>
+
             </div>
 
         </section>
 
 
-        <!-- =========================================
-             MAIN LEADERBOARD
-        ========================================= -->
+        <!-- LEADERBOARD -->
 
         <section class="leaderboard-section">
 
             <div class="section-header">
 
                 <div>
+
                     <div class="section-eyebrow">
                         PREMIUM RANKINGS
                     </div>
@@ -293,6 +1649,7 @@
                     <p>
                         Sword leaderboard • Live rankings
                     </p>
+
                 </div>
 
                 <a
@@ -307,7 +1664,10 @@
 
             <!-- PODIUM -->
 
-            <div id="podium" class="podium">
+            <div
+                id="podium"
+                class="podium"
+            >
 
                 <div class="leaderboard-loading">
                     Loading leaderboard...
@@ -322,19 +1682,32 @@
 
                 <div class="leaderboard-head">
 
-                    <div>Rank</div>
+                    <div>
+                        Rank
+                    </div>
 
-                    <div>Player</div>
+                    <div>
+                        Player
+                    </div>
 
-                    <div>Tier</div>
+                    <div>
+                        Tier
+                    </div>
 
-                    <div>Score</div>
+                    <div>
+                        Score
+                    </div>
 
-                    <div>Tests</div>
+                    <div>
+                        Tests
+                    </div>
 
-                    <div>Record</div>
+                    <div>
+                        Record
+                    </div>
 
                 </div>
+
 
                 <div id="leaderboardBody">
 
@@ -358,11 +1731,15 @@
                     </div>
 
                     <div>
-                        <h3>Looking for cracked players?</h3>
+
+                        <h3>
+                            Looking for cracked players?
+                        </h3>
 
                         <p>
                             View the CRAFTIFY.LOL cracked leaderboard.
                         </p>
+
                     </div>
 
                 </div>
@@ -379,15 +1756,14 @@
         </section>
 
 
-        <!-- =========================================
-             HOW TO GET TESTED
-        ========================================= -->
+        <!-- HOW IT WORKS -->
 
         <section class="how-section">
 
             <div class="section-header centered">
 
                 <div>
+
                     <div class="section-eyebrow">
                         HOW IT WORKS
                     </div>
@@ -399,6 +1775,7 @@
                     <p>
                         Getting your official tier is simple.
                     </p>
+
                 </div>
 
             </div>
@@ -473,9 +1850,7 @@
         </section>
 
 
-        <!-- =========================================
-             SEARCH
-        ========================================= -->
+        <!-- SEARCH -->
 
         <section class="search-section">
 
@@ -492,6 +1867,7 @@
                 <p>
                     Search for any registered Minecraft player.
                 </p>
+
 
                 <div class="search-box">
 
@@ -515,6 +1891,7 @@
 
                 </div>
 
+
                 <div
                     id="searchMessage"
                     class="search-message"
@@ -527,9 +1904,9 @@
     </main>
 
 
-    <!-- =========================================
+    <!-- =========================================================
          FOOTER
-    ========================================= -->
+    ========================================================= -->
 
     <footer class="footer">
 
@@ -537,7 +1914,10 @@
 
             <div class="footer-brand">
 
-                <a href="./index.html" class="logo">
+                <a
+                    href="./index.html"
+                    class="logo"
+                >
                     RO<span>TierList</span>
                 </a>
 
@@ -578,6 +1958,7 @@
 
         </div>
 
+
         <div class="footer-bottom">
             © 2026 ROTierList. All rights reserved.
         </div>
@@ -585,9 +1966,9 @@
     </footer>
 
 
-    <!-- =========================================
-         FIREBASE LEADERBOARD
-    ========================================= -->
+    <!-- =========================================================
+         FIREBASE
+    ========================================================= -->
 
     <script type="module">
 
@@ -600,45 +1981,45 @@
         } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 
 
-        /* =========================================
+        /* =====================================================
            DATABASE
-        ========================================= */
+        ===================================================== */
 
         const database = getDatabase(app);
 
 
-        /* =========================================
+        /* =====================================================
            CONFIG
-        ========================================= */
+        ===================================================== */
 
         const GAMEMODE = "sword";
 
 
         const TIER_SCORE = {
 
-            "HT1": 100,
-            "LT1": 90,
+            HT1: 100,
+            LT1: 90,
 
-            "HT2": 80,
-            "LT2": 70,
+            HT2: 80,
+            LT2: 70,
 
-            "HT3": 60,
-            "LT3": 50,
+            HT3: 60,
+            LT3: 50,
 
-            "HT4": 40,
-            "LT4": 30,
+            HT4: 40,
+            LT4: 30,
 
-            "HT5": 20,
-            "LT5": 10,
+            HT5: 20,
+            LT5: 10,
 
-            "Unranked": 0
+            Unranked: 0
 
         };
 
 
-        /* =========================================
+        /* =====================================================
            ELEMENTS
-        ========================================= */
+        ===================================================== */
 
         const podium =
             document.getElementById("podium");
@@ -671,9 +2052,9 @@
         let allPlayers = [];
 
 
-        /* =========================================
+        /* =====================================================
            HELPERS
-        ========================================= */
+        ===================================================== */
 
         function escapeHTML(value) {
 
@@ -689,7 +2070,11 @@
 
         function getTier(player) {
 
-            return player?.tiers?.[GAMEMODE] || "Unranked";
+            return (
+                player &&
+                player.tiers &&
+                player.tiers[GAMEMODE]
+            ) || "Unranked";
 
         }
 
@@ -703,13 +2088,14 @@
 
         function getTierClass(tier) {
 
-            if (!tier || tier === "Unranked") {
-
+            if (
+                !tier ||
+                tier === "Unranked"
+            ) {
                 return "unranked";
-
             }
 
-            return tier
+            return String(tier)
                 .toLowerCase()
                 .replace(/\s+/g, "");
 
@@ -718,7 +2104,9 @@
 
         function cleanUUID(uuid) {
 
-            if (!uuid) return "";
+            if (!uuid) {
+                return "";
+            }
 
             return String(uuid)
                 .replaceAll("-", "")
@@ -729,7 +2117,8 @@
 
         function getSkin(uuid) {
 
-            const clean = cleanUUID(uuid);
+            const clean =
+                cleanUUID(uuid);
 
             if (!clean) {
 
@@ -737,14 +2126,17 @@
 
             }
 
-            return `https://mc-heads.net/avatar/${clean}/64`;
+            return (
+                `https://mc-heads.net/avatar/${clean}/64`
+            );
 
         }
 
 
         function getBody(uuid) {
 
-            const clean = cleanUUID(uuid);
+            const clean =
+                cleanUUID(uuid);
 
             if (!clean) {
 
@@ -752,14 +2144,16 @@
 
             }
 
-            return `https://mc-heads.net/body/${clean}/100`;
+            return (
+                `https://mc-heads.net/body/${clean}/100`
+            );
 
         }
 
 
-        /* =========================================
-           GET RANKED PLAYERS
-        ========================================= */
+        /* =====================================================
+           RANKING
+        ===================================================== */
 
         function getRankedPlayers() {
 
@@ -767,96 +2161,160 @@
 
                 .filter(player => {
 
-                    if (!player) return false;
-
                     /*
-                     * Homepage = Premium only
+                     * Home leaderboard:
+                     * Premium players only.
                      */
 
-                    if (player.accountType !== "premium") {
-
+                    if (
+                        player.accountType !==
+                        "premium"
+                    ) {
                         return false;
-
                     }
 
 
                     /*
-                     * Only players ranked in Sword
+                     * Sword must have a tier.
                      */
 
-                    return getTier(player) !== "Unranked";
+                    return (
+                        getTier(player) !==
+                        "Unranked"
+                    );
 
                 })
 
-
                 .sort((a, b) => {
 
-                    const tierA = getTier(a);
-                    const tierB = getTier(b);
+                    const tierA =
+                        getTier(a);
 
-                    const scoreA = getTierScore(tierA);
-                    const scoreB = getTierScore(tierB);
+                    const tierB =
+                        getTier(b);
+
+
+                    const scoreA =
+                        getTierScore(tierA);
+
+                    const scoreB =
+                        getTierScore(tierB);
 
 
                     /*
-                     * First: Tier
+                     * 1. Tier
                      */
 
-                    if (scoreA !== scoreB) {
+                    if (
+                        scoreA !== scoreB
+                    ) {
 
-                        return scoreB - scoreA;
+                        return (
+                            scoreB -
+                            scoreA
+                        );
 
                     }
 
 
                     /*
-                     * Second: Tests
+                     * 2. Tests
                      */
 
                     const testsA =
-                        Number(a?.stats?.tests || 0);
+                        Number(
+                            a?.stats?.tests ||
+                            0
+                        );
 
                     const testsB =
-                        Number(b?.stats?.tests || 0);
+                        Number(
+                            b?.stats?.tests ||
+                            0
+                        );
 
-                    if (testsA !== testsB) {
 
-                        return testsB - testsA;
+                    if (
+                        testsA !==
+                        testsB
+                    ) {
+
+                        return (
+                            testsB -
+                            testsA
+                        );
 
                     }
 
 
                     /*
-                     * Third: Wins
+                     * 3. Wins
                      */
 
                     const winsA =
-                        Number(a?.stats?.wins || 0);
+                        Number(
+                            a?.stats?.wins ||
+                            0
+                        );
 
                     const winsB =
-                        Number(b?.stats?.wins || 0);
+                        Number(
+                            b?.stats?.wins ||
+                            0
+                        );
 
-                    return winsB - winsA;
+
+                    if (
+                        winsA !==
+                        winsB
+                    ) {
+
+                        return (
+                            winsB -
+                            winsA
+                        );
+
+                    }
+
+
+                    /*
+                     * 4. Username
+                     * Keeps sorting stable.
+                     */
+
+                    return String(
+                        a.minecraftName ||
+                        ""
+                    ).localeCompare(
+                        String(
+                            b.minecraftName ||
+                            ""
+                        )
+                    );
 
                 });
 
         }
 
 
-        /* =========================================
+        /* =====================================================
            PODIUM
-        ========================================= */
+        ===================================================== */
 
         function renderPodium(players) {
 
-            if (!podium) return;
+            if (!podium) {
+                return;
+            }
 
 
             const top3 =
                 players.slice(0, 3);
 
 
-            if (top3.length === 0) {
+            if (
+                top3.length === 0
+            ) {
 
                 podium.innerHTML = `
 
@@ -883,79 +2341,88 @@
             }
 
 
-            podium.innerHTML = top3
-                .map((player, index) => {
+            podium.innerHTML =
+                top3.map(
+                    (player, index) => {
 
-                    const position =
-                        index + 1;
-
-                    const name =
-                        escapeHTML(
-                            player.minecraftName ||
-                            "Unknown"
-                        );
-
-                    const tier =
-                        getTier(player);
-
-                    const uuid =
-                        player.uuid || "";
-
-                    const score =
-                        getTierScore(tier);
+                        const position =
+                            index + 1;
 
 
-                    return `
+                        const username =
+                            String(
+                                player.minecraftName ||
+                                "Unknown"
+                            );
 
-                        <div
-                            class="podium-card place-${position}"
-                            data-player="${escapeHTML(
-                                player.minecraftName || ""
-                            )}"
-                        >
 
-                            <div class="podium-rank">
-                                #${position}
+                        const name =
+                            escapeHTML(
+                                username
+                            );
+
+
+                        const tier =
+                            getTier(player);
+
+
+                        const uuid =
+                            player.uuid || "";
+
+
+                        const score =
+                            getTierScore(tier);
+
+
+                        return `
+
+                            <div
+                                class="podium-card place-${position}"
+                                data-player="${name}"
+                            >
+
+                                <div class="podium-rank">
+                                    #${position}
+                                </div>
+
+
+                                <div class="podium-player">
+
+                                    <img
+                                        src="${getBody(uuid)}"
+                                        alt="${name}"
+                                        class="podium-skin"
+                                        onerror="
+                                            this.onerror=null;
+                                            this.src='https://mc-heads.net/body/MHF_Steve/100';
+                                        "
+                                    >
+
+
+                                    <div class="podium-name">
+                                        ${name}
+                                    </div>
+
+
+                                    <div
+                                        class="podium-tier ${getTierClass(tier)}"
+                                    >
+                                        ${escapeHTML(tier)}
+                                    </div>
+
+
+                                    <div class="podium-score">
+                                        ${score} pts
+                                    </div>
+
+                                </div>
+
                             </div>
 
+                        `;
 
-                            <div class="podium-player">
-
-                                <img
-                                    src="${getBody(uuid)}"
-                                    alt="${name}"
-                                    class="podium-skin"
-                                    onerror="
-                                        this.onerror=null;
-                                        this.src='https://mc-heads.net/body/MHF_Steve/100';
-                                    "
-                                >
-
-
-                                <div class="podium-name">
-                                    ${name}
-                                </div>
-
-
-                                <div
-                                    class="podium-tier ${getTierClass(tier)}"
-                                >
-                                    ${escapeHTML(tier)}
-                                </div>
-
-
-                                <div class="podium-score">
-                                    ${score} pts
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    `;
-
-                })
-                .join("");
+                    }
+                ).join("");
 
 
             podium
@@ -969,7 +2436,10 @@
                             const username =
                                 card.dataset.player;
 
-                            if (!username) return;
+                            if (!username) {
+                                return;
+                            }
+
 
                             window.location.href =
                                 `./players.html?player=${encodeURIComponent(username)}`;
@@ -982,30 +2452,37 @@
         }
 
 
-        /* =========================================
-           ROWS
-        ========================================= */
+        /* =====================================================
+           TABLE
+        ===================================================== */
 
         function renderRows(players) {
 
-            if (!leaderboardBody) return;
+            if (!leaderboardBody) {
+                return;
+            }
 
 
             /*
-             * Top 3 are already displayed
-             * in the podium.
+             * Top 3 are in the podium.
              */
 
             const remaining =
                 players.slice(3, 50);
 
 
-            if (remaining.length === 0) {
+            if (
+                remaining.length === 0
+            ) {
 
                 leaderboardBody.innerHTML = `
 
                     <div class="empty-row">
-                        No other ranked players.
+                        ${
+                            players.length <= 3
+                                ? "No other ranked players."
+                                : ""
+                        }
                     </div>
 
                 `;
@@ -1016,124 +2493,138 @@
 
 
             leaderboardBody.innerHTML =
-                remaining.map((player, index) => {
+                remaining.map(
+                    (player, index) => {
 
-                    const position =
-                        index + 4;
-
-                    const name =
-                        escapeHTML(
-                            player.minecraftName ||
-                            "Unknown"
-                        );
-
-                    const tier =
-                        getTier(player);
-
-                    const uuid =
-                        player.uuid || "";
-
-                    const tests =
-                        Number(
-                            player?.stats?.tests || 0
-                        );
-
-                    const wins =
-                        Number(
-                            player?.stats?.wins || 0
-                        );
-
-                    const losses =
-                        Number(
-                            player?.stats?.losses || 0
-                        );
-
-                    const score =
-                        getTierScore(tier);
-
-                    const region =
-                        escapeHTML(
-                            player.region || "EU"
-                        );
+                        const position =
+                            index + 4;
 
 
-                    return `
-
-                        <div
-                            class="leaderboard-row"
-                            data-player="${escapeHTML(
-                                player.minecraftName || ""
-                            )}"
-                        >
-
-                            <div class="rank-number">
-                                #${position}
-                            </div>
+                        const username =
+                            String(
+                                player.minecraftName ||
+                                "Unknown"
+                            );
 
 
-                            <div class="player-cell">
-
-                                <img
-                                    src="${getSkin(uuid)}"
-                                    alt="${name}"
-                                    class="player-skin"
-                                    onerror="
-                                        this.onerror=null;
-                                        this.src='https://mc-heads.net/avatar/MHF_Steve/64';
-                                    "
-                                >
+                        const name =
+                            escapeHTML(
+                                username
+                            );
 
 
-                                <div class="player-info">
+                        const tier =
+                            getTier(player);
 
-                                    <div class="player-name">
-                                        ${name}
-                                    </div>
 
-                                    <div class="player-region">
-                                        ${region}
+                        const uuid =
+                            player.uuid || "";
+
+
+                        const tests =
+                            Number(
+                                player?.stats?.tests ||
+                                0
+                            );
+
+
+                        const wins =
+                            Number(
+                                player?.stats?.wins ||
+                                0
+                            );
+
+
+                        const losses =
+                            Number(
+                                player?.stats?.losses ||
+                                0
+                            );
+
+
+                        const score =
+                            getTierScore(tier);
+
+
+                        const region =
+                            escapeHTML(
+                                player.region ||
+                                "EU"
+                            );
+
+
+                        return `
+
+                            <div
+                                class="leaderboard-row"
+                                data-player="${name}"
+                            >
+
+                                <div class="rank-number">
+                                    #${position}
+                                </div>
+
+
+                                <div class="player-cell">
+
+                                    <img
+                                        src="${getSkin(uuid)}"
+                                        alt="${name}"
+                                        class="player-skin"
+                                        onerror="
+                                            this.onerror=null;
+                                            this.src='https://mc-heads.net/avatar/MHF_Steve/64';
+                                        "
+                                    >
+
+
+                                    <div class="player-info">
+
+                                        <div class="player-name">
+                                            ${name}
+                                        </div>
+
+                                        <div class="player-region">
+                                            ${region}
+                                        </div>
+
                                     </div>
 
                                 </div>
 
+
+                                <div class="tier-cell">
+
+                                    <span
+                                        class="tier-badge ${getTierClass(tier)}"
+                                    >
+                                        ${escapeHTML(tier)}
+                                    </span>
+
+                                </div>
+
+
+                                <div class="score-cell">
+                                    ${score}
+                                </div>
+
+
+                                <div class="tests-cell">
+                                    ${tests}
+                                </div>
+
+
+                                <div class="record-cell">
+                                    ${wins}W / ${losses}L
+                                </div>
+
                             </div>
 
+                        `;
 
-                            <div class="tier-cell">
+                    }
+                ).join("");
 
-                                <span
-                                    class="tier-badge ${getTierClass(tier)}"
-                                >
-                                    ${escapeHTML(tier)}
-                                </span>
-
-                            </div>
-
-
-                            <div class="score-cell">
-                                ${score}
-                            </div>
-
-
-                            <div class="tests-cell">
-                                ${tests}
-                            </div>
-
-
-                            <div class="record-cell">
-                                ${wins}W / ${losses}L
-                            </div>
-
-                        </div>
-
-                    `;
-
-                }).join("");
-
-
-            /*
-             * Click row -> player profile
-             */
 
             leaderboardBody
                 .querySelectorAll("[data-player]")
@@ -1146,7 +2637,10 @@
                             const username =
                                 row.dataset.player;
 
-                            if (!username) return;
+                            if (!username) {
+                                return;
+                            }
+
 
                             window.location.href =
                                 `./players.html?player=${encodeURIComponent(username)}`;
@@ -1159,11 +2653,15 @@
         }
 
 
-        /* =========================================
+        /* =====================================================
            STATS
-        ========================================= */
+        ===================================================== */
 
         function renderStats(players) {
+
+            /*
+             * Total registered players.
+             */
 
             if (playersCount) {
 
@@ -1173,15 +2671,23 @@
             }
 
 
+            /*
+             * Total Premium Sword ranked.
+             */
+
             const ranked =
-                players.filter(player => {
+                players.filter(
+                    player => {
 
-                    return (
-                        player?.accountType === "premium" &&
-                        getTier(player) !== "Unranked"
-                    );
+                        return (
+                            player.accountType ===
+                            "premium" &&
+                            getTier(player) !==
+                            "Unranked"
+                        );
 
-                });
+                    }
+                );
 
 
             if (rankedCount) {
@@ -1192,14 +2698,21 @@
             }
 
 
+            /*
+             * Total tests.
+             */
+
             const totalTests =
                 players.reduce(
                     (total, player) => {
 
-                        return total +
+                        return (
+                            total +
                             Number(
-                                player?.stats?.tests || 0
-                            );
+                                player?.stats?.tests ||
+                                0
+                            )
+                        );
 
                     },
                     0
@@ -1215,8 +2728,7 @@
 
 
             /*
-             * There is currently no testers
-             * collection in the database.
+             * Testers are not stored yet.
              */
 
             if (testersCount) {
@@ -1229,25 +2741,28 @@
         }
 
 
-        /* =========================================
-           RENDER
-        ========================================= */
+        /* =====================================================
+           RENDER EVERYTHING
+        ===================================================== */
 
         function renderLeaderboard(players) {
 
             renderPodium(players);
+
             renderRows(players);
 
         }
 
 
-        /* =========================================
+        /* =====================================================
            SEARCH
-        ========================================= */
+        ===================================================== */
 
         function searchPlayer() {
 
-            if (!searchInput) return;
+            if (!searchInput) {
+                return;
+            }
 
 
             const query =
@@ -1260,7 +2775,8 @@
 
                 if (searchMessage) {
 
-                    searchMessage.textContent = "";
+                    searchMessage.textContent =
+                        "";
 
                 }
 
@@ -1274,16 +2790,23 @@
 
 
             const player =
-                allPlayers.find(item => {
+                allPlayers.find(
+                    item => {
 
-                    const name =
-                        String(
-                            item.minecraftName || ""
-                        ).toLowerCase();
+                        const name =
+                            String(
+                                item.minecraftName ||
+                                ""
+                            ).toLowerCase();
 
-                    return name === query;
 
-                });
+                        return (
+                            name ===
+                            query
+                        );
+
+                    }
+                );
 
 
             if (!player) {
@@ -1302,7 +2825,8 @@
 
             if (searchMessage) {
 
-                searchMessage.textContent = "";
+                searchMessage.textContent =
+                    "";
 
             }
 
@@ -1331,7 +2855,10 @@
                 "keydown",
                 event => {
 
-                    if (event.key === "Enter") {
+                    if (
+                        event.key ===
+                        "Enter"
+                    ) {
 
                         searchPlayer();
 
@@ -1343,12 +2870,15 @@
         }
 
 
-        /* =========================================
+        /* =====================================================
            FIREBASE REALTIME DATABASE
-        ========================================= */
+        ===================================================== */
 
         const playersRef =
-            ref(database, "players");
+            ref(
+                database,
+                "players"
+            );
 
 
         onValue(
@@ -1358,27 +2888,35 @@
             snapshot => {
 
                 const data =
-                    snapshot.val() || {};
+                    snapshot.val() ||
+                    {};
 
+
+                /*
+                 * Convert Firebase object
+                 * into an array.
+                 */
 
                 allPlayers =
                     Object.entries(data)
+                        .map(
+                            ([uid, player]) => ({
 
-                        .map(([uid, player]) => ({
+                                uid,
 
-                            uid,
+                                ...(player || {})
 
-                            ...(player || {})
+                            })
+                        )
+                        .filter(
+                            player => {
 
-                        }))
+                                return Boolean(
+                                    player.minecraftName
+                                );
 
-                        .filter(player => {
-
-                            return Boolean(
-                                player.minecraftName
-                            );
-
-                        });
+                            }
+                        );
 
 
                 const rankedPlayers =
@@ -1402,7 +2940,7 @@
 
 
                 console.log(
-                    "[ROTierList] Ranked premium Sword players:",
+                    "[ROTierList] Premium Sword ranked:",
                     rankedPlayers.length
                 );
 
@@ -1461,9 +2999,7 @@
     </script>
 
 
-    <!-- =========================================
-         AUTH UI
-    ========================================= -->
+    <!-- AUTH UI -->
 
     <script
         type="module"
