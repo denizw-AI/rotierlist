@@ -28,7 +28,7 @@
 
             background:
                 radial-gradient(
-                    circle at 50% -15%,
+                    circle at 50% -20%,
                     rgba(126, 81, 255, 0.13),
                     transparent 38%
                 ),
@@ -49,10 +49,8 @@
             text-decoration: none;
         }
 
-        button,
-        input,
-        select {
-            font: inherit;
+        button {
+            font-family: inherit;
         }
 
 
@@ -68,10 +66,10 @@
             width: 100%;
 
             background:
-                rgba(5, 5, 8, 0.78);
+                rgba(5, 5, 8, 0.82);
 
             border-bottom:
-                1px solid rgba(255,255,255,0.055);
+                1px solid rgba(255,255,255,.055);
 
             backdrop-filter:
                 blur(22px);
@@ -87,7 +85,6 @@
 
             display: flex;
             align-items: center;
-            justify-content: space-between;
 
             gap: 30px;
         }
@@ -98,7 +95,7 @@
             font-size: 20px;
             font-weight: 950;
 
-            letter-spacing: -0.8px;
+            letter-spacing: -.8px;
         }
 
         .logo span {
@@ -129,7 +126,7 @@
 
         .nav-links a:hover,
         .nav-links a.active {
-            color: #ffffff;
+            color: #fff;
         }
 
         .nav-links a.active::after {
@@ -143,8 +140,7 @@
             width: 4px;
             height: 4px;
 
-            transform:
-                translateX(-50%);
+            transform: translateX(-50%);
 
             border-radius: 50%;
 
@@ -155,23 +151,17 @@
                 rgba(135,93,255,.8);
         }
 
+
+        /* =====================================================
+           AUTH
+        ===================================================== */
+
         .nav-auth {
+            min-width: 230px;
+
             display: flex;
             align-items: center;
             justify-content: flex-end;
-
-            min-width: 230px;
-        }
-
-
-        /* =====================================================
-           AUTH UI
-        ===================================================== */
-
-        .auth-buttons {
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
         .nav-login,
@@ -193,7 +183,8 @@
         }
 
         .nav-login {
-            border: 1px solid #292932;
+            border:
+                1px solid #292932;
 
             background: #0a0a0f;
 
@@ -201,7 +192,7 @@
         }
 
         .nav-login:hover {
-            color: white;
+            color: #fff;
 
             border-color:
                 rgba(135,93,255,.45);
@@ -211,6 +202,8 @@
         }
 
         .nav-register {
+            margin-left: 7px;
+
             background:
                 linear-gradient(
                     135deg,
@@ -218,19 +211,13 @@
                     #6039dc
                 );
 
-            color: white;
-
-            box-shadow:
-                0 8px 25px
-                rgba(100,60,220,.18);
+            color: #fff;
         }
 
-        .nav-register:hover {
-            transform: translateY(-1px);
 
-            filter: brightness(1.08);
-        }
-
+        /* =====================================================
+           AUTH UI FROM auth-ui.js
+        ===================================================== */
 
         .account-wrapper {
             position: relative;
@@ -241,17 +228,18 @@
             gap: 8px;
         }
 
+        .admin-button,
         .admin-top-button {
             height: 40px;
 
             display: inline-flex;
             align-items: center;
-            gap: 7px;
+            justify-content: center;
 
             padding: 0 13px;
 
             border:
-                1px solid rgba(135,93,255,.27);
+                1px solid rgba(135,93,255,.28);
 
             border-radius: 10px;
 
@@ -260,14 +248,15 @@
 
             color: #aa8cff;
 
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 900;
 
             transition: .18s ease;
         }
 
+        .admin-button:hover,
         .admin-top-button:hover {
-            color: white;
+            color: #fff;
 
             border-color:
                 rgba(135,93,255,.58);
@@ -281,6 +270,7 @@
 
             display: flex;
             align-items: center;
+
             gap: 9px;
 
             padding:
@@ -292,9 +282,9 @@
             border-radius: 11px;
 
             background:
-                rgba(11,11,16,.92);
+                rgba(11,11,16,.94);
 
-            color: white;
+            color: #fff;
 
             cursor: pointer;
 
@@ -308,10 +298,6 @@
 
             background:
                 rgba(135,93,255,.07);
-
-            box-shadow:
-                0 10px 35px
-                rgba(0,0,0,.25);
         }
 
         .account-avatar {
@@ -331,7 +317,7 @@
                     #5830ca
                 );
 
-            color: white;
+            color: #fff;
 
             font-size: 12px;
             font-weight: 950;
@@ -345,11 +331,11 @@
             text-overflow: ellipsis;
             white-space: nowrap;
 
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 900;
         }
 
-        .account-chevron {
+        .account-arrow {
             color: #73737e;
 
             font-size: 10px;
@@ -358,14 +344,11 @@
         }
 
         .account-button.open
-        .account-chevron {
+        .account-arrow {
             transform: rotate(180deg);
 
             color: #9c7aff;
         }
-
-
-        /* ACCOUNT DROPDOWN */
 
         .account-dropdown {
             position: absolute;
@@ -383,7 +366,7 @@
             border-radius: 15px;
 
             background:
-                rgba(10,10,15,.97);
+                rgba(10,10,15,.98);
 
             box-shadow:
                 0 25px 70px
@@ -417,86 +400,28 @@
                 scale(1);
         }
 
-        .account-header {
-            display: flex;
-            align-items: center;
-
-            gap: 11px;
-
-            padding: 10px;
-        }
-
-        .big-avatar {
-            width: 43px;
-            height: 43px;
-
-            flex-shrink: 0;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 11px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #8b63ff,
-                    #5830ca
-                );
-
-            color: white;
-
-            font-size: 15px;
-            font-weight: 950;
-        }
-
-        .account-details {
-            min-width: 0;
-        }
-
-        .account-display-name {
-            overflow: hidden;
-
-            text-overflow: ellipsis;
-            white-space: nowrap;
-
-            font-size: 13px;
-            font-weight: 950;
-        }
-
-        .account-email {
-            max-width: 185px;
-
-            margin-top: 3px;
+        .dropdown-email {
+            padding:
+                11px 10px;
 
             overflow: hidden;
 
             text-overflow: ellipsis;
             white-space: nowrap;
 
-            color: #666672;
+            color: #62626e;
 
             font-size: 10px;
             font-weight: 700;
         }
 
-        .dropdown-divider {
-            height: 1px;
-
-            margin: 5px 3px;
-
-            background: #202029;
-        }
-
-        .dropdown-item,
-        .logout-item {
+        .account-dropdown a,
+        .account-dropdown button {
             width: 100%;
-            height: 42px;
+            height: 40px;
 
             display: flex;
             align-items: center;
-            gap: 11px;
 
             padding: 0 11px;
 
@@ -507,7 +432,7 @@
 
             color: #a3a3ae;
 
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 850;
 
             text-align: left;
@@ -517,29 +442,18 @@
             transition: .15s ease;
         }
 
-        .dropdown-item:hover {
+        .account-dropdown a:hover {
             background:
                 rgba(135,93,255,.09);
 
-            color: white;
+            color: #fff;
         }
 
-        .dropdown-icon {
-            width: 20px;
-
-            display: inline-flex;
-            justify-content: center;
-
-            color: #8963ff;
-
-            font-size: 14px;
+        #logoutButton {
+            color: #ff737c;
         }
 
-        .logout-item {
-            color: #ff747d;
-        }
-
-        .logout-item:hover {
+        #logoutButton:hover {
             background:
                 rgba(255,80,90,.07);
 
@@ -610,7 +524,7 @@
             background:
                 linear-gradient(
                     135deg,
-                    #ffffff 15%,
+                    #fff 15%,
                     #a27fff 85%
                 );
 
@@ -716,7 +630,7 @@
         }
 
         .full-btn:hover {
-            color: white;
+            color: #fff;
 
             border-color:
                 rgba(135,93,255,.5);
@@ -727,7 +641,7 @@
 
 
         /* =====================================================
-           RANKINGS
+           RANKINGS CONTAINER
         ===================================================== */
 
         .rankings {
@@ -759,7 +673,7 @@
         .podium {
             position: relative;
 
-            min-height: 510px;
+            min-height: 520px;
 
             padding:
                 55px 80px
@@ -828,8 +742,6 @@
         }
 
 
-        /* decorative rings */
-
         .podium-decoration {
             position: absolute;
 
@@ -838,7 +750,7 @@
 
             border:
                 1px solid
-                rgba(135,93,255,.08);
+                rgba(135,93,255,.065);
 
             border-radius: 50%;
 
@@ -856,13 +768,15 @@
         }
 
 
-        /* PLAYER CARD */
+        /* =====================================================
+           PODIUM CARD
+        ===================================================== */
 
         .podium-player {
             position: relative;
             z-index: 3;
 
-            height: 345px;
+            height: 350px;
 
             display: flex;
             flex-direction: column;
@@ -887,9 +801,7 @@
                     rgba(9,9,13,.98)
                 );
 
-            transition:
-                transform .2s ease,
-                border-color .2s ease;
+            transition: .2s ease;
         }
 
         .podium-player:hover {
@@ -897,11 +809,11 @@
                 translateY(-5px);
 
             border-color:
-                rgba(255,255,255,.14);
+                rgba(255,255,255,.15);
         }
 
         .podium-player.first {
-            height: 425px;
+            height: 430px;
 
             border-color:
                 rgba(255,198,38,.35);
@@ -934,8 +846,6 @@
         }
 
 
-        /* POSITION */
-
         .position {
             position: absolute;
 
@@ -960,11 +870,9 @@
         }
 
 
-        /* SKIN */
-
         .podium-skin {
             width: 135px;
-            height: 185px;
+            height: 190px;
 
             margin-bottom: -1px;
 
@@ -981,7 +889,7 @@
 
         .first .podium-skin {
             width: 155px;
-            height: 225px;
+            height: 230px;
 
             filter:
                 drop-shadow(
@@ -991,8 +899,6 @@
         }
 
 
-        /* NAME */
-
         .podium-name {
             max-width: 88%;
 
@@ -1001,7 +907,7 @@
             text-overflow: ellipsis;
             white-space: nowrap;
 
-            color: #eeeeF3;
+            color: #eeeef3;
 
             font-size: 17px;
             font-weight: 950;
@@ -1028,8 +934,6 @@
         }
 
 
-        /* TIER */
-
         .podium-tier {
             margin-bottom: 16px;
 
@@ -1039,8 +943,6 @@
             font-weight: 950;
         }
 
-
-        /* NUMBER */
 
         .podium-number {
             width: 100%;
@@ -1090,7 +992,9 @@
         }
 
 
-        /* EMPTY */
+        /* =====================================================
+           EMPTY / LOADING
+        ===================================================== */
 
         .podium-empty {
             position: relative;
@@ -1098,7 +1002,7 @@
 
             grid-column: 1 / -1;
 
-            height: 410px;
+            height: 420px;
 
             display: flex;
             flex-direction: column;
@@ -1189,12 +1093,14 @@
                 rgba(135,93,255,.035);
         }
 
+
         .rank {
             color: #60606c;
 
             font-size: 12px;
             font-weight: 950;
         }
+
 
         .player-cell {
             display: flex;
@@ -1247,8 +1153,17 @@
             text-transform: uppercase;
         }
 
+
+        /* =====================================================
+           TIER BADGES
+        ===================================================== */
+
         .tier-badge {
             display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-width: 48px;
 
             padding:
                 6px 9px;
@@ -1268,6 +1183,88 @@
             font-weight: 950;
         }
 
+
+        /*
+         * Tier colors
+         */
+
+        .tier-ht1 {
+            color: #ff4e4e;
+
+            border-color:
+                rgba(255,78,78,.35);
+
+            background:
+                rgba(255,78,78,.07);
+        }
+
+        .tier-lt1 {
+            color: #ff7474;
+
+            border-color:
+                rgba(255,116,116,.28);
+        }
+
+        .tier-ht2 {
+            color: #ff9b45;
+
+            border-color:
+                rgba(255,155,69,.3);
+
+            background:
+                rgba(255,155,69,.06);
+        }
+
+        .tier-lt2 {
+            color: #ffb267;
+
+            border-color:
+                rgba(255,178,103,.25);
+        }
+
+        .tier-ht3 {
+            color: #ffd34d;
+
+            border-color:
+                rgba(255,211,77,.28);
+        }
+
+        .tier-lt3 {
+            color: #ffe080;
+
+            border-color:
+                rgba(255,224,128,.23);
+        }
+
+        .tier-ht4 {
+            color: #63e6a3;
+
+            border-color:
+                rgba(99,230,163,.28);
+        }
+
+        .tier-lt4 {
+            color: #8be7b6;
+
+            border-color:
+                rgba(139,231,182,.22);
+        }
+
+        .tier-ht5 {
+            color: #72b7ff;
+
+            border-color:
+                rgba(114,183,255,.28);
+        }
+
+        .tier-lt5 {
+            color: #96c9ff;
+
+            border-color:
+                rgba(150,201,255,.22);
+        }
+
+
         .score {
             color: #d1d1d9;
 
@@ -1285,6 +1282,7 @@
         .record {
             display: flex;
             align-items: center;
+
             gap: 7px;
 
             font-size: 11px;
@@ -1406,14 +1404,10 @@
                     #6039db
                 );
 
-            color: white;
+            color: #fff;
 
             font-size: 11px;
             font-weight: 950;
-
-            box-shadow:
-                0 12px 30px
-                rgba(100,60,220,.2);
         }
 
 
@@ -1480,6 +1474,7 @@
             .player-row > :nth-child(5) {
                 display: none;
             }
+
         }
 
 
@@ -1491,7 +1486,7 @@
 
             .nav-container {
                 width:
-                    min(100% - 25px, 1450px);
+                    calc(100% - 25px);
             }
 
             .nav-auth {
@@ -1579,11 +1574,6 @@
                 display: none;
             }
 
-            .table-head,
-            .player-row {
-                padding-left: 14px;
-                padding-right: 14px;
-            }
         }
 
 
@@ -1593,9 +1583,8 @@
                 display: none;
             }
 
-            .admin-top-button {
-                padding:
-                    0 10px;
+            .admin-button {
+                display: none;
             }
 
             .hero h1 {
@@ -1769,19 +1758,28 @@
         </nav>
 
 
-        <!-- auth-ui.js controls this -->
-
         <div
             class="nav-auth"
             id="authArea"
         >
 
-            <a
-                href="./login.html"
-                class="nav-login"
-            >
-                Login
-            </a>
+            <div class="auth-buttons">
+
+                <a
+                    href="./login.html"
+                    class="nav-login"
+                >
+                    Login
+                </a>
+
+                <a
+                    href="./register.html"
+                    class="nav-register"
+                >
+                    Register
+                </a>
+
+            </div>
 
         </div>
 
@@ -1817,7 +1815,7 @@
 
 
 <!-- =========================================================
-     PREMIUM RANKINGS
+     PREMIUM OVERALL
 ========================================================== -->
 
 <section class="section">
@@ -1857,25 +1855,21 @@
     <div class="rankings">
 
 
-        <!-- PODIUM -->
+        <!-- =================================================
+             PODIUM
+        ================================================== -->
 
         <div
             id="podium"
             class="podium"
         >
 
-            <div
-                class="podium-decoration left"
-            ></div>
+            <div class="podium-decoration left"></div>
 
-            <div
-                class="podium-decoration right"
-            ></div>
+            <div class="podium-decoration right"></div>
 
 
-            <div
-                class="podium-empty"
-            >
+            <div class="podium-empty">
 
                 <div class="podium-empty-icon">
                     🏆
@@ -1894,7 +1888,9 @@
         </div>
 
 
-        <!-- TABLE HEADER -->
+        <!-- =================================================
+             TABLE HEADER
+        ================================================== -->
 
         <div class="table-head">
 
@@ -1925,11 +1921,11 @@
         </div>
 
 
-        <!-- PLAYERS -->
+        <!-- =================================================
+             PLAYERS #4 - #53
+        ================================================== -->
 
-        <div
-            id="playerRows"
-        ></div>
+        <div id="playerRows"></div>
 
 
     </div>
@@ -1964,10 +1960,6 @@
 </section>
 
 
-<!-- =========================================================
-     FOOTER
-========================================================== -->
-
 <footer>
 
     © 2026 RO TierList.
@@ -1977,7 +1969,7 @@
 
 
 <!-- =========================================================
-     FIREBASE RANKINGS
+     FIREBASE
 ========================================================== -->
 
 <script type="module">
@@ -1991,36 +1983,21 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 
 
-/* =========================================================
-   DATABASE
-========================================================== */
-
 const database =
     getDatabase(app);
 
 
 /* =========================================================
-   GAMEMODES
-========================================================== */
+   TIER SYSTEM
+==========================================================
 
-const GAMEMODES = [
+   THIS IS THE ACTUAL RANKING SYSTEM.
 
-    "vanilla",
-    "sword",
-    "axe",
-    "uhc",
-    "pot",
-    "mace",
-    "smp",
-    "crystal"
+   Higher score = better tier.
 
-];
+   HT1 > LT1 > HT2 > LT2 > HT3 > LT3
+   > HT4 > LT4 > HT5 > LT5
 
-
-/* =========================================================
-   TIER SCORE
-
-   Higher = better
 ========================================================== */
 
 const TIER_SCORE = {
@@ -2046,7 +2023,25 @@ const TIER_SCORE = {
 
 
 /* =========================================================
-   HELPERS
+   ALL GAMEMODES
+========================================================== */
+
+const GAMEMODES = [
+
+    "vanilla",
+    "sword",
+    "axe",
+    "uhc",
+    "pot",
+    "mace",
+    "smp",
+    "crystal"
+
+];
+
+
+/* =========================================================
+   NORMALIZE
 ========================================================== */
 
 function normalize(value) {
@@ -2057,6 +2052,10 @@ function normalize(value) {
 
 }
 
+
+/* =========================================================
+   ESCAPE HTML
+========================================================== */
 
 function escapeHtml(value) {
 
@@ -2071,7 +2070,7 @@ function escapeHtml(value) {
 
 
 /* =========================================================
-   GET CASE-INSENSITIVE KEY
+   FIND FIREBASE KEY IGNORING CAPITALIZATION
 ========================================================== */
 
 function findKey(object, wanted) {
@@ -2090,7 +2089,7 @@ function findKey(object, wanted) {
 
 
 /* =========================================================
-   GET BEST TIER
+   GET BEST TIER FROM ALL GAMEMODES
 ========================================================== */
 
 function getBestTierInfo(player) {
@@ -2113,24 +2112,27 @@ function getBestTierInfo(player) {
     for (const mode of GAMEMODES) {
 
         const key =
-            findKey(tiers, mode);
+            findKey(
+                tiers,
+                mode
+            );
 
 
-        const value =
+        const tier =
             key
                 ? tiers[key]
                 : "Unranked";
 
 
         const score =
-            TIER_SCORE[value] || 0;
+            TIER_SCORE[tier] || 0;
 
 
         if (score > best.score) {
 
             best = {
 
-                tier: value,
+                tier: tier,
 
                 score: score,
 
@@ -2152,17 +2154,36 @@ function getBestTierInfo(player) {
    GET STATS
 ========================================================== */
 
-function getStatsForMode(
+function getStats(
     player,
-    mode
+    gamemode
 ) {
+
+    if (
+        !gamemode ||
+        gamemode === "-"
+    ) {
+
+        return {
+
+            tests: 0,
+            wins: 0,
+            losses: 0
+
+        };
+
+    }
+
 
     const stats =
         player?.stats || {};
 
 
     const key =
-        findKey(stats, mode);
+        findKey(
+            stats,
+            gamemode
+        );
 
 
     if (!key) {
@@ -2202,32 +2223,37 @@ function getStatsForMode(
    PREPARE PLAYER
 ========================================================== */
 
-function preparePlayer(player) {
+function preparePlayer(
+    uid,
+    player
+) {
 
     const best =
-        getBestTierInfo(player);
+        getBestTierInfo(
+            player
+        );
 
 
     const stats =
-        best.gamemode === "-"
-            ? {
-                tests: 0,
-                wins: 0,
-                losses: 0
-            }
-            : getStatsForMode(
-                player,
-                best.gamemode
-            );
+        getStats(
+            player,
+            best.gamemode
+        );
 
 
     return {
 
-        ...player,
+        uid,
 
         minecraftName:
             player.minecraftName ||
+            player.username ||
             "Unknown",
+
+        accountType:
+            normalize(
+                player.accountType
+            ),
 
         bestTier:
             best.tier,
@@ -2253,7 +2279,22 @@ function preparePlayer(player) {
 
 
 /* =========================================================
-   SORT PLAYERS
+   SORTING SYSTEM
+==========================================================
+
+   IMPORTANT:
+
+   TIER ALWAYS COMES FIRST.
+
+   Example:
+
+   LT3 + 2 wins
+   LT4 + 500 wins
+
+   LT3 WILL ALWAYS BE ABOVE LT4.
+
+   Wins are only used if the tier is equal.
+
 ========================================================== */
 
 function sortPlayers(players) {
@@ -2262,7 +2303,7 @@ function sortPlayers(players) {
         (a, b) => {
 
 
-            /* BEST TIER */
+            /* 1. BEST TIER */
 
             if (
                 b.score !==
@@ -2277,7 +2318,7 @@ function sortPlayers(players) {
             }
 
 
-            /* WINS */
+            /* 2. SAME TIER -> MORE WINS */
 
             if (
                 b.wins !==
@@ -2292,7 +2333,7 @@ function sortPlayers(players) {
             }
 
 
-            /* FEWER LOSSES */
+            /* 3. SAME WINS -> FEWER LOSSES */
 
             if (
                 a.losses !==
@@ -2307,7 +2348,7 @@ function sortPlayers(players) {
             }
 
 
-            /* TESTS */
+            /* 4. SAME RECORD -> MORE TESTS */
 
             if (
                 b.tests !==
@@ -2322,7 +2363,7 @@ function sortPlayers(players) {
             }
 
 
-            /* NAME */
+            /* 5. SAME EVERYTHING -> NAME */
 
             return String(
                 a.minecraftName
@@ -2339,7 +2380,20 @@ function sortPlayers(players) {
 
 
 /* =========================================================
-   SKINS
+   TIER CSS CLASS
+========================================================== */
+
+function tierClass(tier) {
+
+    return String(tier)
+        .toLowerCase()
+        .replaceAll(" ", "-");
+
+}
+
+
+/* =========================================================
+   MINECRAFT BODY SKIN
 ========================================================== */
 
 function bodySkin(name) {
@@ -2353,6 +2407,10 @@ function bodySkin(name) {
 }
 
 
+/* =========================================================
+   MINECRAFT AVATAR
+========================================================== */
+
 function avatarSkin(name) {
 
     return (
@@ -2365,7 +2423,7 @@ function avatarSkin(name) {
 
 
 /* =========================================================
-   PODIUM PLAYER
+   CREATE PODIUM PLAYER
 ========================================================== */
 
 function createPodiumPlayer(
@@ -2443,21 +2501,13 @@ function renderPodium(players) {
         );
 
 
-    /*
-     * No ranked players
-     */
-
     if (!players.length) {
 
         podium.innerHTML = `
 
-            <div
-                class="podium-decoration left"
-            ></div>
+            <div class="podium-decoration left"></div>
 
-            <div
-                class="podium-decoration right"
-            ></div>
+            <div class="podium-decoration right"></div>
 
 
             <div class="podium-empty">
@@ -2495,13 +2545,9 @@ function renderPodium(players) {
 
     let html = `
 
-        <div
-            class="podium-decoration left"
-        ></div>
+        <div class="podium-decoration left"></div>
 
-        <div
-            class="podium-decoration right"
-        ></div>
+        <div class="podium-decoration right"></div>
 
     `;
 
@@ -2521,7 +2567,9 @@ function renderPodium(players) {
 
     } else {
 
-        html += `<div></div>`;
+        html += `
+            <div></div>
+        `;
 
     }
 
@@ -2553,7 +2601,9 @@ function renderPodium(players) {
 
     } else {
 
-        html += `<div></div>`;
+        html += `
+            <div></div>
+        `;
 
     }
 
@@ -2565,7 +2615,7 @@ function renderPodium(players) {
 
 
 /* =========================================================
-   TABLE ROW
+   CREATE TABLE ROW
 ========================================================== */
 
 function createPlayerRow(
@@ -2575,6 +2625,10 @@ function createPlayerRow(
 
     const name =
         player.minecraftName;
+
+
+    const tier =
+        player.bestTier;
 
 
     return `
@@ -2617,10 +2671,13 @@ function createPlayerRow(
 
             <div>
 
-                <span class="tier-badge">
-                    ${escapeHtml(
-                        player.bestTier
-                    )}
+                <span
+                    class="
+                        tier-badge
+                        tier-${tierClass(tier)}
+                    "
+                >
+                    ${escapeHtml(tier)}
                 </span>
 
             </div>
@@ -2661,7 +2718,7 @@ function createPlayerRow(
 
 
 /* =========================================================
-   RENDER TABLE
+   RENDER #4 - #53
 ========================================================== */
 
 function renderRows(players) {
@@ -2673,18 +2730,21 @@ function renderRows(players) {
 
 
     /*
-     * #1 #2 #3 are podium.
+     * #1 #2 #3 are on podium.
      *
-     * Show another 50 below:
+     * We show the next 50:
      *
      * #4 -> #53
      */
 
-    const extraPlayers =
-        players.slice(3, 53);
+    const extra =
+        players.slice(
+            3,
+            53
+        );
 
 
-    if (!extraPlayers.length) {
+    if (!extra.length) {
 
         container.innerHTML = `
 
@@ -2708,7 +2768,7 @@ function renderRows(players) {
     `;
 
 
-    extraPlayers.forEach(
+    extra.forEach(
         (player, index) => {
 
             html +=
@@ -2728,7 +2788,7 @@ function renderRows(players) {
 
 
 /* =========================================================
-   FIREBASE REALTIME LISTENER
+   FIREBASE LIVE DATA
 ========================================================== */
 
 onValue(
@@ -2741,10 +2801,6 @@ onValue(
     snapshot => {
 
 
-        /*
-         * No players
-         */
-
         if (!snapshot.exists()) {
 
             renderPodium([]);
@@ -2756,80 +2812,75 @@ onValue(
         }
 
 
-        const rawPlayers =
+        const data =
             snapshot.val();
 
 
         /*
-         * Convert Firebase object
-         * into array.
+         * Firebase object -> array
          */
 
         const players =
-            Object.entries(
-                rawPlayers
-            )
-            .map(
-                ([uid, player]) => ({
-
-                    uid,
-
-                    ...player
-
-                })
-            )
+            Object.entries(data)
 
 
-            /*
-             * PREMIUM ONLY
-             */
+                /*
+                 * Create player objects
+                 */
 
-            .filter(
-                player =>
-                    normalize(
-                        player.accountType
-                    ) ===
-                    "premium"
-            )
-
-
-            /*
-             * Calculate best tier.
-             */
-
-            .map(
-                preparePlayer
-            )
+                .map(
+                    ([uid, player]) =>
+                        preparePlayer(
+                            uid,
+                            player
+                        )
+                )
 
 
-            /*
-             * Only ranked players.
-             */
+                /*
+                 * PREMIUM ONLY
+                 */
 
-            .filter(
-                player =>
-                    player.score > 0
-            );
+                .filter(
+                    player =>
+                        player.accountType ===
+                        "premium"
+                )
+
+
+                /*
+                 * Must actually have a tier
+                 */
+
+                .filter(
+                    player =>
+                        player.score > 0
+                );
 
 
         /*
-         * Sort from best to worst.
+         * Tier-first ranking
          */
 
-        sortPlayers(players);
-
-
-        /*
-         * Top 3.
-         */
-
-        renderPodium(
-            players.slice(0, 3)
+        sortPlayers(
+            players
         );
 
 
         /*
-         * #4 - #53.
+         * Top 3
+         */
+
+        renderPodium(
+            players.slice(
+                0,
+                3
+            )
+        );
+
+
+        /*
+         * Next 50
          */
 
         renderRows(
@@ -2837,7 +2888,6 @@ onValue(
         );
 
     },
-
 
     error => {
 
@@ -2877,7 +2927,7 @@ onValue(
 
 
 <!-- =========================================================
-     AUTH
+     AUTH UI
 ========================================================== -->
 
 <script
