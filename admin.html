@@ -1,54 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>RO TierList | Admin</title>
+    <title>Admin Panel | RO TierList</title>
 
     <style>
-
-        :root {
-            --bg: #07070b;
-            --panel: #101016;
-            --panel2: #0c0c11;
-            --border: #292934;
-            --purple: #815cff;
-            --purple2: #a184ff;
-            --text: #f5f5f7;
-            --muted: #858597;
-            --green: #4ade80;
-            --red: #ff7070;
-        }
-
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
         }
 
         body {
+            margin: 0;
             min-height: 100vh;
-
             background:
                 radial-gradient(
-                    circle at 50% -10%,
-                    rgba(129,92,255,.14),
+                    circle at top left,
+                    rgba(124, 77, 255, 0.10),
                     transparent 35%
                 ),
-                var(--bg);
-
-            color: var(--text);
-
+                #050509;
+            color: #f5f5f7;
             font-family:
                 Inter,
-                system-ui,
                 -apple-system,
                 BlinkMacSystemFont,
                 "Segoe UI",
@@ -56,301 +34,276 @@
         }
 
         .page {
-            width: min(900px, 94%);
-            margin: auto;
-            padding: 60px 0 100px;
+            width: min(1010px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 28px 0 70px;
         }
 
-        .top {
-            margin-bottom: 35px;
-        }
-
-        .eyebrow {
-            color: var(--purple2);
-            font-size: 11px;
+        .brand {
+            color: #875cff;
+            font-size: 13px;
             font-weight: 900;
-            letter-spacing: 3px;
-            margin-bottom: 12px;
+            letter-spacing: 4px;
+            margin-bottom: 18px;
         }
 
         h1 {
-            font-size: 48px;
-            letter-spacing: -3px;
-            font-weight: 900;
+            margin: 0;
+            font-size: clamp(48px, 7vw, 72px);
+            line-height: 0.95;
+            letter-spacing: -4px;
+            font-weight: 950;
         }
 
         .subtitle {
-            margin-top: 10px;
-            color: var(--muted);
-            font-size: 14px;
+            margin-top: 18px;
+            color: #8f8f9d;
+            font-size: 16px;
         }
 
-        .admin-card {
-            padding: 28px;
-
-            border: 1px solid var(--border);
-            border-radius: 18px;
-
-            background: rgba(16,16,22,.88);
+        .panel {
+            margin-top: 40px;
+            background: rgba(16, 16, 22, 0.92);
+            border: 1px solid #292932;
+            border-radius: 22px;
+            padding: 32px;
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.35);
         }
 
-        .field {
-            margin-bottom: 22px;
-        }
-
-        label {
-            display: block;
-
-            margin-bottom: 8px;
-
-            color: #a4a4b5;
-
-            font-size: 11px;
+        .section-title {
+            margin-bottom: 10px;
+            color: #a7a7b5;
+            font-size: 13px;
             font-weight: 900;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         input,
         select {
-
             width: 100%;
-            height: 48px;
+            height: 54px;
+            padding: 0 16px;
 
-            padding: 0 14px;
+            border-radius: 12px;
+            border: 1px solid #30303a;
 
-            border: 1px solid var(--border);
-            border-radius: 10px;
+            background: #0b0b10;
+            color: #fff;
 
             outline: none;
+            font-size: 15px;
+            font-weight: 600;
 
-            background: var(--panel2);
-            color: white;
-
-            font-family: inherit;
-            font-size: 13px;
-
+            transition: 0.15s ease;
         }
 
         input:focus,
         select:focus {
-            border-color: var(--purple);
-
+            border-color: #7650ff;
             box-shadow:
-                0 0 0 3px
-                rgba(129,92,255,.08);
+                0 0 0 3px rgba(118, 80, 255, 0.10);
+        }
+
+        .player-input {
+            font-size: 16px;
+        }
+
+        .player-status {
+            min-height: 25px;
+            margin-top: 10px;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .checking {
+            color: #a5a5b3;
+        }
+
+        .premium {
+            color: #7cffb2;
+        }
+
+        .cracked {
+            color: #ffbd6b;
+        }
+
+        .error {
+            color: #ff6262;
         }
 
         .player-preview {
-
             display: none;
-
             align-items: center;
-            gap: 13px;
+            gap: 14px;
 
-            margin-top: 10px;
-            padding: 11px;
-
-            border: 1px solid #292934;
-            border-radius: 10px;
+            margin-top: 18px;
+            padding: 14px;
 
             background: #0b0b10;
-
+            border: 1px solid #292932;
+            border-radius: 14px;
         }
 
         .player-preview.show {
             display: flex;
         }
 
-        .player-preview img {
-
-            width: 42px;
-            height: 42px;
-
-            border-radius: 8px;
-
+        .skin {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
             image-rendering: pixelated;
-
+            object-fit: cover;
+            background: #15151c;
         }
 
         .preview-name {
-            font-size: 13px;
+            font-size: 15px;
             font-weight: 900;
         }
 
         .preview-type {
             margin-top: 4px;
-
-            color: var(--muted);
-
-            font-size: 10px;
+            font-size: 12px;
+            color: #8d8d9a;
         }
 
-        .grid {
-
+        .grid-2 {
             display: grid;
-
-            grid-template-columns:
-                1fr 1fr;
-
-            gap: 15px;
-
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-top: 25px;
         }
 
-        .stats {
-
+        .grid-3 {
             display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 12px;
-
-            margin-top: 8px;
-
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 14px;
+            margin-top: 25px;
         }
 
-        .save {
+        .field label {
+            display: block;
+            margin-bottom: 10px;
 
+            color: #a7a7b5;
+            font-size: 13px;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .save-btn {
             width: 100%;
-            height: 50px;
+            height: 58px;
 
-            margin-top: 10px;
+            margin-top: 34px;
 
             border: 0;
-            border-radius: 10px;
+            border-radius: 13px;
 
             background:
                 linear-gradient(
                     135deg,
-                    #815cff,
-                    #633fe0
+                    #865cff,
+                    #6036dc
                 );
 
             color: white;
-
-            font-family: inherit;
-
-            font-size: 13px;
-            font-weight: 900;
+            font-size: 14px;
+            font-weight: 950;
 
             cursor: pointer;
 
-            transition: .2s;
+            box-shadow:
+                0 15px 35px rgba(105, 64, 255, 0.22);
 
+            transition: 0.15s ease;
         }
 
-        .save:hover {
+        .save-btn:hover {
             transform: translateY(-1px);
+            filter: brightness(1.08);
+        }
 
-            box-shadow:
-                0 10px 30px
-                rgba(129,92,255,.25);
+        .save-btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .message {
-
-            min-height: 20px;
-
+            min-height: 22px;
             margin-top: 15px;
 
             text-align: center;
-
-            font-size: 12px;
-            font-weight: 800;
-
-        }
-
-        .message.success {
-            color: var(--green);
-        }
-
-        .message.error {
-            color: var(--red);
-        }
-
-        .locked {
-
-            padding: 50px;
-
-            text-align: center;
-
-            border: 1px solid #332323;
-            border-radius: 18px;
-
-            background: #120d0d;
-
-        }
-
-        .locked h2 {
-            margin-bottom: 8px;
-        }
-
-        .locked p {
-            color: var(--muted);
             font-size: 13px;
+            font-weight: 900;
         }
 
-        @media (max-width: 650px) {
+        .success {
+            color: #72ffad;
+        }
 
-            .grid {
-                grid-template-columns: 1fr;
+        .message-error {
+            color: #ff6464;
+        }
+
+        .security {
+            margin-top: 20px;
+            padding: 13px 15px;
+
+            border: 1px solid #272731;
+            border-radius: 12px;
+
+            color: #777784;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 700px) {
+            .page {
+                width: min(100% - 24px, 1010px);
+                padding-top: 20px;
             }
 
-            .stats {
+            .panel {
+                padding: 20px;
+                border-radius: 18px;
+            }
+
+            .grid-2,
+            .grid-3 {
                 grid-template-columns: 1fr;
             }
 
             h1 {
-                font-size: 40px;
+                letter-spacing: -3px;
             }
-
-            .admin-card {
-                padding: 20px;
-            }
-
         }
-
     </style>
-
 </head>
-
 
 <body>
 
 <div class="page">
 
-    <div class="top">
-
-        <div class="eyebrow">
-            RO TIERLIST
-        </div>
-
-        <h1>Admin Panel</h1>
-
-        <p class="subtitle">
-            Manage players, tiers and PvP statistics.
-        </p>
-
+    <div class="brand">
+        RO TIERLIST
     </div>
 
+    <h1>
+        Admin Panel
+    </h1>
 
-    <div id="locked" class="locked">
-
-        <h2>Checking access...</h2>
-
-        <p>
-            Please wait.
-        </p>
-
+    <div class="subtitle">
+        Manage players, tiers and PvP statistics.
     </div>
 
+    <div class="panel">
 
-    <div
-        id="adminPanel"
-        class="admin-card"
-        style="display:none;"
-    >
+        <!-- PLAYER -->
 
         <div class="field">
 
@@ -359,25 +312,61 @@
             </label>
 
             <input
-                id="playerSearch"
+                id="minecraftName"
+                class="player-input"
                 type="text"
-                list="playerNames"
-                placeholder="Type a Minecraft username..."
                 autocomplete="off"
+                placeholder="Enter any Minecraft username..."
             >
 
-            <datalist id="playerNames"></datalist>
-
-
             <div
-                id="playerPreview"
-                class="player-preview"
-            ></div>
+                id="playerStatus"
+                class="player-status"
+            >
+                You can enter any name.
+            </div>
 
         </div>
 
 
-        <div class="grid">
+        <!-- PREVIEW -->
+
+        <div
+            id="playerPreview"
+            class="player-preview"
+        >
+
+            <img
+                id="skin"
+                class="skin"
+                src=""
+                alt=""
+            >
+
+            <div>
+
+                <div
+                    id="previewName"
+                    class="preview-name"
+                >
+                    -
+                </div>
+
+                <div
+                    id="previewType"
+                    class="preview-type"
+                >
+                    Checking...
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- GAME + TIER -->
+
+        <div class="grid-2">
 
             <div class="field">
 
@@ -483,7 +472,9 @@
         </div>
 
 
-        <div class="stats">
+        <!-- STATS -->
+
+        <div class="grid-3">
 
             <div class="field">
 
@@ -535,18 +526,25 @@
         </div>
 
 
+        <!-- SAVE -->
+
         <button
             id="saveButton"
-            class="save"
+            class="save-btn"
+            type="button"
         >
             Save Player
         </button>
-
 
         <div
             id="message"
             class="message"
         ></div>
+
+
+        <div class="security">
+            Admin access is restricted to the RO TierList owner account.
+        </div>
 
     </div>
 
@@ -555,7 +553,7 @@
 
 <script type="module">
 
-import { auth } from "./firebase.js";
+import { auth, app } from "./firebase.js";
 
 import {
     onAuthStateChanged
@@ -564,458 +562,515 @@ import {
 import {
     getDatabase,
     ref,
-    onValue,
+    get,
+    push,
     update
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 
 
-const OWNER_EMAIL =
-    "denizzzezw@gmail.com";
+/* =========================================
+   CONFIG
+========================================= */
+
+const OWNER_EMAIL = "denizzzezw@gmail.com";
+
+const WORKER_URL =
+    "https://rotierlist-minecraft.denizzzezw.workers.dev";
 
 
-const database =
-    getDatabase();
+const database = getDatabase(app);
 
 
-const locked =
-    document.getElementById("locked");
+/* =========================================
+   ELEMENTS
+========================================= */
 
-
-const adminPanel =
-    document.getElementById("adminPanel");
-
-
-const playerSearch =
-    document.getElementById("playerSearch");
-
-
-const playerNames =
-    document.getElementById("playerNames");
-
-
-const playerPreview =
-    document.getElementById("playerPreview");
-
+const minecraftName =
+    document.getElementById("minecraftName");
 
 const gamemode =
     document.getElementById("gamemode");
 
-
 const tier =
     document.getElementById("tier");
-
 
 const tests =
     document.getElementById("tests");
 
-
 const wins =
     document.getElementById("wins");
-
 
 const losses =
     document.getElementById("losses");
 
-
 const saveButton =
     document.getElementById("saveButton");
-
 
 const message =
     document.getElementById("message");
 
+const playerStatus =
+    document.getElementById("playerStatus");
 
-let players = {};
+const playerPreview =
+    document.getElementById("playerPreview");
 
-let selectedPlayer = null;
+const skin =
+    document.getElementById("skin");
+
+const previewName =
+    document.getElementById("previewName");
+
+const previewType =
+    document.getElementById("previewType");
 
 
-/* =========================
+/* =========================================
+   STATE
+========================================= */
+
+let currentUser = null;
+
+let detectedAccountType = "cracked";
+
+let detectedUUID = "";
+
+let existingPlayerUID = null;
+
+let checkingPlayer = false;
+
+
+/* =========================================
+   HELPERS
+========================================= */
+
+function cleanName(value) {
+
+    return String(value || "").trim();
+
+}
+
+
+function normalize(value) {
+
+    return String(value || "")
+        .trim()
+        .toLowerCase();
+
+}
+
+
+function setMessage(text, type = "") {
+
+    message.textContent = text;
+
+    message.className =
+        "message " + type;
+
+}
+
+
+/* =========================================
    AUTH
-========================= */
+========================================= */
 
 onAuthStateChanged(
     auth,
-    user => {
+    async user => {
+
+        currentUser = user;
 
         if (!user) {
 
-            locked.innerHTML = `
-                <h2>Login required</h2>
-                <p>
-                    You must be logged in to access the Admin Panel.
-                </p>
-            `;
+            window.location.href =
+                "./login.html";
 
             return;
         }
+
+
+        const email =
+            String(user.email || "").toLowerCase();
 
 
         if (
-            String(user.email || "").toLowerCase()
-            !==
+            email !==
             OWNER_EMAIL.toLowerCase()
         ) {
 
-            locked.innerHTML = `
-                <h2>Access denied</h2>
-                <p>
-                    You don't have permission to access this panel.
-                </p>
+            document.body.innerHTML = `
+                <div style="
+                    min-height:100vh;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    background:#050509;
+                    color:white;
+                    font-family:Arial,sans-serif;
+                    text-align:center;
+                    padding:30px;
+                ">
+                    <div>
+                        <h1>Access Denied</h1>
+
+                        <p style="color:#888;">
+                            You are not allowed to access
+                            the Admin Panel.
+                        </p>
+
+                        <a
+                            href="./index.html"
+                            style="
+                                color:#8b5cff;
+                                text-decoration:none;
+                                font-weight:bold;
+                            "
+                        >
+                            Back to Home
+                        </a>
+                    </div>
+                </div>
             `;
 
             return;
         }
 
-
-        locked.style.display = "none";
-
-        adminPanel.style.display = "block";
-
-
-        loadPlayers();
-
     }
 );
 
 
-/* =========================
-   LOAD ALL PLAYERS
-========================= */
+/* =========================================
+   CHECK PLAYER
+========================================= */
 
-function loadPlayers() {
+let checkTimeout = null;
 
-    onValue(
-        ref(database, "players"),
-        snapshot => {
+minecraftName.addEventListener(
+    "input",
+    () => {
 
-            players =
-                snapshot.val() || {};
+        clearTimeout(checkTimeout);
 
-            populatePlayerList();
+        const name =
+            cleanName(minecraftName.value);
 
-            findPlayer();
 
-        },
-        error => {
+        existingPlayerUID = null;
 
-            console.error(error);
+        detectedUUID = "";
 
-            showMessage(
-                "Could not load players.",
-                "error"
+        detectedAccountType =
+            "cracked";
+
+
+        if (!name) {
+
+            playerStatus.textContent =
+                "You can enter any name.";
+
+            playerStatus.className =
+                "player-status";
+
+            playerPreview.classList.remove(
+                "show"
             );
 
+            return;
         }
-    );
-
-}
 
 
-/* =========================
-   DATAlIST
-========================= */
+        playerStatus.textContent =
+            "Checking Minecraft account...";
 
-function populatePlayerList() {
+        playerStatus.className =
+            "player-status checking";
 
-    playerNames.innerHTML = "";
+        playerPreview.classList.add(
+            "show"
+        );
 
+        previewName.textContent =
+            name;
 
-    Object.values(players)
-        .sort((a, b) => {
-
-            const nameA =
-                String(
-                    a?.minecraftName || ""
-                ).toLowerCase();
-
-            const nameB =
-                String(
-                    b?.minecraftName || ""
-                ).toLowerCase();
-
-            return nameA.localeCompare(nameB);
-
-        })
-        .forEach(player => {
-
-            if (!player?.minecraftName) {
-                return;
-            }
+        previewType.textContent =
+            "Checking...";
 
 
-            const option =
-                document.createElement("option");
+        /*
+         * Small delay so we don't spam
+         * the Worker on every keypress.
+         */
 
+        checkTimeout = setTimeout(
+            () => checkPlayer(name),
+            350
+        );
 
-            option.value =
-                player.minecraftName;
-
-
-            playerNames.appendChild(option);
-
-        });
-
-}
-
-
-/* =========================
-   LIVE PLAYER FIND
-========================= */
-
-playerSearch.addEventListener(
-    "input",
-    findPlayer
-);
-
-
-playerSearch.addEventListener(
-    "change",
-    findPlayer
-);
-
-
-function findPlayer() {
-
-    const value =
-        playerSearch.value
-            .trim()
-            .toLowerCase();
-
-
-    selectedPlayer = null;
-
-    playerPreview.classList.remove("show");
-
-
-    if (!value) {
-        return;
     }
+);
 
 
-    const entries =
-        Object.entries(players);
+/* =========================================
+   PLAYER CHECK FUNCTION
+========================================= */
+
+async function checkPlayer(name) {
+
+    checkingPlayer = true;
 
 
     /*
      * FIRST:
-     * exact username
+     * Search Firebase for an existing player.
+     *
+     * This works even if the name is cracked.
      */
 
-    let match =
-        entries.find(
-            ([uid, player]) =>
-                String(
-                    player?.minecraftName || ""
-                ).toLowerCase()
-                ===
-                value
+    try {
+
+        const snapshot =
+            await get(
+                ref(database, "players")
+            );
+
+
+        if (snapshot.exists()) {
+
+            const players =
+                snapshot.val();
+
+
+            for (
+                const [uid, player]
+                of Object.entries(players)
+            ) {
+
+                if (
+                    normalize(player?.minecraftName)
+                    ===
+                    normalize(name)
+                ) {
+
+                    existingPlayerUID = uid;
+
+                    break;
+                }
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Firebase player lookup error:",
+            error
         );
+
+    }
 
 
     /*
      * SECOND:
-     * username that starts with text
+     * Ask the Worker about Minecraft account.
      */
 
-    if (!match) {
+    try {
 
-        match =
-            entries.find(
-                ([uid, player]) =>
-                    String(
-                        player?.minecraftName || ""
-                    ).toLowerCase()
-                    .startsWith(value)
-            );
-
-    }
-
-
-    /*
-     * THIRD:
-     * username containing text
-     */
-
-    if (!match) {
-
-        match =
-            entries.find(
-                ([uid, player]) =>
-                    String(
-                        player?.minecraftName || ""
-                    ).toLowerCase()
-                    .includes(value)
-            );
-
-    }
-
-
-    if (!match) {
-
-        return;
-    }
-
-
-    const [uid, player] =
-        match;
-
-
-    selectedPlayer = {
-        uid,
-        ...player
-    };
-
-
-    showPlayer(
-        selectedPlayer
-    );
-
-
-    loadPlayerData(
-        selectedPlayer
-    );
-
-}
-
-
-/* =========================
-   SHOW PLAYER
-========================= */
-
-function showPlayer(player) {
-
-    const uuid =
-        String(
-            player.uuid || ""
-        ).replaceAll("-", "");
-
-
-    const skin =
-        uuid
-            ? `https://mc-heads.net/avatar/${uuid}/64`
-            : "";
-
-
-    playerPreview.innerHTML = `
-
-        ${
-            skin
-                ? `
-                    <img
-                        src="${skin}"
-                        alt=""
-                    >
-                `
-                : ""
-        }
-
-        <div>
-
-            <div class="preview-name">
-                ${player.minecraftName || "Unknown"}
-            </div>
-
-            <div class="preview-type">
-                ${
-                    player.accountType ||
-                    "Unknown account"
+        const response =
+            await fetch(
+                WORKER_URL +
+                "?username=" +
+                encodeURIComponent(name),
+                {
+                    method: "GET",
+                    cache: "no-store"
                 }
-            </div>
-
-        </div>
-
-    `;
-
-
-    playerPreview.classList.add("show");
-
-}
-
-
-/* =========================
-   LOAD PLAYER DATA
-========================= */
-
-function loadPlayerData(player) {
-
-    const tiers =
-        player.tiers || {};
-
-
-    const stats =
-        player.stats || {};
-
-
-    const mode =
-        gamemode.value;
-
-
-    const existingKey =
-        Object.keys(tiers)
-            .find(
-                key =>
-                    key.toLowerCase()
-                    ===
-                    mode.toLowerCase()
             );
 
 
-    tier.value =
-        existingKey
-            ? tiers[existingKey] || "Unranked"
-            : "Unranked";
+        if (!response.ok) {
 
+            throw new Error(
+                "Worker returned " +
+                response.status
+            );
 
-    tests.value =
-        Number(stats.tests || 0);
-
-
-    wins.value =
-        Number(stats.wins || 0);
-
-
-    losses.value =
-        Number(stats.losses || 0);
-
-}
-
-
-/* =========================
-   GAMEMODE CHANGE
-========================= */
-
-gamemode.addEventListener(
-    "change",
-    () => {
-
-        if (!selectedPlayer) {
-            return;
         }
 
 
-        loadPlayerData(
-            selectedPlayer
+        const data =
+            await response.json();
+
+
+        if (
+            data?.success === true &&
+            data?.accountType === "premium"
+        ) {
+
+            detectedAccountType =
+                "premium";
+
+            detectedUUID =
+                data.uuid || "";
+
+
+            playerStatus.textContent =
+                "✓ Premium Minecraft account verified";
+
+            playerStatus.className =
+                "player-status premium";
+
+
+            previewType.textContent =
+                "Premium • " +
+                (detectedUUID || "Verified");
+
+
+            skin.src =
+                "https://mc-heads.net/avatar/" +
+                encodeURIComponent(name) +
+                "/48";
+
+        } else {
+
+            /*
+             * Important:
+             * We DO NOT block the player.
+             *
+             * The admin can still save it.
+             */
+
+            detectedAccountType =
+                "cracked";
+
+            detectedUUID =
+                data?.uuid || "";
+
+
+            playerStatus.textContent =
+                "✓ Name accepted • Cracked / Unverified";
+
+            playerStatus.className =
+                "player-status cracked";
+
+
+            previewType.textContent =
+                "Cracked / Unverified";
+
+
+            skin.src =
+                "https://mc-heads.net/avatar/" +
+                encodeURIComponent(name) +
+                "/48";
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Minecraft account check error:",
+            error
         );
 
+
+        /*
+         * Worker unavailable?
+         *
+         * STILL allow saving.
+         */
+
+        detectedAccountType =
+            "cracked";
+
+
+        playerStatus.textContent =
+            "✓ Name accepted • Account check unavailable";
+
+        playerStatus.className =
+            "player-status cracked";
+
+
+        previewType.textContent =
+            "Cracked / Unverified";
+
+
+        skin.src =
+            "https://mc-heads.net/avatar/" +
+            encodeURIComponent(name) +
+            "/48";
+
     }
-);
 
 
-/* =========================
-   SAVE
-========================= */
+    checkingPlayer = false;
+
+}
+
+
+/* =========================================
+   SAVE PLAYER
+========================================= */
 
 saveButton.addEventListener(
     "click",
     async () => {
 
-        if (!selectedPlayer) {
+        if (!currentUser) {
 
-            showMessage(
-                "Type an existing Minecraft username first.",
-                "error"
+            setMessage(
+                "You are not logged in.",
+                "message-error"
             );
+
+            return;
+        }
+
+
+        const email =
+            String(
+                currentUser.email || ""
+            ).toLowerCase();
+
+
+        if (
+            email !==
+            OWNER_EMAIL.toLowerCase()
+        ) {
+
+            setMessage(
+                "Access denied.",
+                "message-error"
+            );
+
+            return;
+        }
+
+
+        const name =
+            cleanName(minecraftName.value);
+
+
+        /*
+         * ONLY requirement:
+         * the input cannot be completely empty.
+         *
+         * No Minecraft username regex.
+         * "1" works.
+         * "abc" works.
+         * "test_player" works.
+         * "anything" works.
+         */
+
+        if (!name) {
+
+            setMessage(
+                "Enter a player name first.",
+                "message-error"
+            );
+
+            minecraftName.focus();
 
             return;
         }
@@ -1029,76 +1084,188 @@ saveButton.addEventListener(
 
         try {
 
-            const newTiers = {
-                ...(selectedPlayer.tiers || {})
-            };
+            /*
+             * If we don't already know the account type,
+             * do one final check.
+             */
+
+            if (!checkingPlayer) {
+
+                await checkPlayer(name);
+
+            }
 
 
-            const existingKey =
-                Object.keys(newTiers)
-                    .find(
-                        key =>
-                            key.toLowerCase()
-                            ===
-                            gamemode.value.toLowerCase()
+            /*
+             * Read existing player again.
+             *
+             * This prevents duplicate entries.
+             */
+
+            const playersSnapshot =
+                await get(
+                    ref(database, "players")
+                );
+
+
+            let playerUID =
+                existingPlayerUID;
+
+
+            if (!playerUID && playersSnapshot.exists()) {
+
+                const players =
+                    playersSnapshot.val();
+
+
+                for (
+                    const [uid, player]
+                    of Object.entries(players)
+                ) {
+
+                    if (
+                        normalize(player?.minecraftName)
+                        ===
+                        normalize(name)
+                    ) {
+
+                        playerUID = uid;
+
+                        break;
+                    }
+
+                }
+
+            }
+
+
+            /*
+             * CREATE NEW PLAYER
+             */
+
+            if (!playerUID) {
+
+                const newPlayerRef =
+                    push(
+                        ref(database, "players")
                     );
 
 
-            const tierKey =
-                existingKey ||
+                playerUID =
+                    newPlayerRef.key;
+
+            }
+
+
+            /*
+             * Existing data.
+             *
+             * We only change the selected gamemode.
+             * Other gamemodes stay untouched.
+             */
+
+            let oldPlayer = {};
+
+            if (playersSnapshot.exists()) {
+
+                oldPlayer =
+                    playersSnapshot
+                        .val()?.[playerUID]
+                    || {};
+
+            }
+
+
+            const oldTiers =
+                oldPlayer.tiers || {};
+
+            const oldStats =
+                oldPlayer.stats || {};
+
+
+            const mode =
                 gamemode.value;
 
 
-            newTiers[tierKey] =
-                tier.value;
+            const newTiers = {
+                ...oldTiers,
+                [mode]: tier.value
+            };
 
 
             const newStats = {
+                ...oldStats,
 
-                tests:
-                    Math.max(
-                        0,
-                        Number(tests.value || 0)
-                    ),
+                [mode]: {
+                    tests:
+                        Number(tests.value) || 0,
 
-                wins:
-                    Math.max(
-                        0,
-                        Number(wins.value || 0)
-                    ),
+                    wins:
+                        Number(wins.value) || 0,
 
-                losses:
-                    Math.max(
-                        0,
-                        Number(losses.value || 0)
-                    )
-
+                    losses:
+                        Number(losses.value) || 0
+                }
             };
 
+
+            /*
+             * SAVE
+             */
 
             await update(
                 ref(
                     database,
-                    `players/${selectedPlayer.uid}`
+                    "players/" + playerUID
                 ),
                 {
-                    tiers: newTiers,
-                    stats: newStats
+
+                    minecraftName:
+                        name,
+
+                    uuid:
+                        detectedUUID ||
+                        oldPlayer.uuid ||
+                        "",
+
+                    accountType:
+                        detectedAccountType,
+
+                    tiers:
+                        newTiers,
+
+                    stats:
+                        newStats,
+
+                    updatedAt:
+                        Date.now()
+
                 }
             );
 
 
-            selectedPlayer.tiers =
-                newTiers;
+            existingPlayerUID =
+                playerUID;
 
 
-            selectedPlayer.stats =
-                newStats;
-
-
-            showMessage(
-                `${selectedPlayer.minecraftName} updated successfully.`,
+            setMessage(
+                "✓ Player saved successfully.",
                 "success"
+            );
+
+
+            saveButton.textContent =
+                "Saved ✓";
+
+
+            setTimeout(
+                () => {
+
+                    saveButton.textContent =
+                        "Save Player";
+
+                },
+                1800
             );
 
 
@@ -1110,40 +1277,28 @@ saveButton.addEventListener(
             );
 
 
-            showMessage(
-                "Could not save player. Check Firebase Rules.",
-                "error"
+            setMessage(
+                "Error saving player: " +
+                (
+                    error?.message ||
+                    "Unknown error"
+                ),
+                "message-error"
             );
+
+
+            saveButton.textContent =
+                "Save Player";
+
 
         } finally {
 
             saveButton.disabled = false;
 
-            saveButton.textContent =
-                "Save Player";
-
         }
 
     }
 );
-
-
-/* =========================
-   MESSAGE
-========================= */
-
-function showMessage(
-    text,
-    type
-) {
-
-    message.textContent =
-        text;
-
-    message.className =
-        `message ${type}`;
-
-}
 
 </script>
 
