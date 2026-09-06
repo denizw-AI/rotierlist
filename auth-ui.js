@@ -5,9 +5,7 @@ import {
     signOut
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-
 const OWNER_EMAIL = "denizzzezw@gmail.com";
-
 
 function escapeHtml(value) {
     return String(value || "")
@@ -18,30 +16,51 @@ function escapeHtml(value) {
         .replaceAll("'", "&#039;");
 }
 
-
 function createAuthUI(user) {
 
-    const authArea = document.getElementById("authArea");
+    const authArea =
+        document.getElementById("authArea");
 
-    if (!authArea) {
-        return;
-    }
+    if (!authArea) return;
 
+
+    /* =========================
+       LOGGED OUT
+    ========================= */
 
     if (!user) {
 
         authArea.innerHTML = `
-            <a href="./login.html" class="nav-login">
-                Login
-            </a>
+            <div class="auth-buttons">
+
+                <a
+                    href="./login.html"
+                    class="nav-login"
+                >
+                    Login
+                </a>
+
+                <a
+                    href="./register.html"
+                    class="nav-register"
+                >
+                    Register
+                </a>
+
+            </div>
         `;
 
         return;
     }
 
 
+    /* =========================
+       ACCOUNT
+    ========================= */
+
     const isOwner =
-        String(user.email || "").toLowerCase() ===
+        String(user.email || "").toLowerCase()
+        ===
         OWNER_EMAIL.toLowerCase();
 
 
@@ -49,6 +68,12 @@ function createAuthUI(user) {
         user.displayName ||
         user.email?.split("@")[0] ||
         "Account";
+
+
+    const initial =
+        displayName
+            .charAt(0)
+            .toUpperCase();
 
 
     authArea.innerHTML = `
@@ -60,13 +85,15 @@ function createAuthUI(user) {
                     ? `
                         <a
                             href="./admin.html"
-                            class="admin-button"
+                            class="admin-top-button"
                         >
-                            Admin Panel
+                            <span>✦</span>
+                            Admin
                         </a>
                     `
                     : ""
             }
+
 
             <button
                 id="accountButton"
@@ -75,15 +102,15 @@ function createAuthUI(user) {
             >
 
                 <span class="account-avatar">
-                    ${escapeHtml(displayName.charAt(0).toUpperCase())}
+                    ${escapeHtml(initial)}
                 </span>
 
                 <span class="account-name">
                     ${escapeHtml(displayName)}
                 </span>
 
-                <span class="account-arrow">
-                    ▾
+                <span class="account-chevron">
+                    ↓
                 </span>
 
             </button>
@@ -94,29 +121,85 @@ function createAuthUI(user) {
                 class="account-dropdown"
             >
 
-                <div class="dropdown-email">
-                    ${escapeHtml(user.email)}
+                <div class="account-header">
+
+                    <div class="big-avatar">
+                        ${escapeHtml(initial)}
+                    </div>
+
+                    <div class="account-details">
+
+                        <div class="account-display-name">
+                            ${escapeHtml(displayName)}
+                        </div>
+
+                        <div class="account-email">
+                            ${escapeHtml(user.email)}
+                        </div>
+
+                    </div>
+
                 </div>
 
-                <a href="./profile.html">
-                    Profile
+
+                <div class="dropdown-divider"></div>
+
+
+                <a
+                    href="./profile.html"
+                    class="dropdown-item"
+                >
+
+                    <span class="dropdown-icon">
+                        ◉
+                    </span>
+
+                    <span>
+                        Profile
+                    </span>
+
                 </a>
+
 
                 ${
                     isOwner
                         ? `
-                            <a href="./admin.html">
-                                Admin Panel
+                            <a
+                                href="./admin.html"
+                                class="dropdown-item"
+                            >
+
+                                <span class="dropdown-icon">
+                                    ✦
+                                </span>
+
+                                <span>
+                                    Admin Panel
+                                </span>
+
                             </a>
                         `
                         : ""
                 }
 
+
+                <div class="dropdown-divider"></div>
+
+
                 <button
                     id="logoutButton"
+                    class="logout-item"
                     type="button"
                 >
-                    Logout
+
+                    <span class="dropdown-icon">
+                        ↪
+                    </span>
+
+                    <span>
+                        Logout
+                    </span>
+
                 </button>
 
             </div>
@@ -125,25 +208,49 @@ function createAuthUI(user) {
     `;
 
 
+    /* =========================
+       ELEMENTS
+    ========================= */
+
     const accountButton =
-        document.getElementById("accountButton");
+        document.getElementById(
+            "accountButton"
+        );
 
     const dropdown =
-        document.getElementById("accountDropdown");
+        document.getElementById(
+            "accountDropdown"
+        );
 
     const logoutButton =
-        document.getElementById("logoutButton");
+        document.getElementById(
+            "logoutButton"
+        );
 
+
+    /* =========================
+       DROPDOWN
+    ========================= */
 
     accountButton?.addEventListener(
         "click",
-        () => {
+        event => {
+
+            event.stopPropagation();
 
             dropdown?.classList.toggle("show");
+
+            accountButton.classList.toggle(
+                "open"
+            );
 
         }
     );
 
+
+    /* =========================
+       LOGOUT
+    ========================= */
 
     logoutButton?.addEventListener(
         "click",
@@ -169,6 +276,10 @@ function createAuthUI(user) {
     );
 
 
+    /* =========================
+       CLOSE OUTSIDE
+    ========================= */
+
     document.addEventListener(
         "click",
         event => {
@@ -179,7 +290,13 @@ function createAuthUI(user) {
                 )
             ) {
 
-                dropdown?.classList.remove("show");
+                dropdown?.classList.remove(
+                    "show"
+                );
+
+                accountButton?.classList.remove(
+                    "open"
+                );
 
             }
 
@@ -189,11 +306,13 @@ function createAuthUI(user) {
 }
 
 
+/* =========================
+   AUTH STATE
+========================= */
+
 onAuthStateChanged(
     auth,
     user => {
-
         createAuthUI(user);
-
     }
 );
