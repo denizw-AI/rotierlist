@@ -10,15 +10,13 @@
         :root {
             --bg: #07070b;
             --panel: #0d0d13;
-            --panel2: #101017;
             --border: #252532;
             --purple: #815cff;
-            --purple2: #9b7cff;
+            --purple2: #a184ff;
             --text: #f5f5f7;
             --muted: #858597;
             --green: #4ade80;
             --yellow: #f5c542;
-            --red: #ff6565;
         }
 
         * {
@@ -39,17 +37,11 @@
             color: var(--text);
             font-family:
                 Inter,
-                ui-sans-serif,
                 system-ui,
                 -apple-system,
                 BlinkMacSystemFont,
                 "Segoe UI",
                 sans-serif;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
         }
 
         .page {
@@ -58,7 +50,7 @@
             padding: 55px 0 90px;
         }
 
-        /* HEADER */
+        /* HERO */
 
         .hero {
             text-align: center;
@@ -100,7 +92,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             padding: 5px;
-            background: #0d0d13;
+            background: var(--panel);
             border: 1px solid var(--border);
             border-radius: 12px;
         }
@@ -127,13 +119,12 @@
                 #7250f3
             );
             color: white;
-            box-shadow:
-                0 6px 20px rgba(129, 92, 255, .22);
+            box-shadow: 0 6px 20px rgba(129, 92, 255, .22);
         }
 
         .search {
             height: 56px;
-            background: #0d0d13;
+            background: var(--panel);
             border: 1px solid var(--border);
             border-radius: 12px;
             color: white;
@@ -152,7 +143,7 @@
             box-shadow: 0 0 0 3px rgba(129, 92, 255, .08);
         }
 
-        /* TABLE */
+        /* RESULTS */
 
         .results-box {
             border: 1px solid var(--border);
@@ -168,10 +159,13 @@
                 150px
                 150px
                 130px;
+
             min-height: 64px;
             align-items: center;
             padding: 0 22px;
+
             border-bottom: 1px solid var(--border);
+
             color: #727287;
             font-size: 11px;
             font-weight: 900;
@@ -186,9 +180,11 @@
                 150px
                 150px
                 130px;
+
             min-height: 88px;
             align-items: center;
             padding: 0 22px;
+
             border-bottom: 1px solid #1b1b24;
             transition: .18s;
         }
@@ -247,8 +243,6 @@
             color: #e8a65c;
         }
 
-        /* COLUMNS */
-
         .gamemode {
             color: #a6a6b8;
             font-size: 12px;
@@ -282,34 +276,38 @@
             border: 1px solid rgba(245, 197, 66, .15);
         }
 
-        .status.not-tested {
-            color: #858597;
-            background: rgba(133, 133, 151, .07);
-            border: 1px solid rgba(133, 133, 151, .12);
+        .status.failed {
+            color: #ff8b8b;
+            background: rgba(255, 80, 80, .08);
+            border: 1px solid rgba(255, 80, 80, .15);
         }
 
         /* EMPTY */
 
         .empty {
-            padding: 85px 25px;
+            padding: 90px 25px;
             text-align: center;
         }
 
         .empty-icon {
-            width: 58px;
-            height: 58px;
+            width: 60px;
+            height: 60px;
             margin: 0 auto 18px;
-            border-radius: 16px;
+
             display: grid;
             place-items: center;
+
+            border-radius: 17px;
+
             background: rgba(129, 92, 255, .08);
             border: 1px solid rgba(129, 92, 255, .15);
+
             color: var(--purple2);
-            font-size: 23px;
+            font-size: 24px;
         }
 
         .empty h2 {
-            font-size: 18px;
+            font-size: 19px;
             margin-bottom: 8px;
         }
 
@@ -317,8 +315,6 @@
             color: var(--muted);
             font-size: 13px;
         }
-
-        /* LOADING */
 
         .loading {
             padding: 70px 20px;
@@ -346,8 +342,6 @@
                 opacity: 1;
             }
         }
-
-        /* MOBILE */
 
         @media (max-width: 800px) {
 
@@ -394,30 +388,10 @@
 
             .status {
                 justify-self: end;
-                align-self: end;
             }
 
             h1 {
                 letter-spacing: -3px;
-            }
-        }
-
-        @media (max-width: 500px) {
-
-            .tabs {
-                height: 52px;
-            }
-
-            .tab {
-                font-size: 12px;
-            }
-
-            .search {
-                height: 52px;
-            }
-
-            .result-row {
-                padding: 16px;
             }
         }
     </style>
@@ -446,24 +420,15 @@
 
         <div class="tabs">
 
-            <button
-                class="tab active"
-                data-filter="all"
-            >
+            <button class="tab active" data-filter="all">
                 All
             </button>
 
-            <button
-                class="tab"
-                data-filter="premium"
-            >
+            <button class="tab" data-filter="premium">
                 Premium
             </button>
 
-            <button
-                class="tab"
-                data-filter="cracked"
-            >
+            <button class="tab" data-filter="cracked">
                 Cracked
             </button>
 
@@ -516,16 +481,7 @@
     } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 
 
-    /* =========================
-       FIREBASE
-    ========================= */
-
     const database = getDatabase(app);
-
-
-    /* =========================
-       ELEMENTS
-    ========================= */
 
     const resultsContainer =
         document.getElementById("results");
@@ -537,22 +493,12 @@
         document.querySelectorAll(".tab");
 
 
-    /* =========================
-       STATE
-    ========================= */
-
-    let players = {};
-
-    let realResults = {};
+    let results = {};
 
     let currentFilter = "all";
 
     let currentSearch = "";
 
-
-    /* =========================
-       HELPERS
-    ========================= */
 
     function normalize(value) {
 
@@ -575,43 +521,44 @@
     }
 
 
-    function getName(player, uid) {
+    function getName(result, id) {
 
         return (
-            player?.minecraftName ||
-            player?.username ||
-            player?.name ||
-            uid
+            result.minecraftName ||
+            result.username ||
+            result.playerName ||
+            result.name ||
+            "Unknown Player"
         );
 
     }
 
 
-    function getType(player) {
+    function getAccountType(result) {
 
         return normalize(
-            player?.accountType
+            result.accountType
         );
 
     }
 
 
-    function getUUID(player) {
+    function getUUID(result) {
 
         return String(
-            player?.uuid || ""
+            result.uuid || ""
         ).replaceAll("-", "");
 
     }
 
 
-    function getSkin(player) {
+    function getSkin(result) {
 
         const uuid =
-            getUUID(player);
+            getUUID(result);
 
         if (!uuid) {
-            return "";
+            return null;
         }
 
         return `https://mc-heads.net/avatar/${uuid}/64`;
@@ -622,18 +569,29 @@
     function formatDate(value) {
 
         if (!value) {
-            return "Not tested";
+            return "Not dated";
         }
 
+        let date;
 
-        const date =
-            new Date(value);
+        if (
+            typeof value === "number" ||
+            !isNaN(Number(value))
+        ) {
 
+            date =
+                new Date(Number(value));
 
-        if (Number.isNaN(date.getTime())) {
-            return "Not tested";
+        } else {
+
+            date =
+                new Date(value);
+
         }
 
+        if (isNaN(date.getTime())) {
+            return "Not dated";
+        }
 
         return date.toLocaleDateString(
             "en-GB",
@@ -647,329 +605,12 @@
     }
 
 
-    function getBestTier(player) {
-
-        const modes = [
-            "vanilla",
-            "sword",
-            "axe",
-            "uhc",
-            "pot",
-            "mace",
-            "smp",
-            "crystal"
-        ];
-
-
-        const score = {
-            "HT1": 100,
-            "LT1": 90,
-            "HT2": 80,
-            "LT2": 70,
-            "HT3": 60,
-            "LT3": 50,
-            "HT4": 40,
-            "LT4": 30,
-            "HT5": 20,
-            "LT5": 10,
-            "Unranked": 0
-        };
-
-
-        let best = {
-            tier: "Unranked",
-            mode: null,
-            score: 0
-        };
-
-
-        const tiers =
-            player?.tiers || {};
-
-
-        for (const mode of modes) {
-
-            const key =
-                Object.keys(tiers).find(
-                    key =>
-                        normalize(key) === mode
-                );
-
-
-            if (!key) {
-                continue;
-            }
-
-
-            const tier =
-                tiers[key] || "Unranked";
-
-
-            const tierScore =
-                score[tier] || 0;
-
-
-            if (tierScore > best.score) {
-
-                best = {
-                    tier,
-                    mode,
-                    score: tierScore
-                };
-
-            }
-
-        }
-
-
-        return best;
-
-    }
-
-
-    function getGamemode(player) {
-
-        const best =
-            getBestTier(player);
-
-
-        if (!best.mode) {
-            return "Not tested";
-        }
-
-
-        return (
-            best.mode.charAt(0).toUpperCase() +
-            best.mode.slice(1)
-        );
-
-    }
-
-
-    /* =========================
-       BUILD FALLBACK RESULTS
-       FROM REAL PLAYERS
-    ========================= */
-
-    function buildPlayerResults() {
-
-        const list = [];
-
-
-        Object.entries(players)
-            .forEach(([uid, player]) => {
-
-                if (!player) {
-                    return;
-                }
-
-
-                const name =
-                    getName(player, uid);
-
-
-                const type =
-                    getType(player);
-
-
-                const best =
-                    getBestTier(player);
-
-
-                const isRanked =
-                    best.tier !== "Unranked";
-
-
-                list.push({
-
-                    id: uid,
-
-                    playerUID: uid,
-
-                    minecraftName: name,
-
-                    accountType: type,
-
-                    uuid: player.uuid || "",
-
-                    gamemode:
-                        isRanked
-                            ? getGamemode(player)
-                            : "Not tested",
-
-                    date:
-                        player.updatedAt ||
-                        player.createdAt ||
-                        null,
-
-                    status:
-                        isRanked
-                            ? "ranked"
-                            : "not-tested",
-
-                    tier: best.tier
-
-                });
-
-            });
-
-
-        return list;
-
-    }
-
-
-    /* =========================
-       USE REAL RESULTS
-       IF RESULTS NODE EXISTS
-    ========================= */
-
-    function buildResults() {
-
-        const databaseResults =
-            Object.entries(realResults);
-
-
-        /*
-         * If /results exists and has data,
-         * use the real test results.
-         */
-
-        if (databaseResults.length > 0) {
-
-            return databaseResults
-                .map(([id, result]) => {
-
-                    const playerUID =
-                        result?.playerUID ||
-                        result?.uid ||
-                        result?.playerId;
-
-
-                    const player =
-                        playerUID
-                            ? players[playerUID]
-                            : null;
-
-
-                    const merged = {
-
-                        ...result,
-
-                        id,
-
-                        playerUID,
-
-                        minecraftName:
-                            result?.minecraftName ||
-                            result?.username ||
-                            player?.minecraftName ||
-                            player?.username ||
-                            "Unknown",
-
-                        accountType:
-                            normalize(
-                                result?.accountType ||
-                                player?.accountType ||
-                                "unknown"
-                            ),
-
-                        uuid:
-                            result?.uuid ||
-                            player?.uuid ||
-                            "",
-
-                        gamemode:
-                            result?.gamemode ||
-                            "Unknown",
-
-                        date:
-                            result?.date ||
-                            result?.createdAt ||
-                            null,
-
-                        status:
-                            normalize(
-                                result?.status ||
-                                "pending"
-                            )
-
-                    };
-
-
-                    return merged;
-
-                });
-
-        }
-
-
-        /*
-         * No /results data yet.
-         * Show real registered players instead
-         * of fake Alex/Steve demo players.
-         */
-
-        return buildPlayerResults();
-
-    }
-
-
-    /* =========================
-       FILTER
-    ========================= */
-
-    function filterResults(list) {
-
-        return list.filter(result => {
-
-            const type =
-                normalize(
-                    result.accountType
-                );
-
-
-            if (
-                currentFilter !== "all" &&
-                type !== currentFilter
-            ) {
-
-                return false;
-
-            }
-
-
-            const name =
-                normalize(
-                    result.minecraftName
-                );
-
-
-            if (
-                currentSearch &&
-                !name.includes(currentSearch)
-            ) {
-
-                return false;
-
-            }
-
-
-            return true;
-
-        });
-
-    }
-
-
-    /* =========================
-       STATUS
-    ========================= */
-
     function getStatus(result) {
 
         const status =
-            normalize(result.status);
+            normalize(
+                result.status
+            );
 
 
         if (
@@ -988,85 +629,120 @@
 
 
         if (
-            status === "pending" ||
-            status === "waiting"
+            status === "failed" ||
+            status === "fail"
         ) {
 
             return {
-                text: "Pending",
-                className: "pending"
+                text: "Failed",
+                className: "failed"
             };
 
         }
 
 
         return {
-            text: "Not tested",
-            className: "not-tested"
+            text: "Pending",
+            className: "pending"
         };
 
     }
 
 
-    /* =========================
-       RENDER
-    ========================= */
-
     function render() {
 
-        const all =
-            buildResults();
+        const list =
+            Object.entries(results)
+                .map(([id, result]) => ({
+                    id,
+                    ...(result || {})
+                }))
+                .filter(result => {
+
+                    const type =
+                        getAccountType(result);
+
+                    if (
+                        currentFilter !== "all" &&
+                        type !== currentFilter
+                    ) {
+                        return false;
+                    }
 
 
-        const filtered =
-            filterResults(all);
+                    const name =
+                        normalize(
+                            getName(
+                                result,
+                                result.id
+                            )
+                        );
+
+
+                    if (
+                        currentSearch &&
+                        !name.includes(currentSearch)
+                    ) {
+                        return false;
+                    }
+
+
+                    return true;
+
+                });
 
 
         resultsContainer.innerHTML = "";
 
 
-        if (filtered.length === 0) {
+        if (list.length === 0) {
 
             resultsContainer.innerHTML = `
+
                 <div class="empty">
 
                     <div class="empty-icon">
-                        ⌁
+                        ✦
                     </div>
 
-                    <h2>No results found</h2>
+                    <h2>No results yet</h2>
 
                     <p>
-                        There are no test results matching your search.
+                        Test results will appear here when a real test is added.
                     </p>
 
                 </div>
+
             `;
 
             return;
-
         }
 
 
-        filtered.forEach(result => {
+        list.sort((a, b) => {
 
-            const row =
-                document.createElement("div");
+            const dateA =
+                Number(a.createdAt || a.date || 0);
+
+            const dateB =
+                Number(b.createdAt || b.date || 0);
+
+            return dateB - dateA;
+
+        });
 
 
-            row.className =
-                "result-row";
-
+        list.forEach(result => {
 
             const name =
-                result.minecraftName ||
-                "Unknown";
+                getName(
+                    result,
+                    result.id
+                );
 
 
             const type =
-                normalize(
-                    result.accountType
-                );
+                getAccountType(result);
 
 
             const typeText =
@@ -1081,19 +757,30 @@
                 getSkin(result);
 
 
-            const status =
-                getStatus(result);
-
-
             const gamemode =
                 result.gamemode ||
-                "Not tested";
+                result.mode ||
+                "Unknown";
 
 
             const date =
                 formatDate(
-                    result.date
+                    result.createdAt ||
+                    result.date ||
+                    result.testedAt
                 );
+
+
+            const status =
+                getStatus(result);
+
+
+            const row =
+                document.createElement("div");
+
+
+            row.className =
+                "result-row";
 
 
             row.innerHTML = `
@@ -1110,12 +797,7 @@
                                 >
                             `
                             : `
-                                <div
-                                    class="skin"
-                                    style="display:grid;place-items:center;"
-                                >
-                                    ⛏
-                                </div>
+                                <div class="skin"></div>
                             `
                     }
 
@@ -1158,9 +840,7 @@
     }
 
 
-    /* =========================
-       TABS
-    ========================= */
+    /* FILTER TABS */
 
     tabs.forEach(tab => {
 
@@ -1173,13 +853,10 @@
                         item.classList.remove("active")
                 );
 
-
                 tab.classList.add("active");
-
 
                 currentFilter =
                     tab.dataset.filter;
-
 
                 render();
 
@@ -1189,9 +866,7 @@
     });
 
 
-    /* =========================
-       SEARCH
-    ========================= */
+    /* SEARCH */
 
     searchInput.addEventListener(
         "input",
@@ -1202,22 +877,28 @@
                     searchInput.value
                 );
 
-
             render();
 
         }
     );
 
 
-    /* =========================
-       PLAYERS
-    ========================= */
+    /*
+     * IMPORTANT:
+     *
+     * ONLY /results
+     *
+     * We do NOT read /players here.
+     * We do NOT create demo players.
+     * We do NOT use Alex/Steve.
+     * We do NOT have a fallback.
+     */
 
     onValue(
-        ref(database, "players"),
+        ref(database, "results"),
         snapshot => {
 
-            players =
+            results =
                 snapshot.val() || {};
 
             render();
@@ -1226,48 +907,29 @@
         error => {
 
             console.error(
-                "Players error:",
+                "Results Firebase error:",
                 error
             );
 
-            players = {};
+            results = {};
 
-            render();
+            resultsContainer.innerHTML = `
 
-        }
-    );
+                <div class="empty">
 
+                    <div class="empty-icon">
+                        !
+                    </div>
 
-    /* =========================
-       REAL RESULTS
-    ========================= */
+                    <h2>Unable to load results</h2>
 
-    onValue(
-        ref(database, "results"),
-        snapshot => {
+                    <p>
+                        Check the Firebase Realtime Database rules for /results.
+                    </p>
 
-            realResults =
-                snapshot.val() || {};
+                </div>
 
-            render();
-
-        },
-        error => {
-
-            /*
-             * If /results doesn't exist or cannot
-             * be read, the page still works from
-             * the players collection.
-             */
-
-            console.warn(
-                "Results collection unavailable:",
-                error
-            );
-
-            realResults = {};
-
-            render();
+            `;
 
         }
     );
