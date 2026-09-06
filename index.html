@@ -24,11 +24,12 @@
 
         body {
             margin: 0;
+            min-height: 100vh;
 
             background:
                 radial-gradient(
-                    circle at 50% -10%,
-                    rgba(124, 77, 255, 0.13),
+                    circle at 50% -15%,
+                    rgba(126, 81, 255, 0.13),
                     transparent 38%
                 ),
                 #050507;
@@ -49,34 +50,36 @@
         }
 
         button,
-        input {
+        input,
+        select {
             font: inherit;
         }
 
 
-        /* ================================
+        /* =====================================================
            NAVBAR
-        ================================= */
+        ===================================================== */
 
         .navbar {
-            width: 100%;
-
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
+
+            width: 100%;
 
             background:
-                rgba(5, 5, 7, 0.82);
+                rgba(5, 5, 8, 0.78);
 
             border-bottom:
-                1px solid rgba(255,255,255,0.06);
+                1px solid rgba(255,255,255,0.055);
 
             backdrop-filter:
-                blur(20px);
+                blur(22px);
         }
 
         .nav-container {
-            width: min(1380px, calc(100% - 40px));
+            width:
+                min(1450px, calc(100% - 50px));
 
             height: 72px;
 
@@ -86,97 +89,519 @@
             align-items: center;
             justify-content: space-between;
 
-            gap: 25px;
+            gap: 30px;
         }
 
         .logo {
-            font-size: 19px;
+            flex-shrink: 0;
+
+            font-size: 20px;
             font-weight: 950;
-            letter-spacing: -0.5px;
+
+            letter-spacing: -0.8px;
         }
 
         .logo span {
-            color: #855cff;
+            color: #875dff;
         }
 
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 26px;
+            justify-content: center;
+
+            gap: 28px;
+
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .nav-links a {
-            color: #858594;
+            position: relative;
 
-            font-size: 13px;
-            font-weight: 800;
+            color: #777783;
+
+            font-size: 12px;
+            font-weight: 850;
 
             transition: .18s ease;
         }
 
         .nav-links a:hover,
         .nav-links a.active {
-            color: white;
+            color: #ffffff;
+        }
+
+        .nav-links a.active::after {
+            content: "";
+
+            position: absolute;
+
+            left: 50%;
+            bottom: -9px;
+
+            width: 4px;
+            height: 4px;
+
+            transform:
+                translateX(-50%);
+
+            border-radius: 50%;
+
+            background: #875dff;
+
+            box-shadow:
+                0 0 12px
+                rgba(135,93,255,.8);
         }
 
         .nav-auth {
-            min-width: 150px;
-
             display: flex;
+            align-items: center;
             justify-content: flex-end;
+
+            min-width: 230px;
         }
 
 
-        /* ================================
+        /* =====================================================
+           AUTH UI
+        ===================================================== */
+
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-login,
+        .nav-register {
+            height: 40px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 0 15px;
+
+            border-radius: 10px;
+
+            font-size: 11px;
+            font-weight: 900;
+
+            transition: .18s ease;
+        }
+
+        .nav-login {
+            border: 1px solid #292932;
+
+            background: #0a0a0f;
+
+            color: #aaaab6;
+        }
+
+        .nav-login:hover {
+            color: white;
+
+            border-color:
+                rgba(135,93,255,.45);
+
+            background:
+                rgba(135,93,255,.07);
+        }
+
+        .nav-register {
+            background:
+                linear-gradient(
+                    135deg,
+                    #8a61ff,
+                    #6039dc
+                );
+
+            color: white;
+
+            box-shadow:
+                0 8px 25px
+                rgba(100,60,220,.18);
+        }
+
+        .nav-register:hover {
+            transform: translateY(-1px);
+
+            filter: brightness(1.08);
+        }
+
+
+        .account-wrapper {
+            position: relative;
+
+            display: flex;
+            align-items: center;
+
+            gap: 8px;
+        }
+
+        .admin-top-button {
+            height: 40px;
+
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            padding: 0 13px;
+
+            border:
+                1px solid rgba(135,93,255,.27);
+
+            border-radius: 10px;
+
+            background:
+                rgba(135,93,255,.065);
+
+            color: #aa8cff;
+
+            font-size: 11px;
+            font-weight: 900;
+
+            transition: .18s ease;
+        }
+
+        .admin-top-button:hover {
+            color: white;
+
+            border-color:
+                rgba(135,93,255,.58);
+
+            background:
+                rgba(135,93,255,.12);
+        }
+
+        .account-button {
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            padding:
+                4px 10px 4px 5px;
+
+            border:
+                1px solid #292932;
+
+            border-radius: 11px;
+
+            background:
+                rgba(11,11,16,.92);
+
+            color: white;
+
+            cursor: pointer;
+
+            transition: .18s ease;
+        }
+
+        .account-button:hover,
+        .account-button.open {
+            border-color:
+                rgba(135,93,255,.48);
+
+            background:
+                rgba(135,93,255,.07);
+
+            box-shadow:
+                0 10px 35px
+                rgba(0,0,0,.25);
+        }
+
+        .account-avatar {
+            width: 32px;
+            height: 32px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 8px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #8b63ff,
+                    #5830ca
+                );
+
+            color: white;
+
+            font-size: 12px;
+            font-weight: 950;
+        }
+
+        .account-name {
+            max-width: 115px;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .account-chevron {
+            color: #73737e;
+
+            font-size: 10px;
+
+            transition: .18s ease;
+        }
+
+        .account-button.open
+        .account-chevron {
+            transform: rotate(180deg);
+
+            color: #9c7aff;
+        }
+
+
+        /* ACCOUNT DROPDOWN */
+
+        .account-dropdown {
+            position: absolute;
+
+            top: calc(100% + 10px);
+            right: 0;
+
+            width: 270px;
+
+            padding: 8px;
+
+            border:
+                1px solid #292932;
+
+            border-radius: 15px;
+
+            background:
+                rgba(10,10,15,.97);
+
+            box-shadow:
+                0 25px 70px
+                rgba(0,0,0,.58);
+
+            backdrop-filter:
+                blur(24px);
+
+            opacity: 0;
+            visibility: hidden;
+
+            transform:
+                translateY(-7px)
+                scale(.98);
+
+            transform-origin:
+                top right;
+
+            transition:
+                opacity .16s ease,
+                transform .16s ease,
+                visibility .16s ease;
+        }
+
+        .account-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+
+            transform:
+                translateY(0)
+                scale(1);
+        }
+
+        .account-header {
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+
+            padding: 10px;
+        }
+
+        .big-avatar {
+            width: 43px;
+            height: 43px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #8b63ff,
+                    #5830ca
+                );
+
+            color: white;
+
+            font-size: 15px;
+            font-weight: 950;
+        }
+
+        .account-details {
+            min-width: 0;
+        }
+
+        .account-display-name {
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            font-size: 13px;
+            font-weight: 950;
+        }
+
+        .account-email {
+            max-width: 185px;
+
+            margin-top: 3px;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            color: #666672;
+
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+
+            margin: 5px 3px;
+
+            background: #202029;
+        }
+
+        .dropdown-item,
+        .logout-item {
+            width: 100%;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            gap: 11px;
+
+            padding: 0 11px;
+
+            border: 0;
+            border-radius: 9px;
+
+            background: transparent;
+
+            color: #a3a3ae;
+
+            font-size: 12px;
+            font-weight: 850;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            transition: .15s ease;
+        }
+
+        .dropdown-item:hover {
+            background:
+                rgba(135,93,255,.09);
+
+            color: white;
+        }
+
+        .dropdown-icon {
+            width: 20px;
+
+            display: inline-flex;
+            justify-content: center;
+
+            color: #8963ff;
+
+            font-size: 14px;
+        }
+
+        .logout-item {
+            color: #ff747d;
+        }
+
+        .logout-item:hover {
+            background:
+                rgba(255,80,90,.07);
+
+            color: #ff9299;
+        }
+
+
+        /* =====================================================
            HERO
-        ================================= */
+        ===================================================== */
 
         .hero {
-            width: min(1380px, calc(100% - 40px));
+            width:
+                min(1200px, calc(100% - 40px));
 
             margin: auto;
 
             padding:
-                95px 0
-                80px;
+                105px 0
+                100px;
 
             text-align: center;
         }
 
         .hero-badge {
             display: inline-flex;
+            align-items: center;
 
-            padding: 8px 13px;
+            padding:
+                8px 13px;
 
             border:
-                1px solid rgba(132, 91, 255, .28);
+                1px solid
+                rgba(135,93,255,.3);
 
             border-radius: 999px;
 
-            color: #a988ff;
-
             background:
-                rgba(124, 77, 255, .07);
+                rgba(135,93,255,.06);
 
-            font-size: 11px;
+            color: #a987ff;
+
+            font-size: 10px;
             font-weight: 950;
 
-            letter-spacing: 1.5px;
+            letter-spacing: 1.7px;
+
             text-transform: uppercase;
         }
 
         .hero h1 {
-            max-width: 950px;
+            max-width: 1000px;
 
             margin:
                 25px auto 0;
 
             font-size:
-                clamp(48px, 7vw, 88px);
+                clamp(52px, 7.5vw, 92px);
 
-            line-height: .96;
+            line-height: .94;
 
-            letter-spacing: -5px;
+            letter-spacing: -6px;
 
             font-weight: 950;
         }
@@ -185,8 +610,8 @@
             background:
                 linear-gradient(
                     135deg,
-                    #ffffff,
-                    #9c7aff
+                    #ffffff 15%,
+                    #a27fff 85%
                 );
 
             -webkit-background-clip: text;
@@ -199,25 +624,27 @@
             max-width: 650px;
 
             margin:
-                25px auto 0;
+                27px auto 0;
 
-            color: #858592;
+            color: #777783;
 
-            font-size: 16px;
+            font-size: 15px;
+
             line-height: 1.7;
         }
 
 
-        /* ================================
+        /* =====================================================
            SECTION
-        ================================= */
+        ===================================================== */
 
         .section {
-            width: min(1380px, calc(100% - 40px));
+            width:
+                min(1380px, calc(100% - 40px));
 
             margin: auto;
 
-            padding-bottom: 80px;
+            padding-bottom: 90px;
         }
 
         .section-top {
@@ -225,28 +652,30 @@
             align-items: flex-end;
             justify-content: space-between;
 
-            gap: 20px;
+            gap: 25px;
 
-            margin-bottom: 25px;
+            margin-bottom: 24px;
         }
 
         .section-label {
-            color: #8d65ff;
+            color: #916aff;
 
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 950;
 
             letter-spacing: 2px;
+
             text-transform: uppercase;
         }
 
         .section-title {
             margin-top: 10px;
 
-            font-size: 36px;
+            font-size: 37px;
+
             line-height: 1;
 
-            letter-spacing: -2px;
+            letter-spacing: -2.2px;
 
             font-weight: 950;
         }
@@ -254,30 +683,34 @@
         .section-subtitle {
             margin-top: 10px;
 
-            color: #747481;
+            color: #70707d;
 
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .full-btn {
+            height: 43px;
+
             display: inline-flex;
-
             align-items: center;
-            gap: 8px;
+            justify-content: center;
 
-            padding: 12px 16px;
+            padding:
+                0 15px;
 
             border:
-                1px solid #292933;
+                1px solid #292932;
 
             border-radius: 11px;
 
             background: #09090e;
 
-            color: #bdbdc7;
+            color: #a9a9b5;
 
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 900;
+
+            white-space: nowrap;
 
             transition: .18s ease;
         }
@@ -286,67 +719,68 @@
             color: white;
 
             border-color:
-                rgba(133, 92, 255, .55);
+                rgba(135,93,255,.5);
 
             background:
-                rgba(124, 77, 255, .08);
+                rgba(135,93,255,.07);
         }
 
 
-        /* ================================
-           RANKINGS BOX
-        ================================= */
+        /* =====================================================
+           RANKINGS
+        ===================================================== */
 
         .rankings {
             overflow: hidden;
 
             border:
-                1px solid #24242e;
+                1px solid #25252e;
 
             border-radius: 24px;
 
             background:
                 radial-gradient(
-                    circle at 50% 10%,
-                    rgba(124,77,255,.07),
-                    transparent 34%
+                    ellipse at 50% 0%,
+                    rgba(135,93,255,.075),
+                    transparent 42%
                 ),
                 #08080d;
 
             box-shadow:
-                0 30px 90px rgba(0,0,0,.32);
+                0 35px 100px
+                rgba(0,0,0,.32);
         }
 
 
-        /* ================================
+        /* =====================================================
            PODIUM
-        ================================= */
+        ===================================================== */
 
         .podium {
             position: relative;
 
-            min-height: 505px;
+            min-height: 510px;
 
             padding:
-                65px 70px
-                35px;
+                55px 80px
+                0;
 
             display: grid;
 
             grid-template-columns:
-                minmax(190px, 260px)
-                minmax(220px, 310px)
-                minmax(190px, 260px);
+                250px
+                300px
+                250px;
 
             align-items: end;
             justify-content: center;
 
-            gap: 35px;
-
-            border-bottom:
-                1px solid #25252f;
+            gap: 36px;
 
             overflow: hidden;
+
+            border-bottom:
+                1px solid #24242c;
         }
 
         .podium::before {
@@ -354,11 +788,11 @@
 
             position: absolute;
 
-            width: 600px;
-            height: 260px;
+            width: 750px;
+            height: 330px;
 
             left: 50%;
-            top: 80px;
+            top: 40px;
 
             transform:
                 translateX(-50%);
@@ -366,61 +800,69 @@
             background:
                 radial-gradient(
                     ellipse,
-                    rgba(124,77,255,.13),
+                    rgba(135,93,255,.09),
                     transparent 68%
                 );
 
             pointer-events: none;
         }
 
-        .podium-lines {
-            position: absolute;
-
-            inset: 0;
-
-            opacity: .5;
-
-            pointer-events: none;
-        }
-
-        .podium-lines::before,
-        .podium-lines::after {
+        .podium::after {
             content: "";
 
             position: absolute;
 
-            width: 220px;
-            height: 220px;
+            left: 10%;
+            right: 10%;
+            bottom: 0;
+
+            height: 1px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(135,93,255,.28),
+                    transparent
+                );
+        }
+
+
+        /* decorative rings */
+
+        .podium-decoration {
+            position: absolute;
+
+            width: 230px;
+            height: 230px;
 
             border:
-                1px solid rgba(124,77,255,.10);
+                1px solid
+                rgba(135,93,255,.08);
 
-            transform:
-                rotate(45deg);
+            border-radius: 50%;
 
-            border-radius: 40px;
+            pointer-events: none;
         }
 
-        .podium-lines::before {
-            left: 70px;
+        .podium-decoration.left {
+            left: 40px;
             top: 80px;
         }
 
-        .podium-lines::after {
-            right: 70px;
+        .podium-decoration.right {
+            right: 40px;
             top: 80px;
         }
 
 
-        /* ================================
-           PODIUM PLAYER
-        ================================= */
+        /* PLAYER CARD */
 
         .podium-player {
             position: relative;
-            z-index: 2;
+            z-index: 3;
 
-            height: 360px;
+            height: 345px;
 
             display: flex;
             flex-direction: column;
@@ -428,8 +870,12 @@
             align-items: center;
             justify-content: flex-end;
 
+            overflow: hidden;
+
             border:
-                1px solid #25252e;
+                1px solid #292932;
+
+            border-bottom: 0;
 
             border-radius:
                 18px 18px 0 0;
@@ -437,88 +883,90 @@
             background:
                 linear-gradient(
                     180deg,
-                    rgba(20,20,27,.55),
-                    rgba(10,10,14,.96)
+                    rgba(18,18,25,.65),
+                    rgba(9,9,13,.98)
                 );
 
-            overflow: hidden;
-
-            transition: .2s ease;
+            transition:
+                transform .2s ease,
+                border-color .2s ease;
         }
 
         .podium-player:hover {
-            transform: translateY(-5px);
+            transform:
+                translateY(-5px);
 
             border-color:
-                rgba(255,255,255,.13);
+                rgba(255,255,255,.14);
         }
 
         .podium-player.first {
-            height: 430px;
+            height: 425px;
 
             border-color:
-                rgba(255,196,32,.34);
+                rgba(255,198,38,.35);
 
             background:
                 radial-gradient(
-                    circle at 50% 50%,
-                    rgba(255,190,20,.12),
-                    transparent 48%
+                    circle at 50% 55%,
+                    rgba(255,193,25,.105),
+                    transparent 55%
                 ),
                 linear-gradient(
                     180deg,
-                    rgba(34,29,10,.72),
-                    rgba(11,10,8,.98)
+                    rgba(31,27,10,.75),
+                    rgba(9,9,11,.99)
                 );
 
             box-shadow:
-                0 -10px 55px rgba(255,190,20,.08);
+                0 -18px 70px
+                rgba(255,195,30,.075);
         }
 
         .podium-player.second {
             border-color:
-                rgba(190,195,205,.23);
-
-            box-shadow:
-                0 -10px 45px rgba(180,185,200,.05);
+                rgba(190,195,207,.22);
         }
 
         .podium-player.third {
             border-color:
-                rgba(205,105,35,.28);
-
-            box-shadow:
-                0 -10px 45px rgba(205,105,35,.05);
+                rgba(208,111,42,.27);
         }
+
+
+        /* POSITION */
 
         .position {
             position: absolute;
 
-            top: 16px;
+            top: 17px;
 
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 950;
 
-            letter-spacing: 1px;
-
-            opacity: .8;
+            letter-spacing: 1.4px;
         }
 
         .first .position {
-            color: #ffd329;
+            color: #ffd328;
         }
 
         .second .position {
-            color: #c7cbd5;
+            color: #c7cbd4;
         }
 
         .third .position {
-            color: #dc8538;
+            color: #d98239;
         }
 
+
+        /* SKIN */
+
         .podium-skin {
-            width: 130px;
-            height: 190px;
+            width: 135px;
+            height: 185px;
+
+            margin-bottom: -1px;
 
             object-fit: contain;
 
@@ -526,64 +974,73 @@
 
             filter:
                 drop-shadow(
-                    0 20px 20px rgba(0,0,0,.65)
+                    0 22px 22px
+                    rgba(0,0,0,.62)
                 );
-
-            margin-bottom: -5px;
         }
 
         .first .podium-skin {
-            width: 150px;
+            width: 155px;
             height: 225px;
 
             filter:
                 drop-shadow(
-                    0 18px 30px rgba(255,196,30,.20)
+                    0 20px 30px
+                    rgba(255,195,30,.16)
                 );
         }
 
-        .podium-name {
-            position: relative;
-            z-index: 3;
 
-            max-width: 90%;
+        /* NAME */
+
+        .podium-name {
+            max-width: 88%;
 
             overflow: hidden;
 
             text-overflow: ellipsis;
             white-space: nowrap;
 
-            font-size: 18px;
+            color: #eeeeF3;
+
+            font-size: 17px;
             font-weight: 950;
 
             margin-bottom: 5px;
         }
 
         .first .podium-name {
-            color: #ffd429;
+            color: #ffd42b;
 
             font-size: 21px;
 
             text-shadow:
-                0 0 20px rgba(255,200,30,.25);
+                0 0 20px
+                rgba(255,202,40,.2);
         }
 
         .second .podium-name {
-            color: #d4d6dc;
+            color: #d3d5db;
         }
 
         .third .podium-name {
-            color: #d98638;
+            color: #d9873d;
         }
+
+
+        /* TIER */
 
         .podium-tier {
-            color: #9272ff;
+            margin-bottom: 16px;
 
-            font-size: 12px;
+            color: #9271ff;
+
+            font-size: 11px;
             font-weight: 950;
-
-            margin-bottom: 17px;
         }
+
+
+        /* NUMBER */
 
         .podium-number {
             width: 100%;
@@ -594,7 +1051,9 @@
 
             text-align: center;
 
-            font-size: 58px;
+            color: #858590;
+
+            font-size: 57px;
             line-height: 1;
 
             font-weight: 950;
@@ -602,8 +1061,8 @@
             background:
                 linear-gradient(
                     180deg,
-                    rgba(255,255,255,.035),
-                    rgba(0,0,0,.25)
+                    rgba(255,255,255,.025),
+                    rgba(0,0,0,.2)
                 );
         }
 
@@ -613,32 +1072,33 @@
             background:
                 linear-gradient(
                     180deg,
-                    rgba(255,204,30,.16),
-                    rgba(255,190,20,.035)
+                    rgba(255,205,30,.15),
+                    rgba(255,190,20,.025)
                 );
 
             text-shadow:
-                0 0 28px rgba(255,195,30,.4);
+                0 0 30px
+                rgba(255,195,30,.4);
         }
 
         .second .podium-number {
-            color: #c6c8cf;
+            color: #c4c7ce;
         }
 
         .third .podium-number {
-            color: #cf7830;
+            color: #ca7732;
         }
 
 
-        /* ================================
-           EMPTY PODIUM
-        ================================= */
+        /* EMPTY */
 
         .podium-empty {
             position: relative;
-            z-index: 2;
+            z-index: 3;
 
-            height: 300px;
+            grid-column: 1 / -1;
+
+            height: 410px;
 
             display: flex;
             flex-direction: column;
@@ -646,34 +1106,34 @@
             align-items: center;
             justify-content: center;
 
-            color: #5e5e6b;
+            color: #62626e;
         }
 
         .podium-empty-icon {
-            font-size: 60px;
+            margin-bottom: 13px;
 
-            margin-bottom: 15px;
+            font-size: 55px;
 
-            opacity: .45;
+            opacity: .35;
         }
 
         .podium-empty-title {
             color: #9999a5;
 
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 900;
         }
 
         .podium-empty-text {
             margin-top: 7px;
 
-            font-size: 12px;
+            font-size: 11px;
         }
 
 
-        /* ================================
+        /* =====================================================
            TABLE
-        ================================= */
+        ===================================================== */
 
         .table-head,
         .player-row {
@@ -681,7 +1141,7 @@
 
             grid-template-columns:
                 75px
-                minmax(260px, 1fr)
+                minmax(280px, 1fr)
                 130px
                 100px
                 100px
@@ -691,19 +1151,20 @@
         }
 
         .table-head {
-            min-height: 61px;
+            min-height: 60px;
 
-            padding: 0 24px;
+            padding:
+                0 25px;
 
             border-bottom:
                 1px solid #24242c;
 
             background:
-                rgba(255,255,255,.015);
+                rgba(255,255,255,.012);
 
-            color: #646471;
+            color: #5e5e6b;
 
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 950;
 
             letter-spacing: 1px;
@@ -714,23 +1175,24 @@
         .player-row {
             min-height: 76px;
 
-            padding: 0 24px;
+            padding:
+                0 25px;
 
             border-bottom:
-                1px solid #181820;
+                1px solid #18181f;
 
             transition: .15s ease;
         }
 
         .player-row:hover {
             background:
-                rgba(124,77,255,.035);
+                rgba(135,93,255,.035);
         }
 
         .rank {
-            color: #666673;
+            color: #60606c;
 
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 950;
         }
 
@@ -747,11 +1209,13 @@
             width: 40px;
             height: 40px;
 
-            border-radius: 9px;
+            flex-shrink: 0;
 
             object-fit: cover;
 
-            background: #111118;
+            border-radius: 9px;
+
+            background: #111117;
 
             image-rendering: pixelated;
         }
@@ -766,17 +1230,19 @@
             text-overflow: ellipsis;
             white-space: nowrap;
 
-            font-size: 13px;
+            color: #e8e8ed;
+
+            font-size: 12px;
             font-weight: 900;
         }
 
         .player-mode {
             margin-top: 4px;
 
-            color: #656571;
+            color: #5e5e69;
 
-            font-size: 10px;
-            font-weight: 700;
+            font-size: 9px;
+            font-weight: 800;
 
             text-transform: uppercase;
         }
@@ -784,74 +1250,69 @@
         .tier-badge {
             display: inline-flex;
 
-            width: fit-content;
-
-            padding: 6px 9px;
+            padding:
+                6px 9px;
 
             border:
-                1px solid rgba(124,77,255,.28);
+                1px solid
+                rgba(135,93,255,.28);
 
             border-radius: 7px;
 
-            color: #a986ff;
-
             background:
-                rgba(124,77,255,.07);
+                rgba(135,93,255,.06);
 
-            font-size: 11px;
+            color: #a381ff;
+
+            font-size: 10px;
             font-weight: 950;
         }
 
         .score {
-            color: #d8d8df;
+            color: #d1d1d9;
 
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 900;
         }
 
         .tests {
-            color: #898995;
+            color: #858591;
 
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 800;
         }
 
         .record {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 7px;
 
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 900;
         }
 
         .wins {
-            color: #6effa6;
+            color: #67f9a0;
         }
 
         .losses {
-            color: #ff6d78;
+            color: #ff6973;
         }
 
         .record-separator {
-            color: #44444e;
+            color: #3f3f49;
         }
-
-
-        /* ================================
-           MORE PLAYERS
-        ================================= */
 
         .more-title {
             padding:
-                18px 24px;
+                17px 25px;
 
             border-bottom:
                 1px solid #24242c;
 
-            color: #777783;
+            color: #62626d;
 
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 950;
 
             letter-spacing: 1px;
@@ -860,39 +1321,44 @@
         }
 
         .empty-rows {
-            padding: 55px 20px;
+            padding:
+                55px 20px;
 
             text-align: center;
 
-            color: #666672;
+            color: #62626d;
 
-            font-size: 13px;
+            font-size: 12px;
         }
 
 
-        /* ================================
+        /* =====================================================
            CTA
-        ================================= */
+        ===================================================== */
 
         .cta {
-            width: min(1380px, calc(100% - 40px));
+            width:
+                min(1380px, calc(100% - 40px));
 
-            margin: 20px auto 100px;
+            margin:
+                15px auto
+                100px;
 
-            padding: 55px 35px;
+            padding:
+                58px 35px;
 
             text-align: center;
 
             border:
-                1px solid #25252f;
+                1px solid #25252e;
 
             border-radius: 22px;
 
             background:
                 radial-gradient(
                     circle at center,
-                    rgba(124,77,255,.10),
-                    transparent 55%
+                    rgba(135,93,255,.085),
+                    transparent 58%
                 ),
                 #09090e;
         }
@@ -900,52 +1366,64 @@
         .cta h2 {
             margin: 0;
 
-            font-size: 32px;
+            font-size: 31px;
 
             letter-spacing: -1.5px;
+
+            font-weight: 950;
         }
 
         .cta p {
-            margin: 12px auto 25px;
+            max-width: 560px;
 
-            max-width: 550px;
+            margin:
+                12px auto
+                25px;
 
-            color: #777783;
+            color: #73737e;
 
-            font-size: 13px;
-            line-height: 1.6;
+            font-size: 12px;
+
+            line-height: 1.65;
         }
 
         .cta-button {
+            height: 43px;
+
             display: inline-flex;
+            align-items: center;
+            justify-content: center;
 
-            padding: 13px 19px;
+            padding:
+                0 17px;
 
-            border-radius: 11px;
+            border-radius: 10px;
 
             background:
                 linear-gradient(
                     135deg,
-                    #875cff,
-                    #6036db
+                    #875dff,
+                    #6039db
                 );
 
             color: white;
 
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 950;
 
             box-shadow:
-                0 12px 30px rgba(100,60,220,.2);
+                0 12px 30px
+                rgba(100,60,220,.2);
         }
 
 
-        /* ================================
+        /* =====================================================
            FOOTER
-        ================================= */
+        ===================================================== */
 
         footer {
-            width: min(1380px, calc(100% - 40px));
+            width:
+                min(1380px, calc(100% - 40px));
 
             margin: auto;
 
@@ -956,62 +1434,45 @@
             border-top:
                 1px solid #18181f;
 
-            color: #555560;
+            color: #50505b;
 
-            font-size: 11px;
+            font-size: 10px;
         }
 
 
-        /* ================================
+        /* =====================================================
            RESPONSIVE
-        ================================= */
+        ===================================================== */
 
-        @media (max-width: 950px) {
+        @media (max-width: 1050px) {
 
             .nav-links {
-                display: none;
+                gap: 17px;
+            }
+
+            .nav-auth {
+                min-width: 180px;
             }
 
             .podium {
                 grid-template-columns:
-                    1fr 1fr 1fr;
+                    220px
+                    270px
+                    220px;
 
-                gap: 12px;
+                gap: 20px;
 
-                padding:
-                    45px 15px
-                    25px;
-            }
-
-            .podium-player {
-                height: 300px;
-            }
-
-            .podium-player.first {
-                height: 360px;
-            }
-
-            .podium-skin {
-                width: 95px;
-                height: 140px;
-            }
-
-            .first .podium-skin {
-                width: 110px;
-                height: 170px;
-            }
-
-            .podium-number {
-                font-size: 43px;
+                padding-left: 30px;
+                padding-right: 30px;
             }
 
             .table-head,
             .player-row {
                 grid-template-columns:
-                    55px
-                    minmax(190px, 1fr)
+                    60px
+                    minmax(230px, 1fr)
+                    110px
                     90px
-                    80px
                     90px;
             }
 
@@ -1021,53 +1482,69 @@
             }
         }
 
-        @media (max-width: 650px) {
+
+        @media (max-width: 800px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .nav-container {
+                width:
+                    min(100% - 25px, 1450px);
+            }
+
+            .nav-auth {
+                min-width: auto;
+            }
 
             .hero {
-                padding-top: 65px;
+                padding:
+                    75px 0
+                    80px;
             }
 
             .hero h1 {
-                letter-spacing: -3px;
+                letter-spacing: -4px;
             }
 
             .section-top {
                 align-items: flex-start;
+
                 flex-direction: column;
             }
 
             .podium {
-                min-height: 390px;
+                min-height: 440px;
 
                 grid-template-columns:
-                    1fr 1.15fr 1fr;
+                    1fr
+                    1.12fr
+                    1fr;
 
-                gap: 7px;
+                gap: 8px;
 
                 padding:
-                    30px 8px
-                    20px;
+                    45px 10px
+                    0;
             }
 
             .podium-player {
-                height: 240px;
-
-                border-radius:
-                    12px 12px 0 0;
+                height: 290px;
             }
 
             .podium-player.first {
-                height: 285px;
+                height: 355px;
             }
 
             .podium-skin {
-                width: 65px;
-                height: 100px;
+                width: 90px;
+                height: 130px;
             }
 
             .first .podium-skin {
-                width: 75px;
-                height: 120px;
+                width: 105px;
+                height: 160px;
             }
 
             .podium-name {
@@ -1083,41 +1560,150 @@
             }
 
             .podium-number {
-                font-size: 34px;
+                font-size: 42px;
             }
 
             .table-head,
             .player-row {
                 grid-template-columns:
-                    42px
-                    minmax(150px, 1fr)
+                    45px
+                    minmax(170px, 1fr)
                     75px
-                    60px;
+                    65px;
             }
 
+            .table-head > :nth-child(5),
+            .player-row > :nth-child(5),
             .table-head > :nth-child(6),
             .player-row > :nth-child(6) {
                 display: none;
             }
 
-            .table-head > :nth-child(5),
-            .player-row > :nth-child(5) {
+            .table-head,
+            .player-row {
+                padding-left: 14px;
+                padding-right: 14px;
+            }
+        }
+
+
+        @media (max-width: 560px) {
+
+            .account-name {
                 display: none;
+            }
+
+            .admin-top-button {
+                padding:
+                    0 10px;
+            }
+
+            .hero h1 {
+                font-size: 49px;
+
+                letter-spacing: -3px;
+            }
+
+            .hero p {
+                font-size: 13px;
+            }
+
+            .section {
+                width:
+                    calc(100% - 24px);
+            }
+
+            .section-title {
+                font-size: 29px;
+            }
+
+            .podium {
+                min-height: 360px;
+
+                grid-template-columns:
+                    1fr
+                    1.15fr
+                    1fr;
+            }
+
+            .podium-player {
+                height: 240px;
+            }
+
+            .podium-player.first {
+                height: 290px;
+            }
+
+            .podium-skin {
+                width: 65px;
+                height: 95px;
+            }
+
+            .first .podium-skin {
+                width: 75px;
+                height: 115px;
+            }
+
+            .podium-name {
+                font-size: 10px;
+            }
+
+            .first .podium-name {
+                font-size: 12px;
+            }
+
+            .podium-tier {
+                font-size: 8px;
+            }
+
+            .podium-number {
+                font-size: 32px;
+            }
+
+            .position {
+                font-size: 8px;
             }
 
             .table-head,
             .player-row {
-                padding-left: 13px;
-                padding-right: 13px;
+                grid-template-columns:
+                    38px
+                    minmax(145px, 1fr)
+                    62px
+                    50px;
             }
 
-            .player-row {
-                min-height: 68px;
+            .player-cell {
+                gap: 8px;
             }
 
             .small-skin {
-                width: 34px;
-                height: 34px;
+                width: 32px;
+                height: 32px;
+            }
+
+            .player-name {
+                font-size: 10px;
+            }
+
+            .player-mode {
+                font-size: 8px;
+            }
+
+            .tier-badge {
+                padding:
+                    5px 7px;
+
+                font-size: 8px;
+            }
+
+            .score,
+            .tests {
+                font-size: 9px;
+            }
+
+            .account-dropdown {
+                right: -5px;
             }
 
         }
@@ -1130,13 +1716,14 @@
 <body>
 
 
-<!-- =====================================
+<!-- =========================================================
      NAVBAR
-====================================== -->
+========================================================== -->
 
 <header class="navbar">
 
     <div class="nav-container">
+
 
         <a
             href="./index.html"
@@ -1174,12 +1761,15 @@
             <a
                 href="https://discord.gg/bms3jPBD9p"
                 target="_blank"
+                rel="noopener"
             >
                 Discord
             </a>
 
         </nav>
 
+
+        <!-- auth-ui.js controls this -->
 
         <div
             class="nav-auth"
@@ -1188,21 +1778,22 @@
 
             <a
                 href="./login.html"
-                class="full-btn"
+                class="nav-login"
             >
                 Login
             </a>
 
         </div>
 
+
     </div>
 
 </header>
 
 
-<!-- =====================================
+<!-- =========================================================
      HERO
-====================================== -->
+========================================================== -->
 
 <section class="hero">
 
@@ -1210,10 +1801,12 @@
         Romania Minecraft PvP Rankings
     </div>
 
+
     <h1>
         The home of
         <span>Minecraft PvP.</span>
     </h1>
+
 
     <p>
         Discover the best Minecraft PvP players in Romania.
@@ -1223,11 +1816,12 @@
 </section>
 
 
-<!-- =====================================
-     RANKINGS
-====================================== -->
+<!-- =========================================================
+     PREMIUM RANKINGS
+========================================================== -->
 
 <section class="section">
+
 
     <div class="section-top">
 
@@ -1237,9 +1831,11 @@
                 Premium Rankings
             </div>
 
+
             <div class="section-title">
                 Top Minecraft PvP Players
             </div>
+
 
             <div class="section-subtitle">
                 Overall leaderboard • Best tier across all gamemodes
@@ -1264,18 +1860,41 @@
         <!-- PODIUM -->
 
         <div
-            class="podium"
             id="podium"
+            class="podium"
         >
 
-            <div class="podium-lines"></div>
+            <div
+                class="podium-decoration left"
+            ></div>
 
-            <!-- generated by JS -->
+            <div
+                class="podium-decoration right"
+            ></div>
+
+
+            <div
+                class="podium-empty"
+            >
+
+                <div class="podium-empty-icon">
+                    🏆
+                </div>
+
+                <div class="podium-empty-title">
+                    Loading rankings...
+                </div>
+
+                <div class="podium-empty-text">
+                    Fetching live players.
+                </div>
+
+            </div>
 
         </div>
 
 
-        <!-- TABLE -->
+        <!-- TABLE HEADER -->
 
         <div class="table-head">
 
@@ -1306,6 +1925,8 @@
         </div>
 
 
+        <!-- PLAYERS -->
+
         <div
             id="playerRows"
         ></div>
@@ -1316,9 +1937,9 @@
 </section>
 
 
-<!-- =====================================
-     CRACKED
-====================================== -->
+<!-- =========================================================
+     CRACKED CTA
+========================================================== -->
 
 <section class="cta">
 
@@ -1326,10 +1947,12 @@
         Play on cracked?
     </h2>
 
+
     <p>
         Check the cracked rankings and discover
         where you stand among Romanian Minecraft PvP players.
     </p>
+
 
     <a
         href="./leaderboards.html?type=cracked"
@@ -1341,6 +1964,10 @@
 </section>
 
 
+<!-- =========================================================
+     FOOTER
+========================================================== -->
+
 <footer>
 
     © 2026 RO TierList.
@@ -1349,9 +1976,9 @@
 </footer>
 
 
-<!-- =====================================
-     FIREBASE + LIVE RANKINGS
-====================================== -->
+<!-- =========================================================
+     FIREBASE RANKINGS
+========================================================== -->
 
 <script type="module">
 
@@ -1364,17 +1991,17 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 
 
-/* =====================================
+/* =========================================================
    DATABASE
-====================================== */
+========================================================== */
 
 const database =
     getDatabase(app);
 
 
-/* =====================================
-   CONFIG
-====================================== */
+/* =========================================================
+   GAMEMODES
+========================================================== */
 
 const GAMEMODES = [
 
@@ -1389,6 +2016,12 @@ const GAMEMODES = [
 
 ];
 
+
+/* =========================================================
+   TIER SCORE
+
+   Higher = better
+========================================================== */
 
 const TIER_SCORE = {
 
@@ -1412,9 +2045,9 @@ const TIER_SCORE = {
 };
 
 
-/* =====================================
+/* =========================================================
    HELPERS
-====================================== */
+========================================================== */
 
 function normalize(value) {
 
@@ -1425,25 +2058,46 @@ function normalize(value) {
 }
 
 
-function getTierKey(tiers, mode) {
+function escapeHtml(value) {
 
-    const key =
-        Object.keys(tiers || {})
-            .find(
-                k =>
-                    normalize(k) ===
-                    normalize(mode)
-            );
-
-    return key;
+    return String(value || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
 
 }
 
+
+/* =========================================================
+   GET CASE-INSENSITIVE KEY
+========================================================== */
+
+function findKey(object, wanted) {
+
+    if (!object) {
+        return null;
+    }
+
+    return Object.keys(object).find(
+        key =>
+            normalize(key) ===
+            normalize(wanted)
+    ) || null;
+
+}
+
+
+/* =========================================================
+   GET BEST TIER
+========================================================== */
 
 function getBestTierInfo(player) {
 
     const tiers =
         player?.tiers || {};
+
 
     let best = {
 
@@ -1459,23 +2113,27 @@ function getBestTierInfo(player) {
     for (const mode of GAMEMODES) {
 
         const key =
-            getTierKey(tiers, mode);
+            findKey(tiers, mode);
 
-        const tier =
+
+        const value =
             key
                 ? tiers[key]
                 : "Unranked";
 
+
         const score =
-            TIER_SCORE[tier] || 0;
+            TIER_SCORE[value] || 0;
 
 
         if (score > best.score) {
 
             best = {
 
-                tier,
-                score,
+                tier: value,
+
+                score: score,
+
                 gamemode: mode
 
             };
@@ -1490,13 +2148,21 @@ function getBestTierInfo(player) {
 }
 
 
-function getStatsForMode(player, mode) {
+/* =========================================================
+   GET STATS
+========================================================== */
+
+function getStatsForMode(
+    player,
+    mode
+) {
 
     const stats =
         player?.stats || {};
 
+
     const key =
-        getTierKey(stats, mode);
+        findKey(stats, mode);
 
 
     if (!key) {
@@ -1532,31 +2198,9 @@ function getStatsForMode(player, mode) {
 }
 
 
-function skinBody(name) {
-
-    return (
-        "https://mc-heads.net/body/" +
-        encodeURIComponent(name) +
-        "/150"
-    );
-
-}
-
-
-function skinAvatar(name) {
-
-    return (
-        "https://mc-heads.net/avatar/" +
-        encodeURIComponent(name) +
-        "/40"
-    );
-
-}
-
-
-/* =====================================
+/* =========================================================
    PREPARE PLAYER
-====================================== */
+========================================================== */
 
 function preparePlayer(player) {
 
@@ -1608,47 +2252,84 @@ function preparePlayer(player) {
 }
 
 
-/* =====================================
-   SORT
-====================================== */
+/* =========================================================
+   SORT PLAYERS
+========================================================== */
 
 function sortPlayers(players) {
 
     return players.sort(
         (a, b) => {
 
-            if (b.score !== a.score) {
 
-                return b.score - a.score;
+            /* BEST TIER */
 
-            }
+            if (
+                b.score !==
+                a.score
+            ) {
 
-
-            if (b.wins !== a.wins) {
-
-                return b.wins - a.wins;
-
-            }
-
-
-            if (a.losses !== b.losses) {
-
-                return a.losses - b.losses;
+                return (
+                    b.score -
+                    a.score
+                );
 
             }
 
 
-            if (b.tests !== a.tests) {
+            /* WINS */
 
-                return b.tests - a.tests;
+            if (
+                b.wins !==
+                a.wins
+            ) {
+
+                return (
+                    b.wins -
+                    a.wins
+                );
 
             }
 
+
+            /* FEWER LOSSES */
+
+            if (
+                a.losses !==
+                b.losses
+            ) {
+
+                return (
+                    a.losses -
+                    b.losses
+                );
+
+            }
+
+
+            /* TESTS */
+
+            if (
+                b.tests !==
+                a.tests
+            ) {
+
+                return (
+                    b.tests -
+                    a.tests
+                );
+
+            }
+
+
+            /* NAME */
 
             return String(
                 a.minecraftName
             ).localeCompare(
-                String(b.minecraftName)
+                String(
+                    b.minecraftName
+                )
             );
 
         }
@@ -1657,9 +2338,35 @@ function sortPlayers(players) {
 }
 
 
-/* =====================================
-   PODIUM CARD
-====================================== */
+/* =========================================================
+   SKINS
+========================================================== */
+
+function bodySkin(name) {
+
+    return (
+        "https://mc-heads.net/body/" +
+        encodeURIComponent(name) +
+        "/150"
+    );
+
+}
+
+
+function avatarSkin(name) {
+
+    return (
+        "https://mc-heads.net/avatar/" +
+        encodeURIComponent(name) +
+        "/40"
+    );
+
+}
+
+
+/* =========================================================
+   PODIUM PLAYER
+========================================================== */
 
 function createPodiumPlayer(
     player,
@@ -1668,18 +2375,7 @@ function createPodiumPlayer(
 ) {
 
     const name =
-        player?.minecraftName ||
-        "Unknown";
-
-
-    const tier =
-        player?.bestTier ||
-        "Unranked";
-
-
-    const mode =
-        player?.bestGamemode ||
-        "-";
+        player.minecraftName;
 
 
     return `
@@ -1695,7 +2391,7 @@ function createPodiumPlayer(
 
             <img
                 class="podium-skin"
-                src="${skinBody(name)}"
+                src="${bodySkin(name)}"
                 alt=""
                 loading="eager"
                 onerror="
@@ -1710,9 +2406,17 @@ function createPodiumPlayer(
 
 
             <div class="podium-tier">
-                ${escapeHtml(tier)}
+
+                ${escapeHtml(
+                    player.bestTier
+                )}
+
                 •
-                ${escapeHtml(mode)}
+
+                ${escapeHtml(
+                    player.bestGamemode
+                )}
+
             </div>
 
 
@@ -1727,25 +2431,9 @@ function createPodiumPlayer(
 }
 
 
-/* =====================================
-   ESCAPE HTML
-====================================== */
-
-function escapeHtml(value) {
-
-    return String(value || "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-
-}
-
-
-/* =====================================
+/* =========================================================
    RENDER PODIUM
-====================================== */
+========================================================== */
 
 function renderPodium(players) {
 
@@ -1755,19 +2443,24 @@ function renderPodium(players) {
         );
 
 
+    /*
+     * No ranked players
+     */
+
     if (!players.length) {
 
         podium.innerHTML = `
 
-            <div class="podium-lines"></div>
+            <div
+                class="podium-decoration left"
+            ></div>
 
             <div
-                class="podium-empty"
-                style="
-                    grid-column:
-                        1 / -1;
-                "
-            >
+                class="podium-decoration right"
+            ></div>
+
+
+            <div class="podium-empty">
 
                 <div class="podium-empty-icon">
                     🏆
@@ -1800,22 +2493,22 @@ function renderPodium(players) {
         players[2];
 
 
-    let html =
-        `<div class="podium-lines"></div>`;
+    let html = `
+
+        <div
+            class="podium-decoration left"
+        ></div>
+
+        <div
+            class="podium-decoration right"
+        ></div>
+
+    `;
 
 
     /*
-     * Important:
-     *
-     * DOM order is:
      * #2
-     * #1
-     * #3
-     *
-     * so the visual result is
-     * exactly like a normal podium.
      */
-
 
     if (second) {
 
@@ -1828,12 +2521,14 @@ function renderPodium(players) {
 
     } else {
 
-        html += `
-            <div></div>
-        `;
+        html += `<div></div>`;
 
     }
 
+
+    /*
+     * #1
+     */
 
     html +=
         createPodiumPlayer(
@@ -1842,6 +2537,10 @@ function renderPodium(players) {
             "first"
         );
 
+
+    /*
+     * #3
+     */
 
     if (third) {
 
@@ -1854,9 +2553,7 @@ function renderPodium(players) {
 
     } else {
 
-        html += `
-            <div></div>
-        `;
+        html += `<div></div>`;
 
     }
 
@@ -1867,9 +2564,9 @@ function renderPodium(players) {
 }
 
 
-/* =====================================
-   ROW
-====================================== */
+/* =========================================================
+   TABLE ROW
+========================================================== */
 
 function createPlayerRow(
     player,
@@ -1884,6 +2581,7 @@ function createPlayerRow(
 
         <div class="player-row">
 
+
             <div class="rank">
                 #${rank}
             </div>
@@ -1893,7 +2591,7 @@ function createPlayerRow(
 
                 <img
                     class="small-skin"
-                    src="${skinAvatar(name)}"
+                    src="${avatarSkin(name)}"
                     alt=""
                     loading="lazy"
                 >
@@ -1904,6 +2602,7 @@ function createPlayerRow(
                     <div class="player-name">
                         ${escapeHtml(name)}
                     </div>
+
 
                     <div class="player-mode">
                         ${escapeHtml(
@@ -1953,6 +2652,7 @@ function createPlayerRow(
 
             </div>
 
+
         </div>
 
     `;
@@ -1960,9 +2660,9 @@ function createPlayerRow(
 }
 
 
-/* =====================================
+/* =========================================================
    RENDER TABLE
-====================================== */
+========================================================== */
 
 function renderRows(players) {
 
@@ -1973,20 +2673,12 @@ function renderRows(players) {
 
 
     /*
-     * TOP 3 are displayed in podium.
+     * #1 #2 #3 are podium.
      *
-     * The next 50 players are displayed
-     * underneath.
+     * Show another 50 below:
      *
-     * Therefore total visible:
-     *
-     * 3 podium
-     * +
-     * 50 table
-     *
-     * = 53 players.
+     * #4 -> #53
      */
-
 
     const extraPlayers =
         players.slice(3, 53);
@@ -2035,13 +2727,23 @@ function renderRows(players) {
 }
 
 
-/* =====================================
-   FIREBASE LIVE DATA
-====================================== */
+/* =========================================================
+   FIREBASE REALTIME LISTENER
+========================================================== */
 
 onValue(
-    ref(database, "players"),
+
+    ref(
+        database,
+        "players"
+    ),
+
     snapshot => {
+
+
+        /*
+         * No players
+         */
 
         if (!snapshot.exists()) {
 
@@ -2058,6 +2760,11 @@ onValue(
             snapshot.val();
 
 
+        /*
+         * Convert Firebase object
+         * into array.
+         */
+
         const players =
             Object.entries(
                 rawPlayers
@@ -2071,35 +2778,59 @@ onValue(
 
                 })
             )
+
+
+            /*
+             * PREMIUM ONLY
+             */
+
             .filter(
-                player => {
-
-                    /*
-                     * PREMIUM ONLY
-                     */
-
-                    return normalize(
+                player =>
+                    normalize(
                         player.accountType
-                    ) === "premium";
-
-                }
+                    ) ===
+                    "premium"
             )
+
+
+            /*
+             * Calculate best tier.
+             */
+
             .map(
                 preparePlayer
             )
+
+
+            /*
+             * Only ranked players.
+             */
+
             .filter(
                 player =>
                     player.score > 0
             );
 
 
+        /*
+         * Sort from best to worst.
+         */
+
         sortPlayers(players);
 
+
+        /*
+         * Top 3.
+         */
 
         renderPodium(
             players.slice(0, 3)
         );
 
+
+        /*
+         * #4 - #53.
+         */
 
         renderRows(
             players
@@ -2107,24 +2838,24 @@ onValue(
 
     },
 
+
     error => {
 
         console.error(
-            "Leaderboard error:",
+            "Firebase leaderboard error:",
             error
         );
+
 
         document.getElementById(
             "podium"
         ).innerHTML = `
 
-            <div
-                class="podium-empty"
-                style="
-                    grid-column:
-                        1 / -1;
-                "
-            >
+            <div class="podium-empty">
+
+                <div class="podium-empty-icon">
+                    ⚠
+                </div>
 
                 <div class="podium-empty-title">
                     Unable to load rankings.
@@ -2145,9 +2876,9 @@ onValue(
 </script>
 
 
-<!-- =====================================
-     AUTH UI
-====================================== -->
+<!-- =========================================================
+     AUTH
+========================================================== -->
 
 <script
     type="module"
@@ -2156,4 +2887,5 @@ onValue(
 
 
 </body>
+
 </html>
