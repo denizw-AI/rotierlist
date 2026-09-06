@@ -1,1577 +1,1523 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Admin Panel | RO TierList</title>
+    <title>RO TierList | Admin Panel</title>
 
     <style>
+        :root {
+            --bg: #07070b;
+            --panel: #101015;
+            --panel-2: #0c0c11;
+            --border: #252532;
+            --purple: #7c5cff;
+            --purple-light: #9b7cff;
+            --text: #f5f5fa;
+            --muted: #9292a5;
+            --green: #4ade80;
+            --red: #ff5c5c;
+        }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: Arial, Helvetica, sans-serif;
         }
 
         body {
-
-            min-height: 100vh;
-
             background:
-                radial-gradient(
-                    circle at top left,
-                    rgba(124,92,255,0.14),
-                    transparent 35%
-                ),
-                #08080d;
+                radial-gradient(circle at top, rgba(124, 92, 255, 0.10), transparent 35%),
+                var(--bg);
+            color: var(--text);
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            min-height: 100vh;
+        }
 
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        nav {
+            height: 72px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(7, 7, 11, 0.92);
+            backdrop-filter: blur(14px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 21px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--purple);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .back-btn {
+            padding: 10px 16px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: #cfcfe0;
+            font-size: 14px;
+            transition: .2s;
+        }
+
+        .back-btn:hover {
+            border-color: var(--purple);
             color: white;
-
-            padding: 110px 20px 60px;
-
+            transform: translateY(-1px);
         }
 
-
-        .container {
-
-            width: 100%;
-            max-width: 1200px;
-
-            margin: auto;
-
+        main {
+            width: min(1100px, 92%);
+            margin: 0 auto;
+            padding: 55px 0 80px;
         }
-
 
         .header {
-
             margin-bottom: 30px;
-
         }
-
-
-        .title {
-
-            font-size: 34px;
-
-            font-weight: 900;
-
-        }
-
-
-        .subtitle {
-
-            color: #777783;
-
-            margin-top: 7px;
-
-            font-size: 14px;
-
-        }
-
-
-        .admin-badge {
-
-            display: inline-block;
-
-            margin-top: 15px;
-
-            padding: 7px 12px;
-
-            border-radius: 8px;
-
-            background:
-                rgba(124,92,255,0.10);
-
-            border:
-                1px solid rgba(124,92,255,0.20);
-
-            color: #a994ff;
-
-            font-size: 12px;
-
-            font-weight: 800;
-
-        }
-
-
-        .layout {
-
-            display: grid;
-
-            grid-template-columns:
-                330px 1fr;
-
-            gap: 20px;
-
-        }
-
-
-        .panel {
-
-            background:
-                rgba(15,15,23,0.94);
-
-            border:
-                1px solid rgba(255,255,255,0.07);
-
-            border-radius: 18px;
-
-            padding: 22px;
-
-        }
-
-
-        .panel-title {
-
-            font-size: 15px;
-
-            font-weight: 900;
-
-            margin-bottom: 15px;
-
-        }
-
-
-        .search {
-
-            width: 100%;
-
-            height: 46px;
-
-            padding: 0 13px;
-
-            background: #101018;
-
-            border:
-                1px solid rgba(255,255,255,0.08);
-
-            border-radius: 10px;
-
-            color: white;
-
-            outline: none;
-
-        }
-
-
-        .search:focus {
-
-            border-color: #7c5cff;
-
-        }
-
-
-        .player-list {
-
-            margin-top: 15px;
-
-            max-height: 650px;
-
-            overflow-y: auto;
-
-        }
-
-
-        .player {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 12px;
-
-            padding: 11px;
-
-            border-radius: 11px;
-
-            cursor: pointer;
-
-            transition: 0.15s;
-
-            margin-bottom: 5px;
-
-        }
-
-
-        .player:hover {
-
-            background: #171720;
-
-        }
-
-
-        .player.active {
-
-            background:
-                rgba(124,92,255,0.12);
-
-            border:
-                1px solid rgba(124,92,255,0.18);
-
-        }
-
-
-        .player-skin {
-
-            width: 42px;
-
-            height: 42px;
-
-            object-fit: contain;
-
-            image-rendering: pixelated;
-
-        }
-
-
-        .player-name {
-
-            font-size: 13px;
-
-            font-weight: 800;
-
-        }
-
-
-        .player-meta {
-
-            color: #686875;
-
-            font-size: 10px;
-
-            margin-top: 4px;
-
-        }
-
-
-        .empty {
-
-            color: #666673;
-
-            text-align: center;
-
-            padding: 30px 10px;
-
-            font-size: 13px;
-
-        }
-
-
-        .editor {
-
-            display: none;
-
-        }
-
-
-        .editor.visible {
-
-            display: block;
-
-        }
-
-
-        .profile {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 18px;
-
-            padding-bottom: 22px;
-
-            border-bottom:
-                1px solid rgba(255,255,255,0.06);
-
-            margin-bottom: 22px;
-
-        }
-
-
-        .profile-skin {
-
-            width: 90px;
-
-            height: 120px;
-
-            object-fit: contain;
-
-            image-rendering: pixelated;
-
-        }
-
-
-        .profile-name {
-
-            font-size: 26px;
-
-            font-weight: 900;
-
-        }
-
-
-        .badges {
-
-            display: flex;
-
-            flex-wrap: wrap;
-
-            gap: 7px;
-
-            margin-top: 10px;
-
-        }
-
 
         .badge {
-
-            padding: 6px 9px;
-
-            border-radius: 7px;
-
-            background: #171720;
-
-            color: #9b9ba8;
-
-            font-size: 10px;
-
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(124, 92, 255, .10);
+            border: 1px solid rgba(124, 92, 255, .28);
+            color: var(--purple-light);
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: 11px;
             font-weight: 800;
-
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
         }
 
-
-        .badge.premium {
-
-            color: #65e6a0;
-
-            background:
-                rgba(50,220,130,0.08);
-
+        h1 {
+            font-size: clamp(32px, 5vw, 50px);
+            line-height: 1;
+            letter-spacing: -2px;
+            margin-bottom: 12px;
         }
 
+        .header p {
+            color: var(--muted);
+            font-size: 15px;
+        }
 
-        .form-grid {
-
+        .admin-grid {
             display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 15px;
-
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
 
-
-        .field {
-
-            margin-bottom: 3px;
-
+        .card {
+            background: linear-gradient(
+                145deg,
+                rgba(255,255,255,.025),
+                rgba(255,255,255,.008)
+            );
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.18);
         }
 
-
-        .field.full {
-
-            grid-column:
-                1 / -1;
-
+        .card.full {
+            grid-column: 1 / -1;
         }
 
+        .card-title {
+            font-size: 17px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .card-description {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
 
         label {
-
             display: block;
-
-            margin-bottom: 7px;
-
-            color: #9999a5;
-
-            font-size: 11px;
-
-            font-weight: 800;
-
+            color: #cfcfe0;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 8px;
         }
 
-
-        select,
-        input {
-
+        input,
+        select {
             width: 100%;
-
-            height: 44px;
-
-            padding: 0 12px;
-
-            border-radius: 9px;
-
-            border:
-                1px solid rgba(255,255,255,0.08);
-
-            background: #101018;
-
-            color: white;
-
-            outline: none;
-
-        }
-
-
-        select:focus,
-        input:focus {
-
-            border-color: #7c5cff;
-
-        }
-
-
-        .tier-select {
-
-            font-weight: 900;
-
-        }
-
-
-        .save {
-
-            width: 100%;
-
-            height: 48px;
-
-            margin-top: 20px;
-
-            border: none;
-
+            height: 46px;
             border-radius: 10px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #7c5cff,
-                    #5f43db
-                );
-
+            border: 1px solid var(--border);
+            outline: none;
+            background: #0a0a0f;
             color: white;
+            padding: 0 13px;
+            font-size: 14px;
+            transition: .2s;
+        }
 
-            font-weight: 900;
+        input::placeholder {
+            color: #666678;
+        }
 
+        input:focus,
+        select:focus {
+            border-color: var(--purple);
+            box-shadow: 0 0 0 3px rgba(124, 92, 255, .10);
+        }
+
+        select {
             cursor: pointer;
-
-            transition: 0.2s;
-
         }
 
+        option {
+            background: #0c0c11;
+            color: white;
+        }
 
-        .save:hover {
+        .field {
+            margin-bottom: 18px;
+        }
 
+        .search-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-row input {
+            flex: 1;
+        }
+
+        button {
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .search-btn {
+            height: 46px;
+            padding: 0 18px;
+            border-radius: 10px;
+            background: var(--purple);
+            color: white;
+            font-weight: 800;
+            transition: .2s;
+        }
+
+        .search-btn:hover {
+            background: var(--purple-light);
             transform: translateY(-1px);
-
         }
 
+        .players-list {
+            margin-top: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: #09090e;
+        }
 
-        .save:disabled {
+        .players-list::-webkit-scrollbar {
+            width: 6px;
+        }
 
-            opacity: 0.5;
+        .players-list::-webkit-scrollbar-thumb {
+            background: #292936;
+            border-radius: 10px;
+        }
 
+        .player-option {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 13px 15px;
+            background: transparent;
+            color: white;
+            border-bottom: 1px solid #191923;
+            text-align: left;
+            transition: .15s;
+        }
+
+        .player-option:last-child {
+            border-bottom: none;
+        }
+
+        .player-option:hover {
+            background: rgba(124, 92, 255, .08);
+        }
+
+        .player-option.selected {
+            background: rgba(124, 92, 255, .13);
+            box-shadow: inset 3px 0 0 var(--purple);
+        }
+
+        .player-name {
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .player-type {
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 3px;
+        }
+
+        .player-type.premium {
+            color: #a58cff;
+        }
+
+        .player-type.cracked {
+            color: #f4a261;
+        }
+
+        .selected-player {
+            margin-top: 15px;
+            border: 1px solid rgba(124, 92, 255, .25);
+            background: rgba(124, 92, 255, .06);
+            border-radius: 12px;
+            padding: 14px;
+            display: none;
+        }
+
+        .selected-player.show {
+            display: block;
+        }
+
+        .selected-label {
+            color: var(--muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .selected-name {
+            font-size: 17px;
+            font-weight: 900;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .save-btn {
+            width: 100%;
+            height: 50px;
+            border-radius: 11px;
+            background: linear-gradient(135deg, #7c5cff, #6848ee);
+            color: white;
+            font-size: 14px;
+            font-weight: 900;
+            margin-top: 8px;
+            transition: .2s;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(124,92,255,.25);
+        }
+
+        .save-btn:disabled {
+            opacity: .5;
             cursor: not-allowed;
-
+            transform: none;
+            box-shadow: none;
         }
-
 
         .message {
-
-            display: none;
-
             margin-top: 15px;
-
-            padding: 11px;
-
-            border-radius: 9px;
-
-            font-size: 12px;
-
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-size: 13px;
+            display: none;
         }
 
+        .message.show {
+            display: block;
+        }
 
         .message.success {
-
-            display: block;
-
-            color: #65e6a0;
-
-            background:
-                rgba(50,220,130,0.08);
-
-            border:
-                1px solid rgba(50,220,130,0.16);
-
+            color: #8df0ae;
+            border: 1px solid rgba(74,222,128,.25);
+            background: rgba(74,222,128,.07);
         }
-
 
         .message.error {
-
-            display: block;
-
-            color: #ff7888;
-
-            background:
-                rgba(255,70,90,0.08);
-
-            border:
-                1px solid rgba(255,70,90,0.16);
-
+            color: #ff9696;
+            border: 1px solid rgba(255,92,92,.25);
+            background: rgba(255,92,92,.07);
         }
 
-
-        .section {
-
-            margin-top: 25px;
-
+        .message.info {
+            color: #b6a6ff;
+            border: 1px solid rgba(124,92,255,.25);
+            background: rgba(124,92,255,.07);
         }
 
-
-        .section-title {
-
-            font-size: 14px;
-
-            font-weight: 900;
-
-            margin-bottom: 13px;
-
+        .status {
+            margin-top: 20px;
+            color: var(--muted);
+            font-size: 12px;
         }
 
+        .status strong {
+            color: white;
+        }
 
-        @media(max-width: 850px) {
+        .empty {
+            padding: 25px;
+            text-align: center;
+            color: #6d6d7e;
+            font-size: 13px;
+        }
 
-            .layout {
+        .danger-note {
+            margin-top: 18px;
+            padding: 12px 14px;
+            border: 1px solid rgba(255,92,92,.18);
+            background: rgba(255,92,92,.04);
+            border-radius: 10px;
+            color: #a5a5b5;
+            font-size: 11px;
+            line-height: 1.5;
+        }
 
+        @media (max-width: 800px) {
+            .admin-grid {
                 grid-template-columns: 1fr;
-
             }
 
-        }
-
-
-        @media(max-width: 550px) {
-
-            body {
-
-                padding-left: 12px;
-                padding-right: 12px;
-
-            }
-
-            .form-grid {
-
-                grid-template-columns: 1fr;
-
-            }
-
-            .field.full {
-
+            .card.full {
                 grid-column: auto;
-
             }
-
-            .profile {
-
-                align-items: flex-start;
-
-            }
-
         }
 
+        @media (max-width: 550px) {
+            main {
+                width: 94%;
+                padding-top: 35px;
+            }
+
+            nav {
+                padding: 0 4%;
+            }
+
+            .form-grid,
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-row {
+                flex-direction: column;
+            }
+
+            .search-btn {
+                width: 100%;
+            }
+
+            h1 {
+                letter-spacing: -1px;
+            }
+        }
     </style>
-
 </head>
-
 
 <body>
 
+<nav>
+    <a href="./index.html" class="logo">
+        RO<span>TierList</span>
+    </a>
 
-<div class="container">
+    <div class="nav-right">
+        <a href="./index.html" class="back-btn">← Back to website</a>
+    </div>
+</nav>
 
+<main>
 
     <div class="header">
+        <div class="badge">⚡ ADMIN PANEL</div>
 
-        <div class="title">
-            Admin Panel
-        </div>
+        <h1>Rank Players</h1>
 
-        <div class="subtitle">
-            Manage players, tiers and test statistics.
-        </div>
-
-        <div class="admin-badge">
-            🛡 OWNER / ADMIN
-        </div>
-
+        <p>
+            Select any registered player and manage their Minecraft PvP tiers and stats.
+        </p>
     </div>
 
+    <div class="admin-grid">
 
-    <div class="layout">
+        <!-- PLAYER SELECTOR -->
+        <div class="card">
+            <div class="card-title">Player</div>
 
-
-        <!-- PLAYER LIST -->
-
-        <div class="panel">
-
-            <div class="panel-title">
-                Players
+            <div class="card-description">
+                Search for any player registered on RO TierList.
             </div>
 
-            <input
-                id="search"
-                class="search"
-                placeholder="Search Minecraft username..."
-                autocomplete="off"
-            >
+            <div class="field">
+                <label for="playerSearch">Minecraft Username</label>
 
-            <div
-                id="playerList"
-                class="player-list"
-            >
+                <div class="search-row">
+                    <input
+                        id="playerSearch"
+                        type="text"
+                        placeholder="e.g. Kalasnikov_"
+                        autocomplete="off"
+                    >
 
+                    <button
+                        id="searchButton"
+                        class="search-btn"
+                        type="button"
+                    >
+                        Search
+                    </button>
+                </div>
+            </div>
+
+            <div id="playersList" class="players-list">
                 <div class="empty">
                     Loading players...
                 </div>
-
             </div>
 
+            <div id="selectedPlayer" class="selected-player">
+                <div class="selected-label">
+                    Selected player
+                </div>
+
+                <div id="selectedPlayerName" class="selected-name">
+                    -
+                </div>
+            </div>
+
+            <div id="playerStatus" class="status">
+                Loading database...
+            </div>
         </div>
 
 
-        <!-- EDITOR -->
+        <!-- TIER -->
+        <div class="card">
 
-        <div
-            id="editor"
-            class="panel editor"
-        >
+            <div class="card-title">Tier Management</div>
 
-            <div class="profile">
+            <div class="card-description">
+                Choose the gamemode and tier for the selected player.
+            </div>
 
-                <img
-                    id="profileSkin"
-                    class="profile-skin"
-                    src=""
-                    alt=""
-                >
+            <div class="form-grid">
 
-                <div>
+                <div class="field">
+                    <label for="gamemode">
+                        Gamemode
+                    </label>
 
-                    <div
-                        id="profileName"
-                        class="profile-name"
+                    <select id="gamemode">
+                        <option value="vanilla">Vanilla</option>
+                        <option value="sword">Sword</option>
+                        <option value="axe">Axe</option>
+                        <option value="uhc">UHC</option>
+                        <option value="pot">Pot</option>
+                        <option value="mace">Mace</option>
+                        <option value="smp">SMP</option>
+                        <option value="crystal">Crystal</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="tier">
+                        Tier
+                    </label>
+
+                    <select id="tier">
+                        <option value="Unranked">Unranked</option>
+
+                        <option value="LT5">LT5</option>
+                        <option value="HT5">HT5</option>
+
+                        <option value="LT4">LT4</option>
+                        <option value="HT4">HT4</option>
+
+                        <option value="LT3">LT3</option>
+                        <option value="HT3">HT3</option>
+
+                        <option value="LT2">LT2</option>
+                        <option value="HT2">HT2</option>
+
+                        <option value="LT1">LT1</option>
+                        <option value="HT1">HT1</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="card-title" style="margin-top:10px;">
+                Statistics
+            </div>
+
+            <div class="card-description">
+                Update the player's test and match statistics.
+            </div>
+
+            <div class="stats-grid">
+
+                <div class="field">
+                    <label for="tests">Tests</label>
+
+                    <input
+                        id="tests"
+                        type="number"
+                        min="0"
+                        value="0"
                     >
-                        -
-                    </div>
+                </div>
 
-                    <div
-                        id="badges"
-                        class="badges"
-                    ></div>
+                <div class="field">
+                    <label for="wins">Wins</label>
 
+                    <input
+                        id="wins"
+                        type="number"
+                        min="0"
+                        value="0"
+                    >
+                </div>
+
+                <div class="field">
+                    <label for="losses">Losses</label>
+
+                    <input
+                        id="losses"
+                        type="number"
+                        min="0"
+                        value="0"
+                    >
                 </div>
 
             </div>
-
-
-            <div class="section">
-
-                <div class="section-title">
-                    Tier
-                </div>
-
-
-                <div class="form-grid">
-
-
-                    <div class="field full">
-
-                        <label>
-                            GAMEMODE
-                        </label>
-
-                        <select
-                            id="gamemode"
-                        >
-
-                            <option value="vanilla">
-                                Vanilla
-                            </option>
-
-                            <option value="sword">
-                                Sword
-                            </option>
-
-                            <option value="axe">
-                                Axe
-                            </option>
-
-                            <option value="uhc">
-                                UHC
-                            </option>
-
-                            <option value="pot">
-                                Pot
-                            </option>
-
-                            <option value="mace">
-                                Mace
-                            </option>
-
-                            <option value="smp">
-                                SMP
-                            </option>
-
-                            <option value="crystal">
-                                Crystal
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <div class="field full">
-
-                        <label>
-                            TIER
-                        </label>
-
-                        <select
-                            id="tier"
-                            class="tier-select"
-                        >
-
-                            <option value="Unranked">
-                                Unranked
-                            </option>
-
-                            <option value="HT1">
-                                HT1
-                            </option>
-
-                            <option value="LT1">
-                                LT1
-                            </option>
-
-                            <option value="HT2">
-                                HT2
-                            </option>
-
-                            <option value="LT2">
-                                LT2
-                            </option>
-
-                            <option value="HT3">
-                                HT3
-                            </option>
-
-                            <option value="LT3">
-                                LT3
-                            </option>
-
-                            <option value="HT4">
-                                HT4
-                            </option>
-
-                            <option value="LT4">
-                                LT4
-                            </option>
-
-                            <option value="HT5">
-                                HT5
-                            </option>
-
-                            <option value="LT5">
-                                LT5
-                            </option>
-
-                        </select>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="section">
-
-                <div class="section-title">
-                    Test Statistics
-                </div>
-
-
-                <div class="form-grid">
-
-
-                    <div class="field">
-
-                        <label>
-                            TESTS
-                        </label>
-
-                        <input
-                            id="tests"
-                            type="number"
-                            min="0"
-                            value="0"
-                        >
-
-                    </div>
-
-
-                    <div class="field">
-
-                        <label>
-                            WINS
-                        </label>
-
-                        <input
-                            id="wins"
-                            type="number"
-                            min="0"
-                            value="0"
-                        >
-
-                    </div>
-
-
-                    <div class="field">
-
-                        <label>
-                            LOSSES
-                        </label>
-
-                        <input
-                            id="losses"
-                            type="number"
-                            min="0"
-                            value="0"
-                        >
-
-                    </div>
-
-                </div>
-
-            </div>
-
 
             <button
-                id="save"
-                class="save"
+                id="saveButton"
+                class="save-btn"
+                type="button"
+                disabled
             >
-                Save Changes
+                Save Rank
             </button>
 
+            <div id="message" class="message"></div>
 
-            <div
-                id="message"
-                class="message"
-            ></div>
-
+            <div class="danger-note">
+                Admin access is protected by your Firebase account.
+                Only <strong>denizzzezw@gmail.com</strong> can save player rankings.
+            </div>
 
         </div>
-
 
     </div>
 
-</div>
+</main>
 
 
 <script type="module">
 
-import {
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+    import { auth, app } from "./firebase.js";
 
-import {
-    getDatabase,
-    ref,
-    get,
-    update
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+    import {
+        onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
-import {
-    auth,
-    app
-} from "./firebase.js";
+    import {
+        getDatabase,
+        ref,
+        onValue,
+        update
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 
 
-const database =
-    getDatabase(app);
+    /* =========================
+       CONFIG
+    ========================= */
+
+    const ADMIN_EMAIL = "denizzzezw@gmail.com";
+
+    const database = getDatabase(app);
 
 
-/*
- * IMPORTANT
- *
- * Put the SAME owner email here
- * that you placed in Firebase Rules.
- */
+    /* =========================
+       ELEMENTS
+    ========================= */
 
-const OWNER_EMAIL =
-    "denizzzezw@gmail.com";
+    const playerSearch =
+        document.getElementById("playerSearch");
 
+    const searchButton =
+        document.getElementById("searchButton");
 
-/*
- * ELEMENTS
- */
+    const playersList =
+        document.getElementById("playersList");
 
-const playerList =
-    document.getElementById("playerList");
+    const selectedPlayerBox =
+        document.getElementById("selectedPlayer");
 
-const search =
-    document.getElementById("search");
+    const selectedPlayerName =
+        document.getElementById("selectedPlayerName");
 
-const editor =
-    document.getElementById("editor");
+    const playerStatus =
+        document.getElementById("playerStatus");
 
-const profileSkin =
-    document.getElementById("profileSkin");
+    const gamemode =
+        document.getElementById("gamemode");
 
-const profileName =
-    document.getElementById("profileName");
+    const tier =
+        document.getElementById("tier");
 
-const badges =
-    document.getElementById("badges");
+    const tests =
+        document.getElementById("tests");
 
-const gamemode =
-    document.getElementById("gamemode");
+    const wins =
+        document.getElementById("wins");
 
-const tier =
-    document.getElementById("tier");
+    const losses =
+        document.getElementById("losses");
 
-const tests =
-    document.getElementById("tests");
+    const saveButton =
+        document.getElementById("saveButton");
 
-const wins =
-    document.getElementById("wins");
-
-const losses =
-    document.getElementById("losses");
-
-const save =
-    document.getElementById("save");
-
-const message =
-    document.getElementById("message");
+    const message =
+        document.getElementById("message");
 
 
-/*
- * DATA
- */
+    /* =========================
+       STATE
+    ========================= */
 
-let players = {};
+    let allPlayers = {};
 
-let selectedUID = null;
+    let selectedUID = null;
 
-
-/*
- * AUTH
- */
-
-onAuthStateChanged(
-    auth,
-    async (user) => {
-
-        if (!user) {
-
-            window.location.href =
-                "login.html";
-
-            return;
-
-        }
+    let firebaseReady = false;
 
 
-        /*
-         * FRONTEND CHECK
-         *
-         * Firebase Rules are the real protection.
-         */
+    /* =========================
+       HELPERS
+    ========================= */
 
-        if (
-            user.email?.toLowerCase() !==
-            OWNER_EMAIL.toLowerCase()
-        ) {
+    function showMessage(text, type = "info") {
 
-            document.body.innerHTML = `
+        message.textContent = text;
 
-                <div style="
-                    min-height:100vh;
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                    background:#08080d;
-                    color:white;
-                    font-family:Arial;
-                    text-align:center;
-                    padding:30px;
-                ">
-
-                    <div>
-
-                        <div style="
-                            font-size:50px;
-                            margin-bottom:15px;
-                        ">
-                            🚫
-                        </div>
-
-                        <h1>
-                            Access Denied
-                        </h1>
-
-                        <p style="
-                            color:#777783;
-                            margin-top:10px;
-                        ">
-                            You do not have permission
-                            to access the Admin Panel.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            `;
-
-            return;
-
-        }
-
-
-        await loadPlayers();
+        message.className =
+            `message show ${type}`;
 
     }
-);
 
 
-/*
- * LOAD PLAYERS
- */
+    function hideMessage() {
 
-async function loadPlayers() {
+        message.className = "message";
 
-    try {
-
-        const snapshot =
-            await get(
-                ref(
-                    database,
-                    "players"
-                )
-            );
-
-
-        if (!snapshot.exists()) {
-
-            players = {};
-
-            renderPlayers();
-
-            return;
-
-        }
-
-
-        players =
-            snapshot.val() || {};
-
-
-        renderPlayers();
+        message.textContent = "";
 
     }
 
-    catch (error) {
 
-        console.error(error);
+    function normalize(value) {
 
-        playerList.innerHTML = `
-
-            <div class="empty">
-                Could not load players.
-            </div>
-
-        `;
-
-    }
-
-}
-
-
-/*
- * RENDER PLAYER LIST
- */
-
-function renderPlayers() {
-
-    const query =
-        search.value
+        return String(value || "")
             .trim()
             .toLowerCase();
 
-
-    playerList.innerHTML = "";
-
-
-    const entries =
-        Object.entries(players)
-            .filter(
-                ([uid, player]) => {
-
-                    return (
-                        player.minecraftName
-                            ?.toLowerCase()
-                            .includes(query)
-                    );
-
-                }
-            );
+    }
 
 
-    if (!entries.length) {
+    function safeNumber(value) {
 
-        playerList.innerHTML = `
+        const number = Number(value);
 
-            <div class="empty">
-                No players found.
-            </div>
+        if (!Number.isFinite(number) || number < 0) {
+            return 0;
+        }
 
-        `;
+        return Math.floor(number);
+    }
 
-        return;
+
+    function getAccountType(player) {
+
+        return String(
+            player?.accountType || "unknown"
+        ).toLowerCase();
+    }
+
+
+    function getMinecraftName(player, uid) {
+
+        return (
+            player?.minecraftName ||
+            player?.username ||
+            player?.name ||
+            uid
+        );
+    }
+
+
+    function findTier(player, mode) {
+
+        const tiers = player?.tiers || {};
+
+        const key = Object.keys(tiers).find(
+            key => normalize(key) === normalize(mode)
+        );
+
+        return key
+            ? tiers[key]
+            : "Unranked";
+    }
+
+
+    function findStats(player) {
+
+        return {
+            tests: safeNumber(player?.stats?.tests),
+            wins: safeNumber(player?.stats?.wins),
+            losses: safeNumber(player?.stats?.losses)
+        };
 
     }
 
 
-    entries.forEach(
-        ([uid, player]) => {
+    /* =========================
+       RENDER PLAYERS
+    ========================= */
 
-            const element =
-                document.createElement("div");
+    function renderPlayers(search = "") {
 
-            element.className =
-                "player" +
-                (
-                    selectedUID === uid
-                        ? " active"
-                        : ""
+        const query = normalize(search);
+
+        playersList.innerHTML = "";
+
+        const entries = Object.entries(allPlayers);
+
+        const filtered = entries
+            .filter(([uid, player]) => {
+
+                const name =
+                    getMinecraftName(player, uid);
+
+                return normalize(name)
+                    .includes(query);
+
+            })
+            .sort((a, b) => {
+
+                const nameA =
+                    getMinecraftName(a[1], a[0]);
+
+                const nameB =
+                    getMinecraftName(b[1], b[0]);
+
+                return nameA.localeCompare(
+                    nameB,
+                    undefined,
+                    {
+                        sensitivity: "base"
+                    }
                 );
 
-
-            const skin =
-                player.uuid
-                    ? `https://mc-heads.net/avatar/${player.uuid}/42`
-                    : `https://mc-heads.net/avatar/${encodeURIComponent(player.minecraftName)}/42`;
+            });
 
 
-            element.innerHTML = `
+        if (filtered.length === 0) {
 
-                <img
-                    class="player-skin"
-                    src="${skin}"
-                    alt=""
-                >
+            playersList.innerHTML = `
+                <div class="empty">
+                    No players found.
+                </div>
+            `;
 
+            return;
+        }
+
+
+        filtered.forEach(([uid, player]) => {
+
+            const name =
+                getMinecraftName(player, uid);
+
+            const accountType =
+                getAccountType(player);
+
+
+            const button =
+                document.createElement("button");
+
+            button.type = "button";
+
+            button.className =
+                "player-option" +
+                (selectedUID === uid
+                    ? " selected"
+                    : "");
+
+
+            button.innerHTML = `
                 <div>
-
                     <div class="player-name">
-                        ${escapeHtml(
-                            player.minecraftName || "Unknown"
-                        )}
+                        ${escapeHtml(name)}
                     </div>
 
-                    <div class="player-meta">
+                    <div class="player-type ${accountType}">
                         ${escapeHtml(
-                            player.region || "EU"
-                        )}
-                        ·
-                        ${escapeHtml(
-                            player.accountType || "unknown"
+                            accountType === "premium"
+                                ? "Premium"
+                                : accountType === "cracked"
+                                    ? "Cracked"
+                                    : "Account type unknown"
                         )}
                     </div>
-
                 </div>
 
+                <div style="color:#666678;font-size:12px;">
+                    Select →
+                </div>
             `;
 
 
-            element.addEventListener(
+            button.addEventListener(
                 "click",
-                () => {
-
-                    selectPlayer(uid);
-
-                }
+                () => selectPlayer(uid)
             );
 
 
-            playerList.appendChild(
-                element
-            );
+            playersList.appendChild(button);
 
-        }
-    );
+        });
 
-}
-
-
-/*
- * SELECT PLAYER
- */
-
-function selectPlayer(uid) {
-
-    selectedUID =
-        uid;
-
-
-    const player =
-        players[uid];
-
-
-    if (!player) {
-        return;
     }
 
 
-    editor.classList.add(
-        "visible"
-    );
+    /* =========================
+       ESCAPE HTML
+    ========================= */
+
+    function escapeHtml(value) {
+
+        return String(value)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+
+    }
 
 
-    profileName.textContent =
-        player.minecraftName ||
-        "Unknown";
+    /* =========================
+       SELECT PLAYER
+    ========================= */
 
-
-    profileSkin.src =
-        player.uuid
-            ? `https://mc-heads.net/body/${player.uuid}/120`
-            : `https://mc-heads.net/body/${encodeURIComponent(player.minecraftName)}/120`;
-
-
-    renderBadges(player);
-
-
-    const currentMode =
-        gamemode.value;
-
-
-    tier.value =
-        player.tiers?.[currentMode] ||
-        "Unranked";
-
-
-    tests.value =
-        player.stats?.tests ||
-        0;
-
-
-    wins.value =
-        player.stats?.wins ||
-        0;
-
-
-    losses.value =
-        player.stats?.losses ||
-        0;
-
-
-    renderPlayers();
-
-}
-
-
-/*
- * BADGES
- */
-
-function renderBadges(player) {
-
-    badges.innerHTML = "";
-
-
-    const account =
-        document.createElement("div");
-
-    account.className =
-        "badge " +
-        (
-            player.accountType === "premium"
-                ? "premium"
-                : ""
-        );
-
-
-    account.textContent =
-        player.accountType === "premium"
-            ? "✓ Premium"
-            : "⚠ Unverified";
-
-
-    badges.appendChild(account);
-
-
-    const region =
-        document.createElement("div");
-
-    region.className =
-        "badge";
-
-
-    region.textContent =
-        "🌍 " +
-        (player.region || "EU");
-
-
-    badges.appendChild(region);
-
-}
-
-
-/*
- * CHANGE GAMEMODE
- */
-
-gamemode.addEventListener(
-    "change",
-    () => {
-
-        if (!selectedUID) {
-            return;
-        }
-
+    function selectPlayer(uid) {
 
         const player =
-            players[selectedUID];
+            allPlayers[uid];
 
-
-        tier.value =
-            player.tiers?.[
-                gamemode.value
-            ] ||
-            "Unranked";
-
-    }
-);
-
-
-/*
- * SEARCH
- */
-
-search.addEventListener(
-    "input",
-    renderPlayers
-);
-
-
-/*
- * SAVE
- */
-
-save.addEventListener(
-    "click",
-    async () => {
-
-        if (!selectedUID) {
+        if (!player) {
 
             showMessage(
-                "Select a player first.",
+                "Player not found.",
                 "error"
             );
 
             return;
-
         }
 
 
-        const player =
-            players[selectedUID];
+        selectedUID = uid;
 
 
-        if (!player) {
-            return;
+        const name =
+            getMinecraftName(player, uid);
+
+
+        selectedPlayerName.textContent =
+            name;
+
+        selectedPlayerBox.classList.add("show");
+
+        saveButton.disabled = false;
+
+
+        loadPlayerData(player);
+
+
+        renderPlayers(playerSearch.value);
+
+
+        hideMessage();
+
+        playerStatus.innerHTML =
+            `Selected: <strong>${escapeHtml(name)}</strong>`;
+    }
+
+
+    /* =========================
+       LOAD PLAYER DATA
+    ========================= */
+
+    function loadPlayerData(player) {
+
+        const currentTier =
+            findTier(
+                player,
+                gamemode.value
+            );
+
+        tier.value =
+            currentTier || "Unranked";
+
+
+        const stats =
+            findStats(player);
+
+
+        tests.value =
+            stats.tests;
+
+        wins.value =
+            stats.wins;
+
+        losses.value =
+            stats.losses;
+
+    }
+
+
+    /* =========================
+       GAMEMODE CHANGE
+    ========================= */
+
+    gamemode.addEventListener(
+        "change",
+        () => {
+
+            if (!selectedUID) {
+                return;
+            }
+
+            const player =
+                allPlayers[selectedUID];
+
+            if (!player) {
+                return;
+            }
+
+            tier.value =
+                findTier(
+                    player,
+                    gamemode.value
+                );
+
         }
+    );
 
 
-        save.disabled =
-            true;
+    /* =========================
+       SEARCH
+    ========================= */
 
-        save.textContent =
-            "Saving...";
+    playerSearch.addEventListener(
+        "input",
+        () => {
+
+            renderPlayers(
+                playerSearch.value
+            );
+
+        }
+    );
 
 
-        try {
+    searchButton.addEventListener(
+        "click",
+        () => {
 
-            /*
-             * Clone existing tiers
-             */
+            renderPlayers(
+                playerSearch.value
+            );
+
+            const query =
+                normalize(playerSearch.value);
+
+
+            if (!query) {
+
+                showMessage(
+                    "Type a Minecraft username first.",
+                    "info"
+                );
+
+                return;
+            }
+
+
+            const exact =
+                Object.entries(allPlayers)
+                    .find(([uid, player]) => {
+
+                        return normalize(
+                            getMinecraftName(
+                                player,
+                                uid
+                            )
+                        ) === query;
+
+                    });
+
+
+            if (exact) {
+
+                selectPlayer(exact[0]);
+
+            } else {
+
+                showMessage(
+                    "No player with that Minecraft username was found.",
+                    "error"
+                );
+
+            }
+
+        }
+    );
+
+
+    playerSearch.addEventListener(
+        "keydown",
+        event => {
+
+            if (event.key === "Enter") {
+
+                searchButton.click();
+
+            }
+
+        }
+    );
+
+
+    /* =========================
+       SAVE
+    ========================= */
+
+    saveButton.addEventListener(
+        "click",
+        async () => {
+
+            hideMessage();
+
+
+            if (!firebaseReady) {
+
+                showMessage(
+                    "Firebase is still loading. Try again.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            const user =
+                auth.currentUser;
+
+
+            if (!user) {
+
+                showMessage(
+                    "You are not logged in.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (
+                normalize(user.email) !==
+                normalize(ADMIN_EMAIL)
+            ) {
+
+                showMessage(
+                    "You do not have permission to use the Admin Panel.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            if (!selectedUID) {
+
+                showMessage(
+                    "Select a player first.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            const player =
+                allPlayers[selectedUID];
+
+
+            if (!player) {
+
+                showMessage(
+                    "The selected player no longer exists.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            const selectedName =
+                getMinecraftName(
+                    player,
+                    selectedUID
+                );
+
 
             const newTiers = {
-
                 ...(player.tiers || {})
-
             };
 
 
-            newTiers[
-                gamemode.value
-            ] =
+            /*
+             * Preserve the existing key if it uses
+             * different capitalization.
+             */
+
+            const existingModeKey =
+                Object.keys(newTiers).find(
+                    key =>
+                        normalize(key) ===
+                        normalize(gamemode.value)
+                );
+
+
+            const modeKey =
+                existingModeKey ||
+                gamemode.value;
+
+
+            newTiers[modeKey] =
                 tier.value;
 
 
-            /*
-             * New stats
-             */
-
             const newStats = {
 
-                ...(player.stats || {}),
+                tests: safeNumber(tests.value),
 
-                tests:
-                    Math.max(
-                        0,
-                        Number(tests.value) || 0
-                    ),
+                wins: safeNumber(wins.value),
 
-                wins:
-                    Math.max(
-                        0,
-                        Number(wins.value) || 0
-                    ),
-
-                losses:
-                    Math.max(
-                        0,
-                        Number(losses.value) || 0
-                    )
+                losses: safeNumber(losses.value)
 
             };
 
 
-            /*
-             * UPDATE DATABASE
-             */
+            const updates = {
 
-            await update(
-                ref(
-                    database,
-                    `players/${selectedUID}`
-                ),
-                {
+                tiers: newTiers,
 
-                    tiers:
-                        newTiers,
+                stats: newStats
 
-                    stats:
-                        newStats
+            };
+
+
+            saveButton.disabled = true;
+
+            saveButton.textContent =
+                "Saving...";
+
+
+            try {
+
+                /*
+                 * IMPORTANT:
+                 * This writes to players/{SELECTED PLAYER UID},
+                 * NOT auth.currentUser.uid.
+                 *
+                 * This is what allows the admin to rank
+                 * another player such as Kalasnikov_.
+                 */
+
+                await update(
+                    ref(
+                        database,
+                        `players/${selectedUID}`
+                    ),
+                    updates
+                );
+
+
+                /*
+                 * Update local data immediately.
+                 */
+
+                allPlayers[selectedUID] = {
+
+                    ...player,
+
+                    tiers: newTiers,
+
+                    stats: newStats
+
+                };
+
+
+                showMessage(
+                    `${selectedName} has been updated successfully. ${gamemode.value.toUpperCase()} → ${tier.value}`,
+                    "success"
+                );
+
+
+                playerStatus.innerHTML =
+                    `Selected: <strong>${escapeHtml(selectedName)}</strong> • Saved`;
+
+
+                renderPlayers(
+                    playerSearch.value
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Admin save error:",
+                    error
+                );
+
+
+                if (
+                    error?.code ===
+                    "PERMISSION_DENIED"
+                ) {
+
+                    showMessage(
+                        "Firebase blocked the save. Check your Realtime Database Rules.",
+                        "error"
+                    );
+
+                } else {
+
+                    showMessage(
+                        `Save failed: ${error.message || error}`,
+                        "error"
+                    );
 
                 }
-            );
 
+            } finally {
 
-            /*
-             * Update local data
-             */
+                saveButton.disabled =
+                    !selectedUID;
 
-            players[selectedUID].tiers =
-                newTiers;
+                saveButton.textContent =
+                    "Save Rank";
 
-            players[selectedUID].stats =
-                newStats;
-
-
-            showMessage(
-                "Changes saved successfully.",
-                "success"
-            );
-
-
-            renderPlayers();
+            }
 
         }
+    );
 
-        catch (error) {
 
-            console.error(error);
+    /* =========================
+       AUTH
+    ========================= */
 
-            showMessage(
-                "Could not save changes. Check Firebase Rules.",
-                "error"
-            );
+    onAuthStateChanged(
+        auth,
+        user => {
+
+            if (!user) {
+
+                firebaseReady = false;
+
+                playerStatus.innerHTML =
+                    `<strong style="color:#ff8585;">Not logged in</strong>`;
+
+                playersList.innerHTML = `
+                    <div class="empty">
+                        Please login with the admin account.
+                    </div>
+                `;
+
+                saveButton.disabled = true;
+
+                return;
+            }
+
+
+            if (
+                normalize(user.email) !==
+                normalize(ADMIN_EMAIL)
+            ) {
+
+                firebaseReady = false;
+
+                playerStatus.innerHTML =
+                    `<strong style="color:#ff8585;">Access denied</strong>`;
+
+                playersList.innerHTML = `
+                    <div class="empty">
+                        This account does not have admin access.
+                    </div>
+                `;
+
+                saveButton.disabled = true;
+
+                showMessage(
+                    `Admin access is only available for ${ADMIN_EMAIL}.`,
+                    "error"
+                );
+
+                return;
+            }
+
+
+            firebaseReady = true;
+
+            playerStatus.innerHTML =
+                `Logged in as <strong>${escapeHtml(user.email)}</strong>`;
+
+
+            loadPlayers();
 
         }
+    );
 
 
-        save.disabled =
-            false;
+    /* =========================
+       LOAD ALL PLAYERS
+    ========================= */
 
-        save.textContent =
-            "Save Changes";
+    function loadPlayers() {
+
+        const playersRef =
+            ref(database, "players");
+
+
+        onValue(
+            playersRef,
+            snapshot => {
+
+                const data =
+                    snapshot.val();
+
+
+                allPlayers =
+                    data && typeof data === "object"
+                        ? data
+                        : {};
+
+
+                renderPlayers(
+                    playerSearch.value
+                );
+
+
+                const count =
+                    Object.keys(allPlayers).length;
+
+
+                playerStatus.innerHTML =
+                    `Loaded <strong>${count}</strong> player${count === 1 ? "" : "s"}.`;
+
+
+                /*
+                 * If the currently selected player still exists,
+                 * refresh its data.
+                 */
+
+                if (
+                    selectedUID &&
+                    allPlayers[selectedUID]
+                ) {
+
+                    loadPlayerData(
+                        allPlayers[selectedUID]
+                    );
+
+                }
+
+            },
+            error => {
+
+                console.error(
+                    "Players load error:",
+                    error
+                );
+
+
+                playersList.innerHTML = `
+                    <div class="empty">
+                        Could not load players.
+                    </div>
+                `;
+
+
+                showMessage(
+                    `Could not load players: ${error.message}`,
+                    "error"
+                );
+
+            }
+        );
 
     }
-);
-
-
-/*
- * MESSAGE
- */
-
-function showMessage(
-    text,
-    type
-) {
-
-    message.textContent =
-        text;
-
-    message.className =
-        "message " + type;
-
-}
-
-
-/*
- * ESCAPE
- */
-
-function escapeHtml(value) {
-
-    return String(value)
-
-        .replaceAll("&", "&amp;")
-
-        .replaceAll("<", "&lt;")
-
-        .replaceAll(">", "&gt;")
-
-        .replaceAll('"', "&quot;")
-
-        .replaceAll("'", "&#039;");
-
-}
 
 </script>
 
-
-<script
-    type="module"
-    src="./auth-ui.js"
-></script>
-
-
 </body>
-
 </html>
